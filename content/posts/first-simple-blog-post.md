@@ -12,4 +12,4 @@ Simple themes are more visually appealing and professional looking.
 
 Simple words used in a simple blog are more powerful and impactful. Be direct and to the point. Just get across the message or idea.
 
-This is what I want. A simple blog, with simple themes, written with simple words.
+This is what I want. A simple blog with a simple theme and simple words.
