@@ -7,6 +7,19 @@ body {
     sans-serif;
   font-size: 1rem;
 }
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+  a {
+    color: #66b3ff;
+  }
+
+  a:visited {
+    color: #b19cd9;
+  }
+}
 header {
   text-align: center;
   margin-bottom: 20px;
