@@ -38,3 +38,12 @@ h2 {
 p {
   margin: 10px 0;
 }
+code {
+  color: lightcoral;
+}
+table {
+  margin-top: 20px;
+}
+figcaption {
+  text-align: center;
+}

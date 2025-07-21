@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How LLMs work</title>
+  </head>
+  <body>
+    <header>
+      <h1>How LLMs work</h1>
+      <time datetime="2025-07-21">21 July 2025</time>
+    </header>
+    <article>
+      <h1>How computers generate words</h1>
+      <p>
+        One very simple way we could generate words could be by using bigrams.
+        We analyze pairs of consecutive words in training text to learn
+        statistical patterns. For each word, the system calculates the
+        probability of what should come next based on how often different pairs
+        appeared together in the training data.
+      </p>
+      <p>Let's say we have the following data:</p>
+      <pre><code>
+the dog sat on the mat
+the dog is on the floor
+the dog is walking
+the dog wants the bone
+the dog wants the toy
+the dog wants food
+      </code></pre>
+      <p>We can count how often a word appears after another:</p>
+      <table style="width: 100%; text-align: center">
+        <thead>
+          <tr>
+            <th>First Word</th>
+            <th>Following Word</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 'the' bigrams -->
+          <tr>
+            <td class="first-word" rowspan="5">the</td>
+            <td>dog</td>
+            <td class="count">6</td>
+          </tr>
+          <tr>
+            <td>mat</td>
+            <td class="count">1</td>
+          </tr>
+          <tr>
+            <td>floor</td>
+            <td class="count">1</td>
+          </tr>
+          <tr>
+            <td>bone</td>
+            <td class="count">1</td>
+          </tr>
+          <tr>
+            <td>toy</td>
+            <td class="count">1</td>
+          </tr>
+
+          <!-- 'dog' bigrams -->
+          <tr>
+            <td class="first-word" rowspan="3">dog</td>
+            <td>wants</td>
+            <td class="count">3</td>
+          </tr>
+          <tr>
+            <td>is</td>
+            <td class="count">2</td>
+          </tr>
+          <tr>
+            <td>sat</td>
+            <td class="count">1</td>
+          </tr>
+
+          <!-- 'sat' bigrams -->
+          <tr>
+            <td class="first-word">sat</td>
+            <td>on</td>
+            <td class="count">1</td>
+          </tr>
+
+          <!-- 'on' bigrams -->
+          <tr>
+            <td class="first-word">on</td>
+            <td>the</td>
+            <td class="count">2</td>
+          </tr>
+
+          <!-- 'is' bigrams -->
+          <tr>
+            <td class="first-word" rowspan="2">is</td>
+            <td>on</td>
+            <td class="count">1</td>
+          </tr>
+          <tr>
+            <td>walking</td>
+            <td class="count">1</td>
+          </tr>
+
+          <!-- 'wants' bigrams -->
+          <tr>
+            <td class="first-word" rowspan="2">wants</td>
+            <td>the</td>
+            <td class="count">2</td>
+          </tr>
+          <tr>
+            <td>food</td>
+            <td class="count">1</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Now, if we want to know which word is the most likely to come after
+        <code>dog</code> we can look up the table and find the word
+        <code>wants</code>.
+      </p>
+      <p>
+        To generate new text, the computer starts with an initial word, selects
+        the next one based on the learned probabilities, then uses that new
+        element to predict the following one, continuing this process to build
+        complete words or sentences.
+      </p>
+      <p>
+        Modern LLMs use transformer architectures that can consider hundreds or
+        thousands of words of context simultaneously. Instead of simple
+        probability tables, LLMs use deep neural networks with billions of
+        parameters that learn complex patterns and relationships across entire
+        documents.
+      </p>
+      <p>
+        The core principle is similar though: predicting the next word based on
+        statistical probabilities.
+      </p>
+      <p>
+        This is why LLMs need prompts like "You are a helpful assistant" to get
+        started and longer, more detailed prompts typically produce better
+        results. Each additional detail helps narrow down the vast space of
+        possible responses to something more aligned with what you actually
+        want.
+      </p>
+      <h2>Temperature</h2>
+      <p>
+        Temperature lets you control whether the AI plays it safe with common
+        patterns or takes "creative" risks with less likely options.
+      </p>
+      <p>
+        Imagine we want to predict what comes after "the dog" based on these
+        sentences. Looking at the data, after "the dog" we see:
+      </p>
+      <ul>
+        <li>"wants" - appears 3 times</li>
+        <li>"is" - appears 2 times</li>
+        <li>"sat" - appears 1 time</li>
+      </ul>
+      <p>We need to convert these counts into probabilities.</p>
+      <p>
+        The simple way would be dividing by the total (6), giving us: sat=17%,
+        is=33%, wants=50%.
+      </p>
+      <p>
+        Instead, we will use a more sophisticated mathematical function called
+        softmax.
+      </p>
+      <p>
+        Without getting into the math, softmax might turn our counts into
+        something like: sat=5%, is=20%, wants=75%.
+      </p>
+      <p>
+        It amplifies the differences between common and rare words, making the
+        most frequent patterns stand out more clearly. Temperature is a
+        parameter that controls how much softmax amplifies these differences.
+      </p>
+      <p>
+        When you reduce the temperature, it makes "wants" even MORE likely to be
+        picked while increasing the temperature flattens things out, making more
+        likely to pick "sat".
+      </p>
+      <iframe
+        width="100%"
+        height="520"
+        src="how-llms-work/softmax-explainer.html"
+      ></iframe>
+
+      <h2>Embeddings</h2>
+      <p>
+        Computers can only process numbers, not words. So how do we help them
+        understand that "king" is related to "queen" but not to "banana"? This
+        is where embeddings come in.
+      </p>
+
+      <p>We could try assigning each word a single number:</p>
+      <pre><code>word_ids = { 'king': 1, 'queen': 2, 'man': 3, 'woman': 4, 'banana': 5 }</code></pre>
+      <p>
+        But this fails because the numbers don't capture meaning. Is word #1
+        (king) more similar to word #2 (queen) or word #5 (banana)? The computer
+        has no way to know.
+      </p>
+      <p>
+        Instead of one number, we give each word multiple numbers: a vector.
+        Each number represents a different aspect of meaning. Imagine we measure
+        three qualities:
+      </p>
+      <pre><code>[royalty, gender, fruitiness]</code></pre>
+      <p>Now we can represent words as:</p>
+      <pre>
+        <code>
+king   = [0.8, 0.9, 0.1]
+queen  = [0.8, 0.1, 0.1]
+man    = [0.1, 0.9, 0.1]
+banana = [0.0, 0.0, 0.9]
+apple  = [0.0, 0.0, 0.8]
+        </code>
+    </pre>
+      <p>
+        In practice, we don't manually decide these numbers. Instead, we use
+        machine learning to automatically discover dimensions that capture
+        meaning by analyzing how words are used in millions of sentences. The
+        resulting embeddings enable computers to understand word relationships
+        well enough to power modern AI applications.
+      </p>
+      <p>
+        Now computers can calculate which words are similar by measuring
+        distances between vectors:
+      </p>
+      <ul>
+        <li>Distance(king, queen) = small → related</li>
+        <li>Distance(king, banana) = large → unrelated</li>
+        <li>Distance(banana, apple) = tiny → very related</li>
+      </ul>
+
+      <p>Let's have a look at this:</p>
+      <figure>
+        <img width="100%" src="how-llms-work/plot-word-vec.jpg" />
+        <figcaption>Word vectors plotted in semantic space</figcaption>
+      </figure>
+      <p>
+        Look at the distance and direction between "man/king" and "woman/queen".
+      </p>
+
+      <p>
+        Imagine you don't know the word "aunt" and you're trying to find it. You
+        know that an uncle is a man who is your parent's sibling.
+      </p>
+
+      <p>
+        Using vector arithmetic, you can calculate:
+        <code>woman + (uncle - man) = aunt</code> <br />This works because
+        <code>(uncle - man)</code> captures the "parent's sibling" relationship,
+        and adding it to "woman" gives you the female version.
+      </p>
+
+      <p>We can use this for many things such as:</p>
+      <pre><code>England + (Paris - France) = London</code></pre>
+
+      <p>However, this doesn't always work:</p>
+      <pre><code>Canada + (Paris - France) = Toronto</code></pre>
+
+      <p>
+        Why does this happen? Word embeddings learn from how often words appear
+        together in text. Toronto appears with "Canada" far more often than
+        Ottawa does, so the model associates Toronto more strongly with Canada.
+        The embeddings capture statistical patterns, not factual truths.
+      </p>
+
+      <p>
+        This is exactly how modern AI systems can "hallucinate". They find the
+        most statistically likely answer based on patterns in their training
+        data, which isn't always the factually correct answer.
+      </p>
+      <h2>Tokens</h2>
+      <p>
+        If LLMs used words, the model would need a vocabulary of millions of
+        entries to cover all possible words in all languages. Instead, they
+        break text into common chunks that can be recombined.
+      </p>
+      <p>
+        This approach also handles variations elegantly. Rather than storing
+        "run," "runs," "running," "runner," and "runnable" as completely
+        separate tokens, the model can learn the root "run" and the patterns of
+        "-s," "-ning," "-ner," and "-able".
+      </p>
+      <p>
+        Now you can understand why LLMs are having a hard time counting the
+        letter "r" in strawberry. They never actually see the word, only
+        pre-chunked tokens like "straw" and "berry".
+      </p>
+      <p>
+        To the model, "straw" is just an indivisible unit not a sequence of
+        letters s-t-r-a-w. Then it learned that the token "berry" appears in
+        contexts about fruits, follows certain patterns, and combines with other
+        tokens in meaningful ways. But it never learned that "berry" contains
+        b-e-r-r-y.
+      </p>
+    </article>
+  </body>
+</html>
