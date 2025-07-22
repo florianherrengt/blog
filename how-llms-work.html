@@ -383,6 +383,76 @@ apple  = [0.0, 0.0, 0.8]
         that vector points to a specific spot in this semantic space. Then the
         model picks the most probable word from that region.
       </p>
+      <h2>Fine-tuning and LoRa</h2>
+      <p>
+        Imagine a neural network as a massive machine filled with adjustable
+        knobs. Each knob controls how information flows through the system.
+      </p>
+      <pre>
+Input         Hidden Layers           Output
+─────         ─────────────           ──────
+
+[●]           [●]   [●]   [●]         [●]
+ ├─────────────┼─────┼─────┼───────────┤
+[●]           [●]   [●]   [●]         [●]
+ ├─────────────┼─────┼─────┼───────────┤
+[●]           [●]   [●]   [●]         [●]
+ └─────────────┴─────┴─────┴───────────┘
+      </pre>
+      <p>
+        You move the input knobs on the left and the output on the right changes
+        based on their positions. During training, we figure out exactly how to
+        set all the knobs in the middle (hidden layers) so that any input knob
+        configuration produces the correct output.
+      </p>
+      <p>
+        You want to change the output but you don't want to touch the knobs in
+        the middle because it would be very time consuming to figure out what
+        works and you might break something.
+      </p>
+      <p>
+        Instead, You take the generated output of the big model and change it to
+        your liking. To figure this out, you train your own small machine. You
+        take the input, run it through the big machine, and then run it through
+        your smaller machine to figure out what adjustments to make to get the
+        desired output.
+      </p>
+      <p>
+        Your small machine learns: "When the big model says X, I need to nudge
+        it toward Y instead".
+      </p>
+      <pre>
+Input    Hidden Layers  Output  Adapter   Final Output
+─────    ─────────────  ──────  ───────   ────────────
+
+[●]───┬──[●]─┬─[●]─┬──────[●]───┬─[●]───┬──►[●]
+      │      │     │            │       │
+[●]───┼──[●]─┼─[●]─┼──────[●]───┼─[●]───┼──►[●]
+      │      │     │            │       │
+[●]───┴──[●]─┴─[●]─┴──────[●]───┴─[●]───┴──►[●]
+          ↑     ↑                  ↑
+          │     │                  │
+        Don't touch           Train these
+      </pre>
+      <p>
+        Now, this helps visually represent what is happening but what LoRA
+        actually does is adding small trainable modules inside the big model at
+        many layers, not just at the end.
+      </p>
+      <pre>
+Input    Hidden Layers (with LoRA)    Output
+─────    ─────────────────────────    ──────
+
+[●]───┬──[●+△]─┬─[●+△]─┬─[●+△]───┬──►[●]
+      │        │       │         │
+[●]───┼──[●+△]─┼─[●+△]─┼─[●+△]───┼──►[●]
+      │        │       │         │
+[●]───┴──[●+△]─┴─[●+△]─┴─[●+△]───┴──►[●]
+          ↑         ↑       ↑
+          │         │       │
+      Original + Small LoRA adapters
+      weights    at each layer
+      </pre>
     </article>
   </body>
 </html>
