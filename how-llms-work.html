@@ -453,6 +453,26 @@ Input    Hidden Layers (with LoRA)    Output
       Original + Small LoRA adapters
       weights    at each layer
       </pre>
+      <p>
+        LoRA's distributed approach is more powerful because it can influence
+        processing at each stage of the network, not just post-process the final
+        result.
+      </p>
+      <p>
+        This is how we can take a massive trained model and teach it new things
+        without starting from scratch. For example, the big model already knows
+        language or how to draw and LoRA nudges it toward a specific style (e.g
+        Gordon Ramsay or Studio Ghibli).
+      </p>
+      <p>
+        You can mix and match them and adjust their strengths by turning the
+        their input knobs (50% anime style, 30% cyberpunk, 20% vintage).
+      </p>
+      <p>
+        They're incredibly small (only needs a few million parameters) and cheap
+        (~$10 - $100) compared to the base models they modify. You can literally
+        train one on your gaming computer at home.
+      </p>
     </article>
   </body>
 </html>
