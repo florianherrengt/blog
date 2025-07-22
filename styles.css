@@ -7,18 +7,19 @@ body {
     sans-serif;
   font-size: 1rem;
 }
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #1a1a1a;
-    color: #e0e0e0;
-  }
-  a {
-    color: #66b3ff;
-  }
 
-  a:visited {
-    color: #b19cd9;
-  }
+table {
+  margin-top: 20px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff;
 }
 header {
   text-align: center;
@@ -46,4 +47,25 @@ table {
 }
 figcaption {
   text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+  a {
+    color: #66b3ff;
+  }
+
+  a:visited {
+    color: #b19cd9;
+  }
+  tr:nth-child(even) {
+    background-color: #2a2a2a;
+  }
+
+  tr:nth-child(odd) {
+    background-color: #1f1f1f;
+  }
 }
