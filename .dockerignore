@@ -1,0 +1,8 @@
+.git
+.gitignore
+*.md
+*.txt
+*.m4a
+.DS_Store
+LICENSE
+README.md

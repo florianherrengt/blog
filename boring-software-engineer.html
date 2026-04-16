@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link
+      rel="canonical"
+      href="https://blog.florianherrengt.com/boring-software-engineer.html"
+    />
+
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://blog.florianherrengt.com/boring-software-engineer.html"
+    />
+    <meta property="og:title" content="The boring software engineer" />
+    <meta
+      property="og:description"
+      content="How to build software with fewer moving parts and faster recovery when things break."
+    />
+    <meta property="og:site_name" content="Blog - Florian Herrengt" />
+    <meta property="og:locale" content="en_GB" />
+
+    <meta
+      property="article:published_time"
+      content="2026-04-16T00:00:00+00:00"
+    />
+    <meta property="article:author" content="Florian Herrengt" />
+    <meta property="article:section" content="Technology" />
+
+    <meta
+      name="twitter:url"
+      content="https://blog.florianherrengt.com/boring-software-engineer.html"
+    />
+    <meta
+      name="twitter:description"
+      content="How to build software with fewer moving parts and faster recovery when things break."
+    />
+    <meta name="twitter:title" content="The boring software engineer" />
+    <meta name="twitter:site" content="@florianherrengt" />
+    <meta name="twitter:creator" content="@florianherrengt" />
+
+    <meta name="author" content="Florian Herrengt" />
+    <title>The boring software engineer</title>
+  </head>
+  <body>
+    <header>
+      <h1>A boring software engineer is a good software engineer</h1>
+      <time datetime="2026-04-16">16 April 2026</time>
+    </header>
+
+    <article>
+      <p>
+        SaaS apps do not fail because a server explodes. They fail because the
+        stack has become too complex to debug and maintain.
+      </p>
+      <p>
+        The project is built in such a way that it is impossible to reproduce
+        bugs locally. After I jumped through dozens of nested files and
+        multiple microservices, I still can't figure out where the bug is
+        coming from. Or you don't have a reliable way to run database migrations
+        so they crash all the time.
+      </p>
+      <p>This is what kills productivity. This is what kills projects.</p>
+
+      <h2>Be a minimalist</h2>
+      <p>
+        Every app I work on, I always try to keep the stack as lean as I can.
+      </p>
+      <p>
+        Take this blog for example. It is just HTML files. Nothing else. Nothing
+        fancy. And it just works. I can edit anything I want at any time. I have
+        version control with Git and it scales because I have a CDN. I do not
+        need anything else. It is just me working on this alone, so why would I
+        need a complex system?
+      </p>
+      <p>Before I add anything, I ask:</p>
+      <ul>
+        <li>Can I run it locally?</li>
+        <li>Can I easily replace it?</li>
+        <li>Can I reuse something I already have?</li>
+      </ul>
+
+      <h2>Building a resilient system takes years of failures</h2>
+      <p>
+        I had a client who wanted maximum redundancy. We set up multi-cloud
+        failover so if AWS died, Azure would take over.
+      </p>
+      <p>
+        In the end, the card on file expired, both providers stopped working and
+        the whole setup fell over.
+      </p>
+      <p>
+        Hidden coupling is everywhere. Billing, identity, DNS, CI, secrets
+        managers, etc. I can do my best but I won't catch them all.
+      </p>
+      <p>
+        I have also seen provider lock-in hurt teams hard. A vendor gets
+        acquired, prices jump or an account gets suspended. So today, I build in
+        a way I can easily leave.
+      </p>
+
+      <h2>Optimize for recovery not for fantasy uptime</h2>
+      <p>
+        Across my career, hardware has rarely caused the worst incidents. Human
+        mistakes, bad deploys, provider lockouts and architecture mistakes did.
+      </p>
+      <p>I cannot predict every outage. I can control how fast I recover.</p>
+      <p>I want incidents to be boring and recovery to be boring.</p>
+
+      <h2>The stack I trust by default</h2>
+      <p>For small teams, this setup has worked for me for a long time:</p>
+      <ul>
+        <li>One oversized server</li>
+        <li>Postgres for primary data</li>
+        <li>Files on local disk</li>
+        <li>Containerized app deployment</li>
+      </ul>
+      <p>
+        I oversize the machine on purpose. Extra RAM gives room for spikes,
+        leaks and debugging without panic. It also stops premature optimization
+        work that does not matter yet.
+      </p>
+      <p>
+        A boring server with too much headroom beats a clever setup with no
+        margin.
+      </p>
+
+      <h2>Use Postgres for more than tables</h2>
+      <p>
+        Most of the time, I need a database, a key-value store and a queue.
+        Turns out, Postgres can already do all of this and so much more.
+      </p>
+      <ul>
+        <li>Normal relational tables for core data</li>
+        <li>Materialized views for caching</li>
+        <li>Unlogged tables for fast transient data</li>
+        <li>A Postgres-backed queue library such as pgboss</li>
+        <li>Cron + scheduler</li>
+        <li>
+          Postgres's built-in full-text search is more than enough for most apps
+        </li>
+        <li>
+          Append-only tables for audit trails, events, webhooks received and
+          logs.
+        </li>
+        <li>
+          Time-series analytics store with partitioning, indexes and rollups.
+        </li>
+      </ul>
+      <p>
+        Eventually, I might move to Kafka, Redis, Elasticsearch or ClickHouse
+        but Postgres works really well for a surprisingly long time.
+      </p>
+      <p>
+        In practice, fewer systems mean fewer moving parts and fewer places to
+        look at when I debug something.
+      </p>
+
+      <h2>Everything should be boring</h2>
+      <p>
+        My rule is simple: everything should be boring. There's nothing exciting
+        about using Postgres. It's easy to explain to people and it won't look
+        shiny on my CV.
+      </p>
+      <p>But a boring stack is just much easier to debug.</p>
+      <p>
+        I restore and recreate the production environment with its data and
+        reproduce the issue locally.
+      </p>
+      <p>My backup plan is also dead simple:</p>
+      <ul>
+        <li>Run regular `pg_dump`</li>
+        <li>Incremental backups to object storage with restic</li>
+      </ul>
+      <p>Then I can run restore drills on any machine.</p>
+      <p>
+        Rebuild on a fresh server, restore files and database and verify the app
+        boots end-to-end.
+      </p>
+
+      <h2>Deploy fast</h2>
+      <p>
+        I care a lot about CI speed. If deploys take half an hour, the team only
+        gets a handful of deploys in a day.
+      </p>
+      <p>My deploy path is equally boring every single time.</p>
+      <p>
+        Build a docker container with everything, including the frontend bundle
+        and any other assets. No need for S3 or anything complicated, the CDN
+        will cache it anyway.
+      </p>
+
+      <h2>To microservice or not</h2>
+      <p>I do not like microservices, but they make sense when:</p>
+      <ul>
+        <li>Different services need different runtimes</li>
+        <li>A critical ingestion path must stay isolated</li>
+      </ul>
+      <p>
+        Most of the other reasons I've heard are organisational issues or
+        shortcomings in the architecture. At this stage, your team is too small
+        for "coordination overhead", "domain-driven design" or, the worst reason
+        to use microservices, "scaling".
+      </p>
+      <p>
+        Still, I keep things simple with HTTP APIs calls. No Kafka or PubSub
+        unless I really need it.
+      </p>
+      <p>
+        I choose boring protocols because boring protocols fail in obvious ways
+        and have tools with decades of development to monitor and debug them.
+      </p>
+
+      <h2>Get off the cloud</h2>
+      <p>This one is controversial but hear me out, it actually makes sense.</p>
+      <p>
+        There's the classic mistake of over-engineering too early with
+        Kubernetes and full cloud ceremony, but there's another more subtle one.
+      </p>
+      <p>
+        The memory- and CPU-starved PaaS that forces you to deal with fake
+        scaling issues.
+      </p>
+      <p>
+        Under-provisioned platforms distort priorities. I have seen teams waste
+        time on caps, cold starts and workarounds instead of shipping product.
+      </p>
+      <p>
+        People misread platform limits as architecture needs and add caches and
+        service splits they never needed.
+      </p>
+      <p>
+        None of that is needed if you get one HUGE server to begin with. I can
+        get a fully managed server with 32-core, 256 GB RAM and 2TB of storage
+        for € 199/m.
+      </p>
+      <p>
+        Hardware failures rarely happen. Usually the app goes down because a
+        human messed something up. Even if the server itself fails, the backup
+        recovery is so simple the whole app can be redeployed somewhere else.
+      </p>
+    </article>
+  </body>
+</html>
