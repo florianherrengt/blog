@@ -38,6 +38,7 @@
       name="twitter:description"
       content="How to build software with fewer moving parts and faster recovery when things break."
     />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="The boring software engineer" />
     <meta name="twitter:site" content="@florianherrengt" />
     <meta name="twitter:creator" content="@florianherrengt" />
@@ -58,10 +59,12 @@
       </p>
       <p>
         The project is built in such a way that it is impossible to reproduce
-        bugs locally. After I jumped through dozens of nested files and
-        multiple microservices, I still can't figure out where the bug is
-        coming from. Or you don't have a reliable way to run database migrations
-        so they crash all the time.
+        bugs locally. After jumping through dozens of nested files and multiple
+        microservices, you still can't figure out where the bug is coming from.
+        Or you don't have a reliable way to run database migrations so they
+        crash all the time. Or maybe no one knows where anything is or how it
+        works. Because the person who built it left 6 months ago and everything
+        is so convoluted that nobody understands it.
       </p>
       <p>This is what kills productivity. This is what kills projects.</p>
 
@@ -81,6 +84,11 @@
         <li>Can I run it locally?</li>
         <li>Can I easily replace it?</li>
         <li>Can I reuse something I already have?</li>
+        <li>Can I remove it in one sprint without breaking everything?</li>
+        <li>
+          Does it give more value than its full cost, including complexity,
+          migration risk and maintenance burden?
+        </li>
       </ul>
 
       <h2>Building a resilient system takes years of failures</h2>
@@ -89,8 +97,8 @@
         failover so if AWS died, Azure would take over.
       </p>
       <p>
-        In the end, the card on file expired, both providers stopped working and
-        the whole setup fell over.
+        In the end, the card on file expired so both providers stopped working
+        and the whole setup fell over.
       </p>
       <p>
         Hidden coupling is everywhere. Billing, identity, DNS, CI, secrets
@@ -202,11 +210,11 @@
       <p>
         Most of the other reasons I've heard are organisational issues or
         shortcomings in the architecture. At this stage, your team is too small
-        for "coordination overhead", "domain-driven design" or, the worst reason
+        for "coordination overhead", "domain-driven design" or the worst reason
         to use microservices, "scaling".
       </p>
       <p>
-        Still, I keep things simple with HTTP APIs calls. No Kafka or PubSub
+        Still, I keep things simple with HTTP API calls. No Kafka or PubSub
         unless I really need it.
       </p>
       <p>
@@ -215,7 +223,11 @@
       </p>
 
       <h2>Get off the cloud</h2>
-      <p>This one is controversial but hear me out, it actually makes sense.</p>
+      <p>This one is controversial but hear me out. It actually makes sense.</p>
+      <p>
+        I am not against cloud. I am against cloud complexity theater that teams
+        adopt before they have a real need.
+      </p>
       <p>
         There's the classic mistake of over-engineering too early with
         Kubernetes and full cloud ceremony, but there's another more subtle one.
@@ -241,6 +253,11 @@
         Hardware failures rarely happen. Usually the app goes down because a
         human messed something up. Even if the server itself fails, the backup
         recovery is so simple the whole app can be redeployed somewhere else.
+      </p>
+      <p>
+        But there's still a place for innovation. Strong engineering is boring by
+        default and innovative by exception. When we innovate, it has to be
+        justified, calculated and easy to undo.
       </p>
     </article>
   </body>

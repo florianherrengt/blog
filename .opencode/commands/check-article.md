@@ -4,6 +4,9 @@ Checks this blog article for common issues.
   - og:type is set to "article"
   - og:url matches the expected URL format
   - og:title matches the page title
+  - og:description is present and accurately summarizes the article
+  - If og:image is present, it uses a valid image URL and points to a real file
+  - If og:image is present, og:image:alt is present and relevant
   - og:site_name is present
   - og:locale is present
   - article:published_time is present and valid
@@ -12,8 +15,12 @@ Checks this blog article for common issues.
 
 - **Twitter Card metadata**
   - twitter:card is set
+  - twitter:card is aligned with available assets (for example summary_large_image requires an image)
   - twitter:url matches og:url
   - twitter:title matches og:title
+  - twitter:description is present and accurately summarizes the article
+  - twitter:image is present when using image cards and matches og:image when possible
+  - twitter:image:alt is present and relevant when twitter:image is set
   - twitter:site is present
   - twitter:creator is present
 
@@ -21,6 +28,7 @@ Checks this blog article for common issues.
   - All <img> src files exist
   - All image links in the document are valid
   - Checks for .jpg, .png, .svg files referenced
+  - Open Graph and Twitter image files exist and are reachable when image tags are used
 
 - **File structure**
   - favicon.svg exists
@@ -37,4 +45,5 @@ Checks this blog article for common issues.
 - **Consistency checks**
   - og:title matches <title> tag
   - twitter:title matches og:title
+  - og:description and twitter:description are both relevant and consistent with article content
   - Author metadata consistent across tags
