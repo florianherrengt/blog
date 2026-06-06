@@ -1,0 +1,844 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://blog.florianherrengt.com/self-driving-rc-car.html"
+    />
+    <meta
+      property="og:title"
+      content="Building a basic self driving RC car"
+    />
+    <meta property="og:site_name" content="Blog - Florian Herrengt" />
+    <meta property="og:locale" content="en_GB" />
+    <meta
+      property="og:description"
+      content="Step-by-step guide to building a self-driving RC car using Arduino, optocouplers, computer vision and machine learning."
+    />
+    <meta
+      property="og:image"
+      content="https://miro.medium.com/v2/resize:fit:1200/1*HrOqdpGSY5C3qFnVoHBjXQ.gif"
+    />
+    <meta
+      property="og:image:alt"
+      content="Animated GIF of the self-driving RC car moving on its track"
+    />
+
+    <meta
+      property="article:published_time"
+      content="2017-02-23T00:00:00+00:00"
+    />
+    <meta property="article:author" content="Florian Herrengt" />
+    <meta property="article:section" content="Technology" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:url"
+      content="https://blog.florianherrengt.com/self-driving-rc-car.html"
+    />
+    <meta
+      name="twitter:title"
+      content="Building a basic self driving RC car"
+    />
+    <meta
+      name="twitter:description"
+      content="Step-by-step guide to building a self-driving RC car using Arduino, optocouplers, computer vision and machine learning."
+    />
+    <meta
+      name="twitter:image"
+      content="https://miro.medium.com/v2/resize:fit:1200/1*HrOqdpGSY5C3qFnVoHBjXQ.gif"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Animated GIF of the self-driving RC car moving on its track"
+    />
+    <meta name="twitter:site" content="@florianherrengt" />
+    <meta name="twitter:creator" content="@florianherrengt" />
+
+    <meta name="author" content="Florian Herrengt" />
+    <meta
+      name="description"
+      content="Step-by-step guide to building a self-driving RC car using Arduino, optocouplers, computer vision and machine learning."
+    />
+    <link
+      rel="canonical"
+      href="https://blog.florianherrengt.com/self-driving-rc-car.html"
+    />
+    <title>Building a basic self driving RC car</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Building a basic self driving RC car</h1>
+      <time datetime="2017-02-23">23 February 2017</time>
+    </header>
+
+    <article>
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1200/1*HrOqdpGSY5C3qFnVoHBjXQ.gif" alt="Animated GIF of the self-driving RC car moving on its track" />
+        <figcaption>Moving one step at a time to reduce speed</figcaption>
+      </figure>
+
+      <h2>Requirements</h2>
+      <ul>
+        <li>Programming knowledge (Python / Javascript)</li>
+        <li>Arduino</li>
+        <li>4 x 150&ohm; resistors</li>
+        <li>4 x 100&ohm; resistors</li>
+        <li>4 optocouplers</li>
+        <li>Breadboard + jump wires</li>
+        <li>Solder iron kit</li>
+        <li>RC car</li>
+        <li>Voltage step up converter (optional)</li>
+        <li>
+          Smartphone with camera streaming app
+          (<a href="https://itunes.apple.com/us/app/netcam-studio-smart-camera/id974703108">iOS</a>
+          /
+          <a href="https://play.google.com/store/apps/details?id=com.moonware.smart&amp;hl=en">Android</a>)
+        </li>
+        <li>Smartphone car holder</li>
+      </ul>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*oONepSt-brPVhHsEQ-oPhw.png" alt="Overview of the self-driving RC car circuit setup" />
+      </figure>
+
+      <h2>Building the circuit</h2>
+      <p>
+        The idea is to open and close switches on the remote controller from a script.
+      </p>
+
+      <h3>Optocoupler</h3>
+      <p>
+        I needed to find a way to mimic the action of pushing a physical button from a piece of code.
+      </p>
+      <p>
+        I first thought of using a basic switch controlled from the Arduino but the remote controller I have requires 9V when the Arduino can only handle 5V.
+      </p>
+      <p>Here comes the solution: "Optocouplers"</p>
+      <blockquote>
+        <p>
+          In electronics, an <strong>opto-isolator</strong>, also called an <strong>optocoupler</strong>, <strong>photocoupler</strong>, or <strong>optical isolator</strong>, is a component that transfers electrical signals between two isolated circuits by using light.
+        </p>
+        <cite>&mdash; Wikipedia</cite>
+      </blockquote>
+      <p>
+        This way, we can have 2 circuits logically connected but electrically isolated. The Arduino is now safe and I can open/close the remote controller's circuit in different places.
+      </p>
+      <p>
+        But wait, the optocoupler requires 1.3V and the Arduino GPIOs output 5V
+      </p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*XccMkikwiEgT7UqoYX6vuQ.png" alt="Optocoupler datasheet showing 1.3V requirement" />
+        <figcaption>From the optocoupler datasheet</figcaption>
+      </figure>
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*QKRIiuN79hCgPqkMoWc0rg.png" alt="Arduino GPIO output showing 5V" />
+        <figcaption>Arduino outputs 5V</figcaption>
+      </figure>
+
+      <p>
+        A common and easy way to reduce the voltage is to build a
+        <a href="https://en.wikipedia.org/wiki/Voltage_divider">voltage divider</a>.
+      </p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*rmIDG3KqwV_j9w6uyScKhg.png" alt="Voltage divider formula Vout = Vin * R2 / (R1 + R2)" />
+        <figcaption>Voltage divider formula</figcaption>
+      </figure>
+
+      <p>
+        According to the formula, I picked a 100&ohm; and a 270&ohm; resistor.
+      </p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:312/1*nzibektt8Ek-6wyxs9Oymg.png" alt="Calculation: R1 = 270, R2 = 100, Vin = 5, result Vout = 1.35" />
+        <figcaption>R1 = 270; R2 = 100; Vin = 5</figcaption>
+      </figure>
+
+      <p>Now we can build the circuit ...</p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:880/1*Hv3oK-qgGF8PxyWfGyOVPQ.png" alt="Breadboard with voltage divider circuit" />
+      </figure>
+
+      <p>... and check if everything is working as expected</p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*TkEZpaWqj_8jvrVUm8dnDw.png" alt="Multimeter reading 1.363V across the voltage divider output" />
+        <figcaption>Close enough</figcaption>
+      </figure>
+
+      <p>We can now safely connect it to the optocoupler.</p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*DVSymH-vAII1BHSiXdylHQ.png" alt="Circuit diagram showing optocoupler connected to the voltage divider" />
+        <figcaption>Optocouplers have a dot printed on it. This is where you have to bring the positive wire.</figcaption>
+      </figure>
+
+      <p>
+        Also, once everything was done and working, I discovered
+        <a href="https://en.wikipedia.org/wiki/Voltage_regulator">voltage regulators</a>
+        which would make things even easier.
+      </p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1000/1*rot0TNXFgR2lX-bv1pDS-A.png" alt="Voltage regulator component" />
+        <figcaption>Voltage regulators will always output the predefined voltage</figcaption>
+      </figure>
+
+      <h3>Connecting the remote controller</h3>
+      <p>
+        When I opened the remote controller, I noticed the buttons were making connections between two parts when pressed. This means we can solder wires on each part, hook it to the optocoupler and control it with the Arduino.
+      </p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*ywB8GdxAoOSkkp-rDfbl4Q.png" alt="Remote controller PCB with wires soldered for forward, backward, left and right" />
+        <figcaption>Forward / Backward / Left and Right connected to optocouplers</figcaption>
+      </figure>
+
+      <h3>Powering the remote controller with the Arduino (optional)</h3>
+      <p>
+        As mentioned before, the Arduino outputs 5V and the remote controller requires 9V provided by a battery.
+      </p>
+      <p>
+        Since I want this system to be plug &amp; play, I didn't want to have to deal with the battery.
+      </p>
+      <p>
+        A voltage step up converter allows me to get 9V out of the Arduino and connect it to the remote controller.
+      </p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*ZiJlw4Dm-VEiR3psrBNmjw.png" alt="Voltage step up converter wiring" />
+        <figcaption>White wires are connected to the 5V output and ground of the Arduino. Red and black to the remote.</figcaption>
+      </figure>
+
+      <p>We are now done with the hardware part, let's move on to the code.</p>
+
+      <h2>Controlling the car with Python through the Arduino</h2>
+
+      <h3>Arduino sketch</h3>
+      <p>
+        The Arduino is waiting for <em>strings</em> from the serial port and the python script will send those commands.
+      </p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*hAqZSvQZzW3qWfb42tAmtQ.png" alt="Arduino code with wire color to pin mapping" />
+      </figure>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*9iWPPeoeV3c4i9H9QFrHdw.png" alt="Arduino breadboard wiring showing each optocoupler connection" />
+        <figcaption>Each wire is connected to an optocoupler</figcaption>
+      </figure>
+
+<pre><code>// arduino code
+// read the string from the serial port and turn on/off the associated pin
+int x;
+String str;
+
+void setup()
+{
+
+  Serial.begin(250000);
+  pinMode(8, OUTPUT); // left - brown
+  pinMode(9, OUTPUT); // right - orange
+  pinMode(10, OUTPUT); // backward - white
+  pinMode(11, OUTPUT); // forward - blue
+}
+
+void loop()
+{
+    if(Serial.available() &gt; 0)
+    {
+        str = Serial.readStringUntil('\n');
+        if (str.equals("left_on")) {
+          digitalWrite(9, LOW);
+          digitalWrite(8, HIGH);
+        }
+        if (str.equals("right_on")) {
+          digitalWrite(8, LOW);
+          digitalWrite(9, HIGH);
+        }
+        if (str.equals("backward_on")) {
+          digitalWrite(11, LOW);
+          digitalWrite(10, HIGH);
+        }
+        if (str.equals("forward_on")) {
+          digitalWrite(10, LOW);
+          digitalWrite(11, HIGH);
+        }
+        if (str.equals("left_off")) {
+          digitalWrite(8, LOW);
+        }
+        if (str.equals("right_off")) {
+          digitalWrite(9, LOW);
+        }
+        if (str.equals("backward_off")) {
+          digitalWrite(10, LOW);
+        }
+        if (str.equals("forward_off")) {
+          digitalWrite(11, LOW);
+        }
+    }
+}</code></pre>
+
+      <h3>Sending command from Python</h3>
+      <p>
+        Using the serial connection, we are now able to send commands to the Arduino.
+      </p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*bvd4XpHeqJloEHXombkTSg.png" alt="Arduino serial monitor showing command output" />
+        <figcaption>You can try any commands in the serial monitor</figcaption>
+      </figure>
+
+      <p>First find out the port of your Arduino:</p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*rg3IzlMM_8bgkycJb8CzBw.png" alt="Arduino IDE showing the serial port selection" />
+      </figure>
+
+      <p>Now we should be able to control the car from a Python script</p>
+
+<pre><code>from serial import Serial
+import time
+arduino = Serial('/dev/cu.usbmodem1411', 250000)
+arduino.write(b'forward_on\n')
+time.sleep(1)
+arduino.write(b'forward_off\n')</code></pre>
+
+      <h2>Machine learning and Neural Network</h2>
+      <p>
+        Before we go further, let's pause for a while to think about how we are going to build the self driving feature.
+      </p>
+      <p>
+        We are going to use supervised machine learning, which means we need to:
+      </p>
+      <ol>
+        <li>Collect good samples of data</li>
+        <li>Translate those samples to numbers</li>
+        <li>Train our model</li>
+      </ol>
+
+      <h3>Collecting data</h3>
+      <p>
+        With the smartphone and the car holder attached to the roof of the car we will be able to see what's in front of the car.
+      </p>
+      <p>
+        Using any
+        <a href="https://github.com/Moonware/cordova-cameraserver">app</a>
+        that allows us to get the image of the camera from a URL and a REST API with an endpoint for each direction, we should be able to control the car and see where it's going.
+      </p>
+      <p>We can then use it to collect our data.</p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*ZWpXW2kGK6prZCt9gZw9_g.png" alt="Screenshot of the camera streaming app" />
+      </figure>
+
+<pre><code># REST API to control the car
+# each endpoint move the car toward a direction for a short time
+from serial import Serial
+import requests
+from PIL import Image
+from io import BytesIO
+import time
+import uuid
+arduino = Serial('/dev/cu.usbmodem1411', 250000)
+# wait for the serial port to be ready
+time.sleep(2)
+
+from flask import Flask
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
+
+# check if everything is working
+arduino.write(b'forward_on\n')
+time.sleep(0.05)
+arduino.write(b'forward_off\n')
+time.sleep(0.05)
+arduino.write(b'backward_on\n')
+time.sleep(0.05)
+arduino.write(b'backward_off\n')
+time.sleep(0.05)
+arduino.write(b'left_on\n')
+time.sleep(0.05)
+arduino.write(b'left_off\n')
+time.sleep(0.05)
+arduino.write(b'right_on\n')
+time.sleep(0.05)
+arduino.write(b'right_off\n')
+
+
+def save_data(command):
+    # request the image many times
+    # for some reasons the app doesn't always return
+    # the latest image if you request it only once
+    for _ in range(0, 10):
+        response = requests.get('url of camera')
+    # save the image for future use
+    # the direction is stored at the end of filename
+    Image.open(BytesIO(response.content)).convert('L').save('../data_tmp/{}_{}.jpg'.format(uuid.uuid1(), command))
+
+@app.route("/forward")
+def forward():
+    save_data(0)
+    arduino.write(b'forward_on\n')
+    time.sleep(0.10)
+    arduino.write(b'forward_off\n')
+    return 'forward'
+
+@app.route("/left")
+def left():
+    save_data(1)
+    arduino.write(b'left_on\n')
+    time.sleep(0.5)
+    arduino.write(b'forward_on\n')
+    time.sleep(0.10)
+    arduino.write(b'forward_off\n')
+    time.sleep(0.5)
+    arduino.write(b'left_off\n')
+    return 'left'
+
+@app.route("/right")
+def right():
+    save_data(2)
+    arduino.write(b'right_on\n')
+    time.sleep(0.5)
+    arduino.write(b'forward_on\n')
+    time.sleep(0.10)
+    arduino.write(b'forward_off\n')
+    time.sleep(0.5)
+    arduino.write(b'right_off\n')
+    return 'right'
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')</code></pre>
+
+      <h3>Driving the car from your browser</h3>
+      <p>
+        Let's write a bit of Javascript to send HTTP requests to our server and drive the car from our keyboard.
+      </p>
+      <p>
+        The html file to load
+        <a href="https://github.com/ftlabs/fastclick">FastClick</a>
+        and
+        <a href="https://github.com/ccampbell/mousetrap">Mousetrap</a>:
+      </p>
+
+<pre><code>&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Remote&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id="forward"&gt;Forward&lt;/div&gt;
+        &lt;div id="left"&gt;left&lt;/div&gt;
+        &lt;div id="right"&gt;right&lt;/div&gt;
+        &lt;div id="backward"&gt;Backward&lt;/div&gt;
+        &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"&gt;&lt;/script&gt;
+        &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mousetrap/1.6.0/mousetrap.min.js"&gt;&lt;/script&gt;
+        &lt;script type="text/javascript" src="index.js"&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+      <p>Then bind the keys and buttons to HTTP requests:</p>
+
+<pre><code>if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function() {
+        FastClick.attach(document.body); // remove 300ms delay on mobile
+    }, false);
+}
+
+function switchOn(direction) {
+    fetch('http://localhost:5000/' + direction)
+        .then(response =&gt; response.text())
+        .then(response =&gt; console.log(response))
+        .catch(error =&gt; console.log(error));
+}
+
+// send a request to switch off a GPIOs and turn off a LED
+function switchOff(direction) {
+    fetch('http://localhost:5000/' + direction + '-off')
+        .then(response =&gt; response.text())
+        .then(response =&gt; console.log(response))
+        .catch(error =&gt; console.log(error));
+}
+
+// binding the buttons on the UI
+['forward', 'backward', 'left', 'right'].forEach(key =&gt; {
+    document.getElementById(key).addEventListener('mousedown', () =&gt; switchOn(key));
+    document.getElementById(key).addEventListener('mouseup', () =&gt; switchOff(key));
+});
+
+// keep track of which keys are down
+const keysDown = {
+    up: false,
+    down: false,
+    left: false,
+    right: false,
+};
+
+// mapping keys to directions
+const keyDirections = {
+    up: 'forward',
+    down: 'backward',
+    left: 'left',
+    right: 'right',
+};
+
+// binding keyboard keys
+['up', 'down', 'left', 'right'].forEach(key =&gt; {
+    Mousetrap.bind(key, () =&gt; {
+        if (!keysDown[key]) {
+            keysDown[key] = true;
+            switchOn(keyDirections[key]);
+        }
+    }, 'keydown');
+    Mousetrap.bind(key, () =&gt; {
+        keysDown[key] = false;
+        switchOff(keyDirections[key]);
+    }, 'keyup');
+});</code></pre>
+
+      <p>Now, we open the webpage and start driving the car to collect data.</p>
+
+      <h3>Translate an image to numbers</h3>
+      <p>
+        First we need to understand how a Neural Network works.
+        The easy version is that it takes an array of numbers and gives a solution.
+      </p>
+      <p>E.g: We want our NN to understand that we are performing a multiplication:</p>
+
+<pre><code>// data sample to teach multiplications
+input =[
+    [1, 2],
+    [2, 4],
+    [5, 10],
+    ...
+]
+output = [2, 8, 50, ...]</code></pre>
+
+      <p>We train our model, then hopefully we ask it to predict [3, 2] and it returns 6.</p>
+
+      <p>
+        Images are made of pixels and each pixel has a color based on its level of Red Green and Blue (RGB).
+        This sounds like something we could use to convert our image into numbers : an array of arrays representing each pixel colours [[R, G, B]].
+      </p>
+
+<pre><code>// representation of an image with colours
+[
+    [123, 212, 12],
+    [43, 17, 121],
+    [3, 54, 90],
+    ...
+]</code></pre>
+
+      <p>
+        However, working with all the colours will triple the amount of data and we're interested in patterns and shapes detection.
+      </p>
+      <p>
+        In order to simplify the process I propose to train our model based on the brightness of pixels (aka grayscale) instead of the colour.
+      </p>
+      <p>
+        We end up with an array of numbers. Each element of this array representing the brightness of every pixel.
+      </p>
+
+<pre><code>// representation of a black and white image
+[0, 255, 127, ...]</code></pre>
+
+      <p>
+        I first started with
+        <a href="http://scikit-image.org">scikit-image</a>
+        but
+        <a href="http://opencv.org/">OpenCV</a>
+        seems to be better for the job.
+      </p>
+      <p>We are going to do a few things:</p>
+      <ul>
+        <li>Blur the image to remove details</li>
+        <li>Convert it to black and white <strong>only</strong> (binary)</li>
+        <li>Resize to 25x25</li>
+        <li>Convert to an array</li>
+      </ul>
+
+<pre><code># convert image to array
+# adapt params to the image and the brightness of the room
+import cv2
+import numpy as np
+img = cv2.imread('image.jpg')
+img = cv2.blur(img, (5, 5))
+retval, img = cv2.threshold(img, 140, 255, cv2.THRESH_BINARY)
+img = cv2.resize(img, (25, 25))
+image_as_array = np.ndarray.flatten(np.asarray(img))
+cv2.imshow('img',img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()</code></pre>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:576/1*k4AAcL9sUCMx_v3jGvsQUw.png" alt="Grayscale image of the track from the car's perspective" />
+        <figcaption>Grayscaled image</figcaption>
+      </figure>
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:576/1*vPiyfS06isu7VG210UPwGA.png" alt="Blurred version of the track image" />
+        <figcaption>Blur the image to remove the details of the wooden floor</figcaption>
+      </figure>
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:574/1*caGMES6ieU_BF9WMZywWaA.png" alt="Binary (black and white) version of the track image" />
+        <figcaption>Binarized image with OpenCV</figcaption>
+      </figure>
+
+      <p>Why do we need to resize the image?</p>
+      <p>
+        The minimum size the app allows us to use is 192 x 144, which means our array will have 27,648 elements. We don't need such a huge sample to detect patterns. By reducing the size of the image to 25 x 25, we will deal with arrays of 625 elements instead, improving training speed (no one wants to wait hours to see the result).
+      </p>
+
+      <h3>Train the model</h3>
+      <p>
+        We first load and process the previously saved images generated while driving the car manually and use them as our training set. Then train the model and save it for later.
+      </p>
+      <p>
+        This is shamelessly taken from the
+        <a href="http://scikit-learn.org/stable/modules/neural_networks_supervised.html">scikit-learn documentation</a>
+        with a few tweaks to adapt it to the use case.
+      </p>
+
+<pre><code>import numpy as np
+from os import listdir
+from os.path import isfile, join
+from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+import cv2
+
+X = []
+y = []
+
+# load all the images and convert them
+files_name = [f for f in listdir('data') if isfile(join('data', f)) and f != '.DS_Store']
+for name in files_name:
+    try:
+        # load the image
+        img = cv2.imread(join('data', name))
+        # blur to remove details
+        img = cv2.blur(img, (5, 5))
+        # convert to binary
+        retval, img = cv2.threshold(img, 210, 255, cv2.THRESH_BINARY)
+        # resize to improve performance
+        img = cv2.resize(img, (24, 24))
+        # convert to array
+        image_as_array = np.ndarray.flatten(np.array(img))
+        # add our image to the dataset
+        X.append(image_as_array)
+        # retrive the direction from the filename
+        y.append(name.split('_')[1].split('.')[0])
+    except Exception as inst:
+        print(name)
+        print(inst)
+
+# split for testing
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+
+# scale the data
+scaler = StandardScaler()
+scaler.fit(X_train)
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+
+
+clf = MLPClassifier(solver='lbfgs', alpha=100.0, random_state=1, hidden_layer_sizes=50)
+clf.fit(X_train, y_train)
+print('score: ', clf.score(X_test, y_test))</code></pre>
+
+      <p>Notes:</p>
+      <ul>
+        <li>
+          clf.score isn't really accurate. You could use
+          <a href="http://scikit-learn.org/stable/modules/cross_validation.html">cross validation</a>
+        </li>
+      </ul>
+
+<pre><code>predicted = cross_val_predict(clf, X, y, cv=5, verbose=2, n_jobs=8)
+print('CV: ', metrics.accuracy_score(y, predicted))</code></pre>
+
+      <ul>
+        <li>Train your model again with the full dataset</li>
+      </ul>
+
+<pre><code>clf = MLPClassifier(solver='lbfgs', alpha=100.0, random_state=1, hidden_layer_sizes=50)
+clf.fit(X, y)</code></pre>
+
+      <h2>Let the computer drive the car</h2>
+
+<pre><code>from skimage import io
+import numpy as np
+from sklearn.externals import joblib
+from serial import Serial
+import time
+import cv2
+arduino = Serial('/dev/cu.usbmodem1411', 250000)
+time.sleep(2)
+
+arduino.write(b'forward_on\n')
+time.sleep(0.1)
+arduino.write(b'forward_off\n')
+time.sleep(0.1)
+arduino.write(b'backward_on\n')
+time.sleep(0.1)
+arduino.write(b'backward_off\n')
+time.sleep(0.1)
+arduino.write(b'left_on\n')
+time.sleep(0.1)
+arduino.write(b'left_off\n')
+time.sleep(0.1)
+arduino.write(b'right_on\n')
+time.sleep(0.1)
+arduino.write(b'right_off\n')
+
+CAMERA_URL = 'http://192.168.1.211:8080/live.jpg'
+ARDUINO_SERVER = 'http://localhost:5000'
+
+clf = joblib.load('model.pkl')
+scaler = joblib.load('scaler.pkl')
+scaler_stop = joblib.load('stop/scaler.pkl')
+is_stop = joblib.load('stop/model.pkl')
+print('model loaded')
+
+def send_command(result):
+    if result == '0':
+        arduino.write(b'forward_on\n')
+        time.sleep(0.05)
+        arduino.write(b'forward_off\n')
+    if result == '1':
+        arduino.write(b'left_on\n')
+        time.sleep(0.5)
+        arduino.write(b'forward_on\n')
+        time.sleep(0.05)
+        arduino.write(b'forward_off\n')
+        time.sleep(0.5)
+        arduino.write(b'left_off\n')
+    if result == '2':
+        arduino.write(b'right_on\n')
+        time.sleep(0.5)
+        arduino.write(b'forward_on\n')
+        time.sleep(0.05)
+        arduino.write(b'forward_off\n')
+        time.sleep(0.5)
+        arduino.write(b'right_off\n')
+
+def drive():
+    img = io.imread(CAMERA_URL)
+    cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = cv2.blur(img, (5, 5))
+    retval, img = cv2.threshold(img, 210, 255, cv2.THRESH_BINARY)
+    img = cv2.resize(img, (24, 24))
+    retval, img = cv2.threshold(img, 210, 255, cv2.THRESH_BINARY)
+    image_as_array = np.ndarray.flatten(np.array(img))
+    result = clf.predict([image_as_array])[0]
+
+    send_command(result)
+
+    time.sleep(0.5)
+    drive()
+
+print('start driving')
+
+drive()</code></pre>
+
+      <p>Run the script and see what happens!</p>
+      <p>I had many failures. Apparently this ML model didn't like the camera.</p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1200/1*4k2LdDkELCgzmchihDlAFQ.gif" alt="Animated GIF showing the car driving autonomously on a track" />
+
+      </figure>
+
+      <p>
+        Reduce the sleep time and move backward after each step to limit speed
+      </p>
+      <p>
+        You can play with the value of time.sleep to get smoother movements.
+      </p>
+
+      <h2>What's next?</h2>
+
+      <h3>The car</h3>
+      <p>
+        The steering angle of this car is really bad and it needs a bigger room to perform significant turns.
+      </p>
+      <p>
+        Building a RC vehicle using the
+        <a href="https://shop.pimoroni.com/products/zumo-chassis-kit-no-motors">Zumo Chassis</a>
+        would be a fun project and give more control over the directions.
+      </p>
+
+      <h3>Self driving</h3>
+      <p>
+        There are many ways to solve a problem with machine learning. So far we only used scikit learn but
+        <a href="https://www.tensorflow.org/">Tensorflow</a>
+        or any other alternative should be explored.
+      </p>
+      <p>There are also many paths to explore in the way data are processed.</p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:1148/1*g_mRGmB6DM_KusFe9x0AXw.png" alt="Diagram showing curve fitting on the track as alternative data input" />
+        <figcaption>Fit a curve on the track and use it as data input instead of pixels</figcaption>
+      </figure>
+
+      <h3>Add stop sign and traffic lights</h3>
+      <p>
+        I have already started to experiment with STOP signs but I need to craft a proper one and an Arduino with 3 LEDs should be enough for traffic lights.
+      </p>
+
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:576/1*GY4qaMxAX9qPAfLyildytw.png" alt="Stop sign image for object detection training" />
+        <figcaption>The car should stop whenever it recognizes this sign</figcaption>
+      </figure>
+      <figure>
+        <img src="https://miro.medium.com/v2/resize:fit:600/1*PmHYi6x5AkFvB72bNl00Fw.png" alt="Traffic light with 3 LEDs controlled by Arduino" />
+        <figcaption>It should be fairly easy to build a traffic light with 3 LEDs and an Arduino</figcaption>
+      </figure>
+
+      <p>
+        OpenCV has a lot of
+        <a href="https://www.learnopencv.com/image-recognition-and-object-detection-part1/">tutorials about object detection</a>.
+      </p>
+
+      <h2>Acknowledgements</h2>
+      <ul>
+        <li>
+          <a href="https://www.youtube.com/user/greatscottlab">GreatScott</a>
+          has many videos about electronics. I highly recommend his playlist on
+          <a href="https://www.youtube.com/playlist?list=PLAROrg3NQn7cyu01HpOv5BWo217XWBZu0">Electronic Basics</a>
+        </li>
+        <li>
+          David Singleton made a great
+          <a href="http://blog.davidsingleton.org/nnrccar/">tutorial</a>
+          and
+          <a href="https://vimeo.com/46432806">talk</a>
+          on his own self driving RC car
+        </li>
+        <li>
+          <a href="https://twitter.com/sarwechs">Sarwech Shar</a>
+          who found this great project and built it with me
+        </li>
+        <li>
+          <a href="https://twitter.com/loglinear">Miroslav Batchkarov</a>
+          is the one who suggested to reduce the size images allowing faster iterations.
+        </li>
+        <li>
+          <a href="https://twitter.com/ctcharlton">Chris Charlton</a>
+          helped me to understand the Neural Network part and led to the idea of building my own RC vehicle based on his previous experience.
+        </li>
+      </ul>
+      <p>Thank you everyone for your help!</p>
+      <p>Any feedback or suggestions are welcome.</p>
+    </article>
+  </body>
+</html>
