@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://blog.florianherrengt.com/how-to-automate-instagram-engagements.html"
+    />
+    <meta
+      property="og:title"
+      content="How to automate Instagram engagements with computer vision (and get banned)"
+    />
+
+    <meta property="og:site_name" content="Blog - Florian Herrengt" />
+    <meta property="og:locale" content="en_GB" />
+    <meta
+      property="og:description"
+      content="Using computer vision and template matching to automate Instagram engagements."
+    />
+
+    <!-- Article specific OG tags -->
+    <meta
+      property="article:published_time"
+      content="2026-06-06T00:00:00+00:00"
+    />
+    <meta property="article:author" content="Florian Herrengt" />
+    <meta property="article:section" content="Technology" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:url"
+      content="https://blog.florianherrengt.com/how-to-automate-instagram-engagements.html"
+    />
+    <meta
+      name="twitter:title"
+      content="How to automate Instagram engagements with computer vision (and get banned)"
+    />
+
+    <meta
+      name="twitter:description"
+      content="Using computer vision and template matching to automate Instagram engagements."
+    />
+    <meta name="twitter:site" content="@florianherrengt" />
+    <meta name="twitter:creator" content="@florianherrengt" />
+
+    <meta name="author" content="Florian Herrengt" />
+    <link
+      rel="canonical"
+      href="https://blog.florianherrengt.com/how-to-automate-instagram-engagements.html"
+    />
+    <title>
+      How to automate Instagram engagements with computer vision (and get
+      banned)
+    </title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>
+        How to automate Instagram engagements with computer vision (and get
+        banned)
+      </h1>
+      <time datetime="2026-06-06">6 June 2026</time>
+    </header>
+
+    <article>
+      <p>
+        Obviously, Instagram does not want you to automate engagement. Their
+        HTML is a mess of randomly generated class names and deeply nested divs.
+        The structure changes every deployment. Any script that relies on DOM
+        selectors breaks within weeks because the class name doesn't exist
+        anymore.
+      </p>
+
+      <p>
+        But it doesn't matter anyway. Instagram can obfuscate their code all
+        they want because code is for machines. But
+        <strong>UI</strong>... The UI is for humans. A heart icon has to look
+        like a heart icon. A comment button has to be where users expect it. The
+        layout has to be consistent enough that a person can easily navigate it.
+      </p>
+
+      <p>
+        So instead of fighting the DOM, let's just bypass it entirely. Take a
+        screenshot. Find the heart by its visual appearance. Get its
+        coordinates. Move the cursor there. Click. Done.
+      </p>
+
+      <p>
+        This works on anything that renders to pixels. Web apps, native apps,
+        games, terminals. If a human can see it and click it, a computer can
+        too. No selectors, no APIs, no platform-specific hooks. Just computer
+        vision and cursor automation.
+      </p>
+
+      <p>
+        Unfortunately, you can't just hardcode a position. Things move around
+        all the time. A long caption pushes the action bar down. A location tag
+        adds a line. A carousel of images takes up more vertical space. Every
+        post compresses or expands the layout differently.
+      </p>
+
+      <p>
+        Navigate between 2 posts and watch what happens to the hearts' position:
+      </p>
+
+      <figure>
+        <video
+          src="how-to-automate-instagram-engagements/output.mp4"
+          poster="how-to-automate-instagram-engagements/output-poster.jpg"
+          controls
+          loop
+          preload="none"
+          style="max-width: 100%"
+        ></video>
+        <figcaption>
+          Hearts move between posts. The positions are never the same
+        </figcaption>
+      </figure>
+
+      <p>
+        Computer vision solves this. Instead of guessing where the hearts
+        <em>should</em> be, you look at the screen and find where they actually
+        <em>are</em>.
+      </p>
+
+      <h2>The First Problem: Too Much Screen, Too Many False Positives</h2>
+
+      <p>
+        The naive approach is simple: take the heart icon as a template and find
+        it on the screen. Wherever it matches, that's a heart. It's the most
+        basic computer vision operation you can do.
+      </p>
+
+      <p>It doesn't work very well.</p>
+
+      <p>
+        A full screenshot is huge. Over 7 million pixels on a typical screen.
+        And a heart is small, roughly 70x60 pixels. That's a lot of surface area
+        to search. In that sea of pixels there are plenty of things that vaguely
+        resemble a heart. You get too many false positives.
+      </p>
+
+      <p>
+        The detection technique is fine. The
+        <strong>search space</strong> is the problem. The screen is full of
+        noise. The more area you search, the more noise you find.
+      </p>
+
+      <h2>Shrink the Search Space</h2>
+
+      <p>
+        The fix is to stop searching the whole screen. Instead,
+        <b>find things on screen that are easy to detect</b> and use them to
+        figure out where the hearts must be.
+      </p>
+
+      <p>On Instagram, two things are consistently easy to find:</p>
+
+      <ul>
+        <li>
+          The <strong>triple-dots menu</strong> (⋯) in the top-right corner of
+          every post. It's small, high-contrast and visually distinctive. It's
+          always present.
+        </li>
+        <li>
+          The <strong>action bar</strong> (like/comment/share) at the bottom of
+          every post. It's a wide, predictable pattern of icons.
+        </li>
+      </ul>
+
+      <p>
+        Both can be found with basic template matching in milliseconds. But we
+        don't care about them for their own sake. We care about what they tell
+        us: the triple-dots sits directly above the heart column. The action bar
+        sits directly below it. If we know where those two landmarks are, we
+        know exactly where the hearts are. They're in the vertical strip between
+        them.
+      </p>
+
+      <pre><code>crop.x      = triple_dots.x
+crop.y      = triple_dots.y + triple_dots.height
+crop.width  = triple_dots.width
+crop.height = action_bar.y - crop.y - action_bar.height x 0.2</code></pre>
+
+      <p>
+        The only things left in the search region are actual hearts and whatever
+        happens to be in that exact column.
+      </p>
+
+      <p>
+        And since the crop region is derived from the actual positions of the
+        landmarks on screen rather than being hardcoded, it adapts to every post
+        automatically. The landmarks might be higher or lower depending on the
+        post content, but the geometric relationship between them and the hearts
+        is always the same.
+      </p>
+
+      <h2>The Sliding Window</h2>
+
+      <p>
+        Now that the search space is tiny and clean, you can run the sliding
+        window. Take the heart template and slide it across the search region
+        pixel by pixel. Score every position. The better the match, the more
+        likely it's a heart.
+      </p>
+
+      <p>
+        The sliding window is deliberately loose to catch every possible heart.
+        But that means it also catches things that aren't hearts.
+      </p>
+
+      <p>
+        Hearts on Instagram are all in one vertical column. Every single one.
+        Most detections will be on that line. Anything not on it is an outlier:
+      </p>
+
+      <pre><code>·   ·   ·   ·   ·   ·   ·   ·
+·   ·   ·   ·   ·   ♡   ·   ·     ← most detections are here
+·   ·   ·   ·   ·   ·   ·   ·
+·   ·   ·   ·   ·   ♡   ·   ·     ← same column
+·   ✕   ·   ·   ·   ·   ·   ·     ← outlier (off to the left)
+·   ·   ·   ·   ·   ♡   ·   ·     ← same column
+·   ·   ·   ·   ·   ·   ·   ·
+·   ·   ·   ·   ·   ♡   ·   ·     ← same column
+·   ·   ·   ·   ·   ·   ·   ·
+·   ·   ·   ·   ·   ·   ✕   ·     ← outlier (off to the right)
+·   ·   ·   ·   ·   ♡   ·   ·     ← same column
+·   ·   ·   ·   ·   ·   ·   ·</code></pre>
+
+      <p>
+        The hearts (♡) cluster on one X coordinate. The false positives (✕) are
+        scattered. The sliding window thought they looked heart-shaped, but
+        they're not in the column.
+      </p>
+
+      <p>
+        So we find the most common X among all detections, the consensus line,
+        and discard anything more than 10 pixels away. It's just finding the
+        mode of the X values and treating everything else as noise. A few lines
+        of code and nearly all false positives are gone. The sliding window was
+        deliberately loose to catch every possible heart. This filter is tight
+        to remove everything that isn't one.
+      </p>
+
+      <h2>The Full Detection Pipeline</h2>
+
+      <pre><code>Take screenshot
+  → Find triple-dots and action bar via template matching
+  → Calculate crop region from their positions
+  → Crop to a 60-pixel-wide strip
+  → Run sliding window template matching at multiple scales
+  → Vertical alignment filter
+  → Deduplicate, sort top to bottom
+  → Return [{x, y}, ...]</code></pre>
+
+      <p>The explainer video shows this whole process:</p>
+
+      <video
+        src="how-to-automate-instagram-engagements/explainer.mp4"
+        controls
+        style="max-width: 100%"
+      ></video>
+
+      <p>
+        Each detected heart becomes a click coordinate. The server returns them
+        as JSON. The client moves the cursor to each one and clicks.
+      </p>
+
+      <h2>The Ban</h2>
+
+      <p>The account was banned within days.</p>
+
+      <p>
+        I tried a few things to make it less obvious. Bezier curves for natural
+        cursor movement, randomized click timing, idle fidgeting between
+        actions, random offsets on the follow button. All the usual tricks.
+      </p>
+
+      <p>
+        Of course, it didn't work. Instagram spends a lot of money on bot
+        detection and their team is working on it full time.
+      </p>
+
+      <p>
+        But the experiment was still interesting. Can you point a camera at any
+        screen and interact with it using only computer vision and cursor
+        automation? The answer is yes.
+      </p>
+
+      <h2>What the Codebase Contains</h2>
+
+      <table>
+        <tr>
+          <th>Dir</th>
+          <th>What</th>
+        </tr>
+        <tr>
+          <td><code>server/</code></td>
+          <td>
+            Flask API + <code>heart_detector.py</code> (the core detection
+            engine)
+          </td>
+        </tr>
+        <tr>
+          <td><code>app/</code></td>
+          <td>
+            Python desktop app with a tkinter GUI, Bezier cursor and screen
+            capture
+          </td>
+        </tr>
+        <tr>
+          <td><code>src/</code></td>
+          <td>TypeScript CLI using robotjs as an alternative client</td>
+        </tr>
+        <tr>
+          <td><code>electron/</code></td>
+          <td>Electron app for cross-platform desktop distribution</td>
+        </tr>
+        <tr>
+          <td><code>gateway/</code></td>
+          <td>Express middleware for production deployment</td>
+        </tr>
+        <tr>
+          <td><code>tests/</code></td>
+          <td>11-test unittest suite with pixel-perfect validation</td>
+        </tr>
+        <tr>
+          <td><code>archive/</code></td>
+          <td>
+            Manual offset verification scripts from the earliest experiments
+          </td>
+        </tr>
+      </table>
+
+      <h2>Files Worth Reading</h2>
+
+      <table>
+        <tr>
+          <th>File</th>
+          <th>What's Inside</th>
+        </tr>
+        <tr>
+          <td><code>server/heart_detector.py</code></td>
+          <td>The full detection pipeline</td>
+        </tr>
+        <tr>
+          <td><code>app/bezier_human_cursor.py</code></td>
+          <td>Bezier cursor movement with human-like click profiles</td>
+        </tr>
+        <tr>
+          <td><code>app/cursor_controller.py</code></td>
+          <td>Screen capture and coordinate orchestration</td>
+        </tr>
+        <tr>
+          <td><code>archive/show_rectangle.py</code></td>
+          <td>Verifying offsets by hand in the earliest experiments</td>
+        </tr>
+      </table>
+    </article>
+  </body>
+</html>
