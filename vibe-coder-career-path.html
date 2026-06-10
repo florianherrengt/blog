@@ -479,6 +479,16 @@
         >
       </p>
     </article>
+    <script>
+      (() => {
+        const t = document.querySelector('.twitter-tweet');
+        if (!t) return;
+        const m = window.matchMedia('(prefers-color-scheme: dark)');
+        const set = (e) => (t.dataset.theme = e.matches ? 'dark' : 'light');
+        set(m);
+        m.addEventListener('change', set);
+      })();
+    </script>
     <script async src="https://platform.twitter.com/widgets.js"></script>
   </body>
 </html>
