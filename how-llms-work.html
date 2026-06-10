@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -16,7 +16,10 @@
       property="og:url"
       content="https://blog.florianherrengt.com/how-llms-work.html"
     />
-    <meta property="og:title" content="How LLMs work" />
+    <meta
+      property="og:title"
+      content="From bigrams to attention: a gentle guide to LLMs"
+    />
     <meta
       property="og:description"
       content="A simple explanation of how LLMs work using bigrams, attention, and context."
@@ -42,26 +45,38 @@
       name="twitter:description"
       content="A simple explanation of how LLMs work using bigrams, attention, and context."
     />
-    <meta name="twitter:title" content="How LLMs work" />
+    <meta
+      name="twitter:title"
+      content="From bigrams to attention: a gentle guide to LLMs"
+    />
     <meta name="twitter:site" content="@florianherrengt" />
     <meta name="twitter:creator" content="@florianherrengt" />
 
     <meta name="author" content="Florian Herrengt" />
-    <title>How LLMs work</title>
+    <title>From bigrams to attention: a gentle guide to LLMs</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/styles/github.min.css"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/styles/github-dark.min.css"
+      media="(prefers-color-scheme: dark)"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/highlight.min.js"></script>
   </head>
   <body>
     <header>
-      <h1>How LLMs work</h1>
+      <h1>From bigrams to attention: a gentle guide to LLMs</h1>
       <time datetime="2025-07-21">21 July 2025</time>
     </header>
     <article>
       <h1>How computers generate words</h1>
       <p>
-        One very simple way we could generate words could be by using bigrams.
-        We analyze pairs of consecutive words in training text to learn
-        statistical patterns. For each word, the system calculates the
-        probability of what should come next based on how often different pairs
-        appeared together in the training data.
+        One simple way to generate words is with bigrams. Take a bunch of text
+        and count which words follow which. For each word you work out the
+        probability of what comes next by looking at how often each pair showed up.
       </p>
       <p>Let's say we have the following data:</p>
       <pre><code>
@@ -159,32 +174,28 @@ the dog wants food
       </table>
       <p>
         Now, if we want to know which word is the most likely to come after
-        <code>dog</code> we can look up the table and find the word
+        <code>dog</code>, we can look up the table and find the word
         <code>wants</code>.
       </p>
       <p>
-        To generate new text, the computer starts with an initial word, selects
-        the next one based on the learned probabilities, then uses that new
-        element to predict the following one, continuing this process to build
-        complete words or sentences.
+        To generate new text, the computer starts with a word, picks the next
+        based on those probabilities, then uses that word to predict the
+        following one. Repeat until you have a sentence.
       </p>
       <p>
-        Modern LLMs use transformer architectures that can consider hundreds or
-        thousands of words of context simultaneously. Instead of simple
-        probability tables, LLMs use deep neural networks with billions of
-        parameters that learn complex patterns and relationships across entire
-        documents.
+        Modern LLMs use transformer architectures that can look at hundreds or
+        thousands of words of context at once. Instead of probability tables,
+        they use deep neural networks with billions of parameters that learn
+        patterns across whole documents.
       </p>
       <p>
-        The core principle is similar though: predicting the next word based on
-        statistical probabilities.
+        The core principle is the same though: predict the next word based on
+        what came before.
       </p>
       <p>
-        This is why LLMs need prompts like "You are a helpful assistant" to get
-        started and longer, more detailed prompts typically produce better
-        results. Each additional detail helps narrow down the vast space of
-        possible responses to something more aligned with what you actually
-        want.
+        This is also why prompts matter. "You are a helpful assistant" pushes
+        the model toward certain kinds of responses. Each extra detail narrows
+        what it can say next.
       </p>
       <h2>Temperature</h2>
       <p>
@@ -206,22 +217,17 @@ the dog wants food
         is=33%, wants=50%.
       </p>
       <p>
-        Instead, we will use a more sophisticated mathematical function called
-        softmax.
+        Instead we use a function called softmax.
       </p>
       <p>
-        Without getting into the math, softmax might turn our counts into
-        something like: sat=5%, is=20%, wants=75%.
-      </p>
-      <p>
-        It amplifies the differences between common and rare words, making the
-        most frequent patterns stand out more clearly. Temperature is a
-        parameter that controls how much softmax amplifies these differences.
+        Without getting into the math, softmax exaggerates the gap between
+        scores. Common words get boosted, rare words get squashed. Temperature
+        controls how much it does this.
       </p>
       <p>
         When you reduce the temperature, it makes "wants" even MORE likely to be
-        picked while increasing the temperature flattens things out, making more
-        likely to pick "sat".
+        picked, while increasing the temperature flattens things out, making it
+        more likely to pick "sat".
       </p>
       <iframe
         width="100%"
@@ -231,9 +237,9 @@ the dog wants food
 
       <h2>Embeddings</h2>
       <p>
-        Computers can only process numbers, not words. So how do we help them
-        understand that "king" is related to "queen" but not to "banana"? This
-        is where embeddings come in.
+        Computers can only process numbers, not words. So how do we get them to
+        understand that "king" is related to "queen" but not to "banana"?
+        Embeddings.
       </p>
 
       <p>We could try assigning each word a single number:</p>
@@ -260,11 +266,9 @@ apple  = [0.0, 0.0, 0.8]
         </code>
     </pre>
       <p>
-        In practice, we don't manually decide these numbers. Instead, we use
-        machine learning to automatically discover dimensions that capture
-        meaning by analyzing how words are used in millions of sentences. The
-        resulting embeddings enable computers to understand word relationships
-        well enough to power modern AI applications.
+        In practice we don't pick these numbers by hand. Machine learning finds
+        them by analysing how words are used across millions of sentences. The
+        result is a map where related words sit close together.
       </p>
       <p>
         Now computers can calculate which words are similar by measuring
@@ -304,16 +308,16 @@ apple  = [0.0, 0.0, 0.8]
       <pre><code>Canada + (Paris - France) = Toronto</code></pre>
 
       <p>
-        Why does this happen? Word embeddings learn from how often words appear
-        together in text. Toronto appears with "Canada" far more often than
-        Ottawa does, so the model associates Toronto more strongly with Canada.
-        The embeddings capture statistical patterns, not factual truths.
+        Word embeddings learn from how often words appear together in text.
+        Toronto appears with "Canada" far more often than Ottawa does, so the
+        model associates Toronto more strongly with Canada. The embeddings
+        capture statistical patterns, not facts.
       </p>
 
       <p>
-        This is exactly how modern AI systems can "hallucinate". They find the
-        most statistically likely answer based on patterns in their training
-        data, which isn't always the factually correct answer.
+        This is one reason AI systems can hallucinate. They find the most
+        statistically likely answer based on patterns in their training data,
+        which isn't always the factually correct answer.
       </p>
       <h2>Tokens</h2>
       <p>
@@ -322,7 +326,7 @@ apple  = [0.0, 0.0, 0.8]
         break text into common chunks that can be recombined.
       </p>
       <p>
-        This approach also handles variations elegantly. Rather than storing
+        This also handles variations well. Rather than storing
         "run," "runs," "running," "runner," and "runnable" as completely
         separate tokens, the model can learn the root "run" and the patterns of
         "-s," "-ning," "-ner," and "-able".
@@ -333,23 +337,22 @@ apple  = [0.0, 0.0, 0.8]
         pre-chunked tokens like "straw" and "berry".
       </p>
       <p>
-        To the model, "straw" is just an indivisible unit not a sequence of
-        letters s-t-r-a-w. Then it learned that the token "berry" appears in
+        To the model, "straw" is just an indivisible unit, not a sequence of
+        letters s-t-r-a-w. It has learned that the token "berry" appears in
         contexts about fruits, follows certain patterns and combines with other
         tokens in meaningful ways. But it never learned that "berry" contains
         b-e-r-r-y.
       </p>
       <p>
-        Because tokens are just chunks of information converted into numbers
-        that the model can process, images can be divided into small patches and
-        audio into tiny time slices or notes. Each piece becomes a token. The
-        same mechanism that predicts the next word can now predict the next
-        image patch or musical note.
+        Since tokens are just chunks of text converted to numbers, the same
+        idea works for images and audio too. Split a picture into patches or
+        sound into slices and each one becomes a token. The same predictor that
+        guesses the next word can guess the next image patch or note.
       </p>
       <h2>Attention</h2>
       <p>
-        Attention is the secret sauce behind modern language models. At a high
-        level, it lets the model decide which tokens to "focus".
+        Attention is the secret sauce. It lets the model decide which tokens to
+        focus on.
       </p>
       <p>
         For example, choose the next word between <code>supermarket</code> and
@@ -367,24 +370,147 @@ apple  = [0.0, 0.0, 0.8]
         would fade by the time the model reached the end. Attention solves this
         by creating a direct shortcut to every word in the context.
       </p>
-      <p>It does this by creating three special vectors for each word:</p>
+      <p>It works by creating three vectors for each word:</p>
       <ul>
         <li>
           Query: This is like a question the current word asks. For our {?}
           token, the query is essentially, "Given the context, what kind of
-          place am I?"
+          place am I?"<sup
+            ><a href="#fn-asterisk" id="r-asterisk" aria-label="footnote"
+              >*</a
+            ></sup
+          >
         </li>
         <li>
-          Key: This is like a label or a "keyword" for each word in the
-          sentence. The word "car" would have a key that says, "I am a vehicle,"
-          and "broken" would have a key that says, "I describe a state of
-          disrepair."
+          Key: This encodes what kind of context a word typically appears in.
+          The word "car" would have a key that encodes something like, "I'm a
+          noun that can be repaired and often appears near mechanical concepts,"
+          and "broken" would encode something like, "I describe a state and
+          often appear near objects that can be damaged."
         </li>
         <li>
-          Value: This contains the actual meaning or substance of a word. It's
-          the information that gets passed on if a word is deemed important.
+          Value: This contains the information that gets passed forward if the
+          word is considered relevant.
         </li>
       </ul>
+
+      <h3>KV Cache</h3>
+      <p>
+        When generating text, the model produces one token at a time. Suppose
+        we've already generated <code>The dog wants food</code>.
+      </p>
+      <p>
+        For each token, the model computes a Query, Key and Value:
+      </p>
+      <pre>
+Token      Query   Key   Value
+
+The          Q      K      V
+dog          Q      K      V
+wants        Q      K      V
+food         Q      K      V
+</pre>
+      <p>
+        The current token uses its Query to determine which previous tokens are
+        relevant. A simplified version looks like this:
+      </p>
+      <pre><code>kv_cache = []
+
+def process_token(token):
+    query = compute_query(token)
+    key = compute_key(token)
+    value = compute_value(token)
+
+    scores = []
+    for previous in kv_cache:
+        score = dot(query, previous["key"])
+        scores.append(score)
+
+    weights = softmax(scores)
+
+    context = weighted_sum(
+        weights,
+        [previous["value"] for previous in kv_cache]
+    )
+
+    kv_cache.append({
+        "key": key,
+        "value": value,
+    })
+
+    return context</code></pre>
+      <p>
+        The important thing to notice is that we only store Keys and Values:
+      </p>
+      <pre><code>kv_cache.append({
+    "key": key,
+    "value": value,
+})</code></pre>
+      <p>We do <strong>not</strong> store Queries. Why?</p>
+      <p>
+        Because future tokens never need old Queries. The current Query is used
+        immediately and then discarded. Future tokens only need the Keys and
+        Values from previous tokens.
+      </p>
+      <pre>
+Current Query
+      │
+      ▼
+
+Previous Keys
+      │
+      ▼
+
+Attention Weights
+      │
+      ▼
+
+Previous Values
+      │
+      ▼
+
+Context
+</pre>
+      <p>That's what the KV cache is:</p>
+      <p>
+        A collection of Keys and Values from all previous tokens, kept in memory
+        so future tokens can attend to them.
+      </p>
+      <p>
+        Without a KV cache, the model would need to recompute the Keys and
+        Values for every previous token every time it generates a new token.
+      </p>
+      <p>
+        Because the cache grows with every token:
+      </p>
+      <pre>
+Token 1      -> K,V
+Token 2      -> K,V
+Token 3      -> K,V
+...
+Token 100000 -> K,V
+</pre>
+      <p>Longer contexts require more memory.</p>
+      <p>
+        And when a new token arrives, its Query must still be compared against
+        every stored Key:
+      </p>
+      <pre>
+New Query
+    │
+    ▼
+
+K1
+K2
+K3
+...
+K100000
+</pre>
+      <p>
+        This is why long contexts are both memory-intensive and slower to
+        process.
+      </p>
+
       <p>
         The model takes the Query vector for {?} and compares it with the Key
         vector of every other word in the sentence. This comparison is usually
@@ -392,40 +518,204 @@ apple  = [0.0, 0.0, 0.8]
       </p>
       <ul>
         <li>
-          Q_{?} ⋅ K_{car} will produce a high score because the question "what
-          kind of place am I?" is highly related to the keyword "I am a
-          vehicle."
+          Q_{?} ⋅ K_{car} will produce a high score because the query vector
+          happens to align well with the key vector for "car", the kind of place
+          that matches mechanical concepts.<sup
+            ><a href="#fn-asterisk" aria-label="footnote">*</a></sup
+          >
         </li>
         <li>
-          Q_{?} ⋅ K_{broken} will also produce a high score because the context
-          of "broken" is critical.
+          Q_{?} ⋅ K_{broken} will also produce a high score because "broken"
+          often appears near vehicles and repair contexts in the training data.
         </li>
         <li>
           Q_{?} ⋅ K_{yesterday} will produce a low score because the time aspect
           isn't as relevant to the type of place.
         </li>
       </ul>
+      <p>Visually, it looks something like this:</p>
+      <pre>
+Predicting next token:
+
+Yesterday, I drove my broken car to the {?}
+
+broken ──────────────────────█ 0.40
+car    ────────────────────────█ 0.45
+drove  ────────────█ 0.08
+to     ───────█ 0.03
+the    ────█ 0.02
+I      ──█ 0.01
+Yesterday ─█ 0.01
+</pre
+      >
+      <pre>
+Current token:
+
+     Query
+       │
+       ▼
+
+     "What kind of place
+      fits this context?"
+
+Previous tokens:
+
+broken ── Key ──┐
+                ├── high match
+car    ── Key ──┘
+
+Yesterday ─ Key ─ low match
+I         ─ Key ─ low match
+</pre
+      >
       <p>
         After softmax, the words "broken" and "car" will have high attention
         weights (e.g., 0.5 and 0.4), while words like "I" and "yesterday" will
         have very low weights (e.g., 0.01).
       </p>
       <p>
-        At the end, the model multiplies the attention weights for each word by
-        that word's Value vector. Because "broken" and "car" have high weights,
-        their Value vectors will dominate this context vector.
+        Use those weights to combine the Values. Because "broken" and "car" have
+        high weights, their Value vectors will dominate the resulting context
+        vector.
       </p>
+
       <p>
-        Remember about the embeddings earlier? The vectors for mechanic, garage,
+        Remember the embeddings from earlier? The vectors for mechanic, garage,
         and repair will be clustered together. The vectors for supermarket,
         store and groceries will be in another cluster, far away from the first
         one.
       </p>
       <p>
-        When the attention mechanism creates a context vector for our sentence,
-        that vector points to a specific spot in this semantic space. Then the
-        model picks the most probable word from that region.
+        The context vector then goes through more layers that score every
+        possible next token. Those scores become probabilities and one token
+        gets picked. Then it repeats — the new token joins the context and the
+        model predicts the next one.
       </p>
+
+      <h2>Context window</h2>
+      <p>
+        Most explanations of context windows are surprisingly bad because they
+        focus on the size rather than what the model is actually doing.
+      </p>
+      <p>
+        Every time the model generates a token, it can look back at all the
+        tokens currently in its context window. That is simply the set of tokens
+        that attention is allowed to look at.
+      </p>
+      <pre>
+Context window:
+
+┌──────────────────────────────────────┐
+│ Yesterday I drove my broken car ...  │
+└──────────────────────────────────────┘
+                  ▲
+                  │
+           Current token
+</pre
+      >
+      <p>
+        To predict the next token, attention can examine every token inside the
+        window.
+      </p>
+      <pre>
+                    Current token
+                           │
+                           ▼
+
+Yesterday  I  drove  my  broken  car  to  the
+    ▲      ▲    ▲      ▲      ▲      ▲
+    │      │    │      │      │      │
+    └──────┴────┴──────┴──────┴──────┘
+
+      Can attend to all of them
+</pre
+      >
+
+      <h3>Why is a larger context window useful?</h3>
+      <p>Suppose you tell the model:</p>
+      <pre>
+My dog's name is Sherlock.
+
+... 50,000 tokens later ...
+
+What's my dog's name?
+</pre
+      >
+      <p>If both sentences fit inside the context window:</p>
+      <pre>
+┌─────────────────────────────────────┐
+│ My dog's name is Sherlock            │
+│ ...                                  │
+│ ... 50,000 tokens later ...          │
+│ What's my dog's name?                │
+└─────────────────────────────────────┘
+</pre
+      >
+      <p>The model can still attend to the earlier mention of "Sherlock".</p>
+      <p>If it falls outside the context window:</p>
+      <pre>
+┌─────────────────────────────────────┐
+│ ...                                  │
+│ ...                                  │
+│ What's my dog's name?                │
+└─────────────────────────────────────┘
+
+"My dog's name is Sherlock"
+has been pushed out.
+</pre
+      >
+      <p>The information is gone.</p>
+
+      <h3>Why does a long context use more memory?</h3>
+      <p>Every token stores a Key and Value vector in the KV cache.</p>
+      <pre>
+Token 1      -> K,V
+Token 2      -> K,V
+Token 3      -> K,V
+...
+Token 100000 -> K,V
+</pre
+      >
+      <p>
+        The more tokens in the context window, the more K and V vectors must be
+        stored.
+      </p>
+      <pre>
+100 tokens      = small cache
+10,000 tokens   = large cache
+100,000 tokens  = huge cache
+</pre
+      >
+      <p>This is why long contexts consume lots of VRAM.</p>
+
+      <h3>Why does generation get slower?</h3>
+      <p>
+        When generating a new token, the model must compare the new Query
+        against every stored Key.
+      </p>
+      <pre>
+New Query
+    │
+    ▼
+
+Compare against:
+
+K1
+K2
+K3
+...
+K100000
+</pre
+      >
+      <p>A larger context means more comparisons.</p>
+      <pre>
+100 tokens      -> 100 comparisons
+10,000 tokens   -> 10,000 comparisons
+100,000 tokens  -> 100,000 comparisons
+</pre
+      >
+      <p>More context means more work per generated token.</p>
+
       <h2>Fine-tuning and LoRa</h2>
       <p>
         Imagine a neural network as a massive machine filled with adjustable
@@ -454,33 +744,9 @@ Input         Hidden Layers           Output
         works and you might break something.
       </p>
       <p>
-        Instead, You take the generated output of the big model and change it to
-        your liking. To figure this out, you train your own small machine. You
-        take the input, run it through the big machine, and then run it through
-        your smaller machine to figure out what adjustments to make to get the
-        desired output.
-      </p>
-      <p>
-        Your small machine learns: "When the big model says X, I need to nudge
-        it toward Y instead".
-      </p>
-      <pre>
-Input    Hidden Layers  Output  Adapter   Final Output
-─────    ─────────────  ──────  ───────   ────────────
-
-[●]───┬──[●]─┬─[●]─┬──────[●]───┬─[●]───┬──►[●]
-      │      │     │            │       │
-[●]───┼──[●]─┼─[●]─┼──────[●]───┼─[●]───┼──►[●]
-      │      │     │            │       │
-[●]───┴──[●]─┴─[●]─┴──────[●]───┴─[●]───┴──►[●]
-          ↑     ↑                  ↑
-          │     │                  │
-        Don't touch           Train these
-      </pre>
-      <p>
-        Now, this helps visually represent what is happening but what LoRA
-        actually does is adding small trainable modules inside the big model at
-        many layers, not just at the end.
+        Instead of touching all those knobs, we insert small trainable modules
+        inside the existing layers and freeze everything else. Each module
+        learns tiny adjustments that steer the model toward what we want.
       </p>
       <pre>
 Input    Hidden Layers (with LoRA)    Output
@@ -497,25 +763,35 @@ Input    Hidden Layers (with LoRA)    Output
       weights    at each layer
       </pre>
       <p>
-        LoRA's distributed approach is more powerful because it can influence
-        processing at each stage of the network, not just post-process the final
-        result.
+        LoRA does this at every stage of the network.
       </p>
       <p>
-        This is how we can take a massive trained model and teach it new things
-        without starting from scratch. For example, the big model already knows
-        language or how to draw and LoRA nudges it toward a specific style (e.g
-        Gordon Ramsay or Studio Ghibli).
+        So we can take a massive trained model and adapt it without starting
+        from scratch. The big model already knows language or how to draw and
+        LoRA nudges it toward a specific style (e.g Gordon Ramsay or Studio
+        Ghibli).
       </p>
       <p>
-        You can mix and match them and adjust their strengths by turning the
+        You can mix and match them and adjust their strengths by turning
         their input knobs (50% anime style, 30% cyberpunk, 20% vintage).
       </p>
       <p>
-        They're incredibly small (only needs a few million parameters) and cheap
+        They're incredibly small (they only need a few million parameters) and cheap
         (~$10 - $100) compared to the base models they modify. You can literally
         train one on your gaming computer at home.
       </p>
+      <aside id="fn-asterisk">
+        <h2>Notes</h2>
+        <small
+          ><sup><a href="#r-asterisk">*</a></sup> The model doesn't create
+           explicit semantic questions. Q, K, and V are just learned vectors.
+           People describe them as questions and labels because it's easier to
+           think about that way.</small
+        >
+      </aside>
     </article>
+    <script>
+      hljs.highlightAll();
+    </script>
   </body>
 </html>
