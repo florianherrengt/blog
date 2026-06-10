@@ -72,7 +72,7 @@
       <time datetime="2025-07-21">21 July 2025</time>
     </header>
     <article>
-      <h1>How computers generate words</h1>
+      <h2>How computers generate words</h2>
       <p>
         One simple way is with bigrams. Take a bunch of text and count which
         words follow which. For each word you work out the probability of what
@@ -366,7 +366,7 @@ apple  = [0.0, 0.0, 0.8]
         Models only know what's statistically probable. That's not the same as
         knowing facts.
       </p>
-      <h2>Attention</h2>
+      <h2>Attention is all you need<sup><a href="#fn-attention-paper" id="r-attention-paper" aria-label="footnote">†</a></sup></h2>
       <p>
         Attention lets the model decide which tokens to focus on.
       </p>
@@ -818,6 +818,12 @@ Input    Hidden Layers (with LoRA)    Output
       </p>
       <aside id="fn-asterisk">
         <h2>Notes</h2>
+        <small id="fn-attention-paper"
+          ><sup><a href="#r-attention-paper">†</a></sup> In 2017, Google Brain released
+          <a href="https://arxiv.org/abs/1706.03762"><cite>"Attention Is All You Need"</cite></a>,
+          the paper that introduced the Transformer architecture.</small
+        >
+        <br /><br />
         <small
           ><sup><a href="#r-asterisk">*</a></sup> The model doesn't create
           explicit semantic questions. Q, K, and V are just learned vectors.
