@@ -169,24 +169,22 @@
 
       <h2>Everything should be boring</h2>
       <p>
-        My rule is simple: everything should be boring. There's nothing exciting
-        about using Postgres. It's easy to explain to people and it won't look
-        shiny on my CV.
+        There's nothing exciting about using Postgres. It's easy to explain to
+        people and it doesn't look shiny on a CV.
       </p>
       <p>But a boring stack is just much easier to debug.</p>
       <p>
         I restore and recreate the production environment with its data and
         reproduce the issue locally.
       </p>
-      <p>My backup plan is also dead simple:</p>
+      <p>My backup plan is dead simple:</p>
       <ul>
         <li>Run regular `pg_dump`</li>
         <li>Incremental backups to object storage with restic</li>
       </ul>
-      <p>Then I can run restore drills on any machine.</p>
       <p>
-        Rebuild on a fresh server, restore files and database and verify the app
-        boots end-to-end.
+        I can run restore drills on any machine. Rebuild on a fresh server,
+        restore files and database and verify the app works end-to-end.
       </p>
 
       <h2>Deploy fast</h2>
@@ -194,19 +192,24 @@
         I care a lot about CI speed. If deploys take half an hour, the team only
         gets a handful of deploys in a day.
       </p>
-      <p>My deploy path is equally boring every single time.</p>
+      <p>To no one's surprise, my deploy path is equally boring.</p>
       <p>
         Build a docker container with everything, including the frontend bundle
-        and any other assets. No need for S3 or anything complicated, the CDN
-        will cache it anyway.
+        and any other assets. Cache every build layer aggressively. No need for
+        S3 or anything complicated, the CDN will cache it anyway.
       </p>
 
       <h2>To microservice or not</h2>
-      <p>I do not like microservices, but they make sense when:</p>
+      <p>
+        I'm not the biggest fan of microservices, but they can make sense when:
+      </p>
       <ul>
         <li>Different services need different runtimes</li>
         <li>A critical ingestion path must stay isolated</li>
+        <li>Parts of the system scale differently</li>
+        <li>Different teams need independent ownership</li>
       </ul>
+      <p>Most of those things do not apply to most startups and small teams.</p>
       <p>
         Most of the other reasons I've heard are simply due to organisational
         issues or shortcomings in the architecture. At this stage, your team is
@@ -214,16 +217,17 @@
         worst reason to use microservices, "scaling".
       </p>
       <p>
-        Still, I keep things simple with HTTP API calls. No Kafka or PubSub
-        unless I really need it.
+        A modular monolith is usually the right answer until proven otherwise.
+        Then split it. Still, always keep things simple with HTTP API calls. No
+        Kafka or PubSub unless it is really needed.
       </p>
       <p>
-        I choose boring protocols because boring protocols fail in obvious ways
-        and have tools with decades of development to monitor and debug them.
+        Boring protocols fail in obvious ways and have tools with decades of
+        development to monitor and debug them.
       </p>
 
       <h2>Get off the cloud</h2>
-      <p>This one is controversial but hear me out. It actually makes sense.</p>
+      <p>Wait what? You might start to think I've lost my sense here.</p>
       <p>
         I am not against cloud. I am against cloud complexity theater that teams
         adopt before they have a real need.
@@ -237,12 +241,16 @@
         scaling issues.
       </p>
       <p>
-        Under-provisioned platforms distort priorities. I have seen teams waste
-        time on caps, cold starts and workarounds instead of shipping product.
+        Most of those platforms have a ridiculously low amount of provisioned
+        resources. I have seen teams waste time on caps, cold starts and
+        workarounds instead of shipping product. If you only have a few
+        gigabytes of RAM to work with, you're going to have to optimise your
+        code much earlier than you should.
       </p>
       <p>
-        People misread platform limits as architecture needs and add caches and
-        service splits they never needed.
+        People misread platform limits as architecture needs. They add caches
+        and service splits and queues and whatever they can to work around the
+        fact that they just don't have enough CPU or RAM.
       </p>
       <p>
         None of that is needed if you get one HUGE server to begin with. I can
