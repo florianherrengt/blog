@@ -74,9 +74,9 @@
     <article>
       <h1>How computers generate words</h1>
       <p>
-        One simple way to generate words is with bigrams. Take a bunch of text
-        and count which words follow which. For each word you work out the
-        probability of what comes next by looking at how often each pair showed up.
+        One simple way is with bigrams. Take a bunch of text and count which
+        words follow which. For each word you work out the probability of what
+        comes next by looking at how often each pair showed up.
       </p>
       <p>Let's say we have the following data:</p>
       <pre><code>
@@ -198,42 +198,90 @@ the dog wants food
         what it can say next.
       </p>
       <h2>Temperature</h2>
-      <p>
-        Temperature lets you control whether the AI plays it safe with common
-        patterns or takes "creative" risks with less likely options.
-      </p>
+      <p>This controls how predictable or creative the output is.</p>
       <p>
         Imagine we want to predict what comes after "the dog" based on these
         sentences. Looking at the data, after "the dog" we see:
       </p>
       <ul>
-        <li>"wants" - appears 3 times</li>
-        <li>"is" - appears 2 times</li>
-        <li>"sat" - appears 1 time</li>
+        <li>"wants" — appears 3 times</li>
+        <li>"is" — appears 2 times</li>
+        <li>"sat" — appears 1 time</li>
       </ul>
-      <p>We need to convert these counts into probabilities.</p>
       <p>
-        The simple way would be dividing by the total (6), giving us: sat=17%,
-        is=33%, wants=50%.
+        The model first assigns a score to each possible next word. Those scores
+        go through a function called <strong>softmax</strong> that turns them
+        into probabilities.
+      </p>
+      <p>Without temperature, the probabilities might look like this:</p>
+      <pre><code>wants = 50%
+is    = 33%
+sat   = 17%</code></pre>
+      <p>
+        Temperature changes how much softmax favours the highest-scoring
+        options.
       </p>
       <p>
-        Instead we use a function called softmax.
+        <strong>Low temperature</strong> makes the most likely words even more
+        likely:
       </p>
+      <pre><code>wants = 75%
+is    = 20%
+sat   = 5%</code></pre>
       <p>
-        Without getting into the math, softmax exaggerates the gap between
-        scores. Common words get boosted, rare words get squashed. Temperature
-        controls how much it does this.
+        <strong>High temperature</strong> spreads the probabilities more evenly:
       </p>
+      <pre><code>wants = 40%
+is    = 35%
+sat   = 25%</code></pre>
+      <p>So:</p>
+      <ul>
+        <li>Low temperature = safer, more predictable output</li>
+        <li>High temperature = more variety, more creativity, more mistakes</li>
+      </ul>
       <p>
-        When you reduce the temperature, it makes "wants" even MORE likely to be
-        picked, while increasing the temperature flattens things out, making it
-        more likely to pick "sat".
+        Temperature doesn't give the model new knowledge. It only changes how
+        often it picks less likely words.
       </p>
       <iframe
         width="100%"
         height="520"
         src="how-llms-work/softmax-explainer.html"
       ></iframe>
+
+      <h2>Tokens</h2>
+      <p>
+        If LLMs used words, the model would need a vocabulary of millions of
+        entries to cover all possible words in all languages. Instead, they
+        break text into common chunks that can be recombined.
+      </p>
+      <p>
+        This also handles variations well. Rather than storing "run," "runs,"
+        "running," "runner," and "runnable" as completely separate tokens, the
+        model can learn the root "run" and the patterns of "-s," "-ning,"
+        "-ner," and "-able".
+      </p>
+      <p>
+        Now you can understand why LLMs are having a hard time counting the
+        letter "r" in strawberry. They never actually see the word, only
+        pre-chunked tokens like "straw" and "berry".
+      </p>
+      <p>
+        To the model, "straw" is just an indivisible unit, not a sequence of
+        letters s-t-r-a-w. It has learned that "berry" appears in fruit contexts
+        and connects with certain other tokens. But it never learned that
+        "berry" contains b-e-r-r-y.
+      </p>
+      <p>
+        Since tokens are just chunks of text converted to numbers, the same idea
+        works for images and audio too. Split a picture into patches or sound
+        into slices and each one becomes a token. The same predictor that
+        guesses the next word can guess the next image patch or note.
+      </p>
+      <p>
+        Once text has been split into tokens, each token is converted into an
+        embedding vector before being processed by the model.
+      </p>
 
       <h2>Embeddings</h2>
       <p>
@@ -315,44 +363,12 @@ apple  = [0.0, 0.0, 0.8]
       </p>
 
       <p>
-        This is one reason AI systems can hallucinate. They find the most
-        statistically likely answer based on patterns in their training data,
-        which isn't always the factually correct answer.
-      </p>
-      <h2>Tokens</h2>
-      <p>
-        If LLMs used words, the model would need a vocabulary of millions of
-        entries to cover all possible words in all languages. Instead, they
-        break text into common chunks that can be recombined.
-      </p>
-      <p>
-        This also handles variations well. Rather than storing
-        "run," "runs," "running," "runner," and "runnable" as completely
-        separate tokens, the model can learn the root "run" and the patterns of
-        "-s," "-ning," "-ner," and "-able".
-      </p>
-      <p>
-        Now you can understand why LLMs are having a hard time counting the
-        letter "r" in strawberry. They never actually see the word, only
-        pre-chunked tokens like "straw" and "berry".
-      </p>
-      <p>
-        To the model, "straw" is just an indivisible unit, not a sequence of
-        letters s-t-r-a-w. It has learned that the token "berry" appears in
-        contexts about fruits, follows certain patterns and combines with other
-        tokens in meaningful ways. But it never learned that "berry" contains
-        b-e-r-r-y.
-      </p>
-      <p>
-        Since tokens are just chunks of text converted to numbers, the same
-        idea works for images and audio too. Split a picture into patches or
-        sound into slices and each one becomes a token. The same predictor that
-        guesses the next word can guess the next image patch or note.
+        Models only know what's statistically probable. That's not the same as
+        knowing facts.
       </p>
       <h2>Attention</h2>
       <p>
-        Attention is the secret sauce. It lets the model decide which tokens to
-        focus on.
+        Attention lets the model decide which tokens to focus on.
       </p>
       <p>
         For example, choose the next word between <code>supermarket</code> and
@@ -367,8 +383,8 @@ apple  = [0.0, 0.0, 0.8]
       </p>
       <p>
         Older models struggled with long sentences. The meaning of early words
-        would fade by the time the model reached the end. Attention solves this
-        by creating a direct shortcut to every word in the context.
+        would fade by the time the model reached the end. Attention fixes this
+        by giving every word a direct path back to every earlier word.
       </p>
       <p>It works by creating three vectors for each word:</p>
       <ul>
@@ -382,11 +398,10 @@ apple  = [0.0, 0.0, 0.8]
           >
         </li>
         <li>
-          Key: This encodes what kind of context a word typically appears in.
-          The word "car" would have a key that encodes something like, "I'm a
-          noun that can be repaired and often appears near mechanical concepts,"
-          and "broken" would encode something like, "I describe a state and
-          often appear near objects that can be damaged."
+          Key: This marks what kind of context a word typically shows up in.
+          "car" gets a key like "I'm a noun that can be repaired and often
+          appears near mechanical concepts." "broken" gets "I describe a state
+          and often appear near objects that can be damaged."
         </li>
         <li>
           Value: This contains the information that gets passed forward if the
@@ -399,9 +414,7 @@ apple  = [0.0, 0.0, 0.8]
         When generating text, the model produces one token at a time. Suppose
         we've already generated <code>The dog wants food</code>.
       </p>
-      <p>
-        For each token, the model computes a Query, Key and Value:
-      </p>
+      <p>For each token, the model computes a Query, Key and Value:</p>
       <pre>
 Token      Query   Key   Value
 
@@ -409,7 +422,8 @@ The          Q      K      V
 dog          Q      K      V
 wants        Q      K      V
 food         Q      K      V
-</pre>
+</pre
+      >
       <p>
         The current token uses its Query to determine which previous tokens are
         relevant. A simplified version looks like this:
@@ -470,7 +484,8 @@ Previous Values
       ▼
 
 Context
-</pre>
+</pre
+      >
       <p>That's what the KV cache is:</p>
       <p>
         A collection of Keys and Values from all previous tokens, kept in memory
@@ -480,16 +495,15 @@ Context
         Without a KV cache, the model would need to recompute the Keys and
         Values for every previous token every time it generates a new token.
       </p>
-      <p>
-        Because the cache grows with every token:
-      </p>
+      <p>Because the cache grows with every token:</p>
       <pre>
 Token 1      -> K,V
 Token 2      -> K,V
 Token 3      -> K,V
 ...
 Token 100000 -> K,V
-</pre>
+</pre
+      >
       <p>Longer contexts require more memory.</p>
       <p>
         And when a new token arrives, its Query must still be compared against
@@ -505,7 +519,8 @@ K2
 K3
 ...
 K100000
-</pre>
+</pre
+      >
       <p>
         This is why long contexts are both memory-intensive and slower to
         process.
@@ -513,8 +528,8 @@ K100000
 
       <p>
         The model takes the Query vector for {?} and compares it with the Key
-        vector of every other word in the sentence. This comparison is usually
-        done using a dot product:
+        vector of every other word in the sentence. It usually uses a dot
+        product:
       </p>
       <ul>
         <li>
@@ -592,15 +607,39 @@ I         ─ Key ─ low match
         model predicts the next one.
       </p>
 
+      <p>Here's how all the pieces fit together:</p>
+      <pre>
+Input text
+     │
+     ▼
+Tokenization
+     │
+     ▼
+Embeddings
+     │
+     ▼
+Attention
+     │
+     ▼
+Context vector
+     │
+     ▼
+Scores for every token
+     │
+     ▼
+Softmax + Temperature
+     │
+     ▼
+Next token
+</pre>
+
       <h2>Context window</h2>
-      <p>
-        Most explanations of context windows are surprisingly bad because they
-        focus on the size rather than what the model is actually doing.
-      </p>
       <p>
         Every time the model generates a token, it can look back at all the
         tokens currently in its context window. That is simply the set of tokens
-        that attention is allowed to look at.
+        that attention is allowed to look at. When someone says a model has a
+        128k context window, they mean the model can keep up to 128,000 tokens
+        available for attention.
       </p>
       <pre>
 Context window:
@@ -739,9 +778,8 @@ Input         Hidden Layers           Output
         configuration produces the correct output.
       </p>
       <p>
-        You want to change the output but you don't want to touch the knobs in
-        the middle because it would be very time consuming to figure out what
-        works and you might break something.
+        You want to change the output but touching the middle knobs takes a
+        long time to figure out and you might break something.
       </p>
       <p>
         Instead of touching all those knobs, we insert small trainable modules
@@ -762,9 +800,7 @@ Input    Hidden Layers (with LoRA)    Output
       Original + Small LoRA adapters
       weights    at each layer
       </pre>
-      <p>
-        LoRA does this at every stage of the network.
-      </p>
+      <p>LoRA does this at every stage of the network.</p>
       <p>
         So we can take a massive trained model and adapt it without starting
         from scratch. The big model already knows language or how to draw and
@@ -772,21 +808,21 @@ Input    Hidden Layers (with LoRA)    Output
         Ghibli).
       </p>
       <p>
-        You can mix and match them and adjust their strengths by turning
-        their input knobs (50% anime style, 30% cyberpunk, 20% vintage).
+        You can mix and match them and adjust their strengths by turning their
+        input knobs (50% anime style, 30% cyberpunk, 20% vintage).
       </p>
       <p>
-        They're incredibly small (they only need a few million parameters) and cheap
-        (~$10 - $100) compared to the base models they modify. You can literally
-        train one on your gaming computer at home.
+        They're incredibly small (they only need a few million parameters) and
+        cheap (~$10 - $100) compared to the base models they modify. You can
+        literally train one on your gaming computer at home.
       </p>
       <aside id="fn-asterisk">
         <h2>Notes</h2>
         <small
           ><sup><a href="#r-asterisk">*</a></sup> The model doesn't create
-           explicit semantic questions. Q, K, and V are just learned vectors.
-           People describe them as questions and labels because it's easier to
-           think about that way.</small
+          explicit semantic questions. Q, K, and V are just learned vectors.
+          People describe them as questions and labels because it's easier to
+          think about that way.</small
         >
       </aside>
     </article>
