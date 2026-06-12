@@ -60,13 +60,18 @@
     </title>
     <link rel="stylesheet" href="styles.css" />
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RQ5DTCN8C"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-7RQ5DTCN8C"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-7RQ5DTCN8C');
+      gtag("config", "G-7RQ5DTCN8C");
     </script>
   </head>
   <body>
@@ -316,13 +321,49 @@ crop.height = action_bar.y - crop.y - action_bar.height x 0.2</code></pre>
         screen and interact with it using only computer vision and cursor
         automation? The answer is yes.
       </p>
+
+      <h2>Why Instagram?</h2>
+
+      <p>Because everyone understands Instagram.</p>
+
+      <p>
+        Everyone knows what a like button is. Everyone understands what it means
+        to automate engagement and get banned for it. It makes the technical
+        idea easier to explain.
+      </p>
+
+      <h2>Isn't this against Instagram's rules?</h2>
+
+      <p>Yes. That is the point.</p>
+
+      <p>It's a system that actively does not want this to work.</p>
+
+      <p>
+        The DOM is hostile. The UI changes. Behaviour gets fingerprinted. The
+        platform watches for patterns and fights back.
+      </p>
+
+      <h2>So what was the point?</h2>
+
+      <p>
+        It is fun to build against something that is trying to stop you. Not
+        because it is useful. Not because it is a good business idea. But
+        because the feedback loop is interesting.
+      </p>
+
+      <p>
+        It's the adversarial part. You build a dumb version. It breaks. You add
+        template matching. It finds too many false positives. You crop the
+        search space. It gets better. You filter by vertical alignment. It gets
+        reliable. You make the cursor movement more human. The platform still
+        catches you.
+      </p>
+
+      <p>That is much more interesting than automating a clean API.</p>
+
       <h2>Notes</h2>
       <p>
         <a href="https://github.com/florianherrengt/instabot">Read the code</a>
-      </p>
-      <p>
-        If you just want to get something working, check out
-        <a href="https://github.com/oculix-org">Oculix</a>.
       </p>
     </article>
   </body>
