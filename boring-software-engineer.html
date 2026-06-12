@@ -15,7 +15,7 @@
       property="og:url"
       content="https://blog.florianherrengt.com/boring-software-engineer.html"
     />
-    <meta property="og:title" content="The boring software engineer" />
+    <meta property="og:title" content="Good engineers make boring choices" />
     <meta
       property="og:description"
       content="How to build software with fewer moving parts and faster recovery when things break."
@@ -39,17 +39,30 @@
       content="How to build software with fewer moving parts and faster recovery when things break."
     />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="The boring software engineer" />
+    <meta name="twitter:title" content="Good engineers make boring choices" />
     <meta name="twitter:site" content="@florianherrengt" />
     <meta name="twitter:creator" content="@florianherrengt" />
 
     <meta name="author" content="Florian Herrengt" />
-    <title>The boring software engineer</title>
+    <title>Good engineers make boring choices</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RQ5DTCN8C"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-7RQ5DTCN8C');
+    </script>
   </head>
   <body>
     <header>
-      <h1>A boring software engineer is a good software engineer</h1>
+      <h1>Good engineers make boring choices</h1>
       <time datetime="2026-04-16">16 April 2026</time>
+      <p class="subtitle">
+        Complexity is the real outage. Build systems you can run, debug, restore
+        and replace.
+      </p>
     </header>
 
     <article>
@@ -58,40 +71,34 @@
         stack has become too complex to debug and maintain.
       </p>
       <p>
-        The project is built in such a way that it is impossible to reproduce
-        bugs locally. After jumping through dozens of nested files and multiple
-        microservices, you still can't figure out where the bug is coming from.
-        Or you don't have a reliable way to run database migrations so they
-        crash all the time. Or maybe no one knows where anything is or how it
-        works. Because the person who built it left 6 months ago and everything
-        is so convoluted that nobody understands it.
+        The app cannot be reproduced locally. Bugs require jumping through
+        dozens of files, services and dashboards. Migrations are fragile. Nobody
+        knows where anything lives. The person who built the system left six
+        months ago, and now every change feels dangerous.
       </p>
       <p>This is what kills productivity. This is what kills projects.</p>
 
-      <h2>Be a minimalist</h2>
+      <h2>Start with the smallest system that can work</h2>
       <p>
-        Every app I work on, I always try to keep the stack as lean as I can.
+        For every app I work on, I try to keep the stack as lean as possible.
       </p>
       <p>
-        Take this blog for example. It is just HTML files. Nothing else. Nothing
-        fancy. And it just works. I can edit anything I want at any time. I have
-        version control with Git and it scales because I have a CDN. I do not
-        need anything else. It is just me working on this alone, so why would I
-        need a complex system?
+        Take this blog for example. It is just HTML files. Nothing fancy. It
+        works. I can edit anything I want at any time. I have version control
+        with Git and it scales because I have a CDN. I do not need anything
+        else. It is just me working on this alone, so why would I need a complex
+        system?
       </p>
       <p>Before I add anything, I ask:</p>
       <ul>
-        <li>Can I run it locally?</li>
-        <li>Can I easily replace it?</li>
-        <li>Can I reuse something I already have?</li>
-        <li>Can I remove it in one sprint without breaking everything?</li>
-        <li>
-          Does it give more value than its full cost, including complexity,
-          migration risk and maintenance burden?
-        </li>
+        <li>Can we run it locally?</li>
+        <li>Can we restore it?</li>
+        <li>Can we replace it?</li>
+        <li>Can we debug it at 2am?</li>
+        <li>Can we remove it without rewriting the product?</li>
       </ul>
 
-      <h2>Building a resilient system takes years of failures</h2>
+      <h2>Redundancy is not resilience</h2>
       <p>
         I had a client who wanted maximum redundancy. We set up multi-cloud
         failover so if AWS died, Azure would take over.
@@ -106,100 +113,95 @@
       </p>
       <p>
         I have also seen provider lock-in hurt teams hard. A vendor gets
-        acquired, prices jump or an account gets suspended. So today, I build in
-        a way I can easily leave.
+        acquired, prices jump, an API changes or an account gets suspended. So
+        today, I build in a way I can easily leave.
+      </p>
+      <p>
+        If the answer to "can we replace it?" is no, that vendor owns a piece of
+        our future.
       </p>
 
-      <h2>Optimize for recovery not for fantasy uptime</h2>
+      <h2>Optimise for recovery, not fantasy uptime</h2>
       <p>
         Across my career, hardware has rarely caused the worst incidents. Human
         mistakes, bad deploys, provider lockouts and architecture mistakes did.
       </p>
       <p>I cannot predict every outage. I can control how fast I recover.</p>
-      <p>I want incidents to be boring and recovery to be boring.</p>
+      <p>
+        Systems I can reproduce locally. Deployments I can understand.
+        Dependencies I can replace. Incidents where the fix is obvious.
+        Infrastructure that fails in ways I have seen before.
+      </p>
+      <p>
+        What matters at 2am is whether the failure is understandable and the
+        recovery path is already known — not whether the architecture looks
+        impressive on a diagram.
+      </p>
 
-      <h2>The stack I trust by default</h2>
+      <h2>My default stack for small teams</h2>
       <p>For small teams, this setup has worked for me for a long time:</p>
       <ul>
         <li>One oversized server</li>
         <li>Postgres for primary data</li>
         <li>Files on local disk</li>
-        <li>Containerized app deployment</li>
+        <li>Containerised app deployment</li>
       </ul>
       <p>
         I oversize the machine on purpose. Extra RAM gives room for spikes,
-        leaks and debugging without panic. It also stops premature optimization
+        leaks and debugging without panic. It also stops premature optimisation
         work that does not matter yet.
       </p>
       <p>
-        A boring server with too much headroom beats a clever setup with no
-        margin.
+        A server with too much headroom beats a clever setup with no margin.
       </p>
-
-      <h2>Use Postgres for more than tables</h2>
-      <p>
-        Most of the time, I need a database, a key-value store and a queue.
-        Turns out, Postgres can already do all of this and so much more.
-      </p>
+      <p>My backup plan is deliberately simple:</p>
       <ul>
-        <li>Normal relational tables for core data</li>
-        <li>Materialized views for caching</li>
-        <li>Unlogged tables for fast transient data</li>
-        <li>A Postgres-backed queue library such as pgboss</li>
-        <li>Cron + scheduler</li>
-        <li>
-          Postgres's built-in full-text search is more than enough for most apps
-        </li>
-        <li>
-          Append-only tables for audit trails, events, webhooks received and
-          logs.
-        </li>
-        <li>
-          Time-series analytics store with partitioning, indexes and rollups.
-        </li>
-      </ul>
-      <p>
-        Eventually, I might move to Kafka, Redis, Elasticsearch or ClickHouse
-        but Postgres works really well for a surprisingly long time.
-      </p>
-      <p>
-        In practice, fewer systems mean fewer moving parts and fewer places to
-        look at when I debug something.
-      </p>
-
-      <h2>Everything should be boring</h2>
-      <p>
-        There's nothing exciting about using Postgres. It's easy to explain to
-        people and it doesn't look shiny on a CV.
-      </p>
-      <p>But a boring stack is just much easier to debug.</p>
-      <p>
-        I restore and recreate the production environment with its data and
-        reproduce the issue locally.
-      </p>
-      <p>My backup plan is dead simple:</p>
-      <ul>
-        <li>Run regular `pg_dump`</li>
-        <li>Incremental backups to object storage with restic</li>
+        <li>Regular <code>pg_dump</code> backups</li>
+        <li>Incremental backups to object storage with <code>restic</code></li>
       </ul>
       <p>
         I can run restore drills on any machine. Rebuild on a fresh server,
         restore files and database and verify the app works end-to-end.
       </p>
 
+      <h2>Postgres gets you surprisingly far</h2>
+      <p>
+        Most of the time, I need a database, a key-value store and a queue.
+        Turns out, Postgres can already do all of this and so much more.
+      </p>
+      <ul>
+        <li>Normal relational tables for core data</li>
+        <li>Materialised views for caching</li>
+        <li>Unlogged tables for fast transient data</li>
+        <li>A Postgres-backed queue library such as <code>pg-boss</code></li>
+        <li>Scheduled jobs with <code>cron</code> or <code>pg_cron</code></li>
+        <li>Built-in full-text search is more than enough for most apps</li>
+        <li>Append-only tables for audit trails and logs.</li>
+        <li>Time-series data with partitioning and rollups.</li>
+      </ul>
+      <p>
+        Eventually, I might move to Kafka, Redis, Elasticsearch or ClickHouse
+        but Postgres works really well for a surprisingly long time.
+      </p>
       <h2>Deploy fast</h2>
       <p>
         I care a lot about CI speed. If deploys take half an hour, the team only
         gets a handful of deploys in a day.
       </p>
-      <p>To no one's surprise, my deploy path is equally boring.</p>
+      <p>My deploy path follows the same rule.</p>
       <p>
-        Build a docker container with everything, including the frontend bundle
-        and any other assets. Cache every build layer aggressively. No need for
-        S3 or anything complicated, the CDN will cache it anyway.
+        Build one Docker image or binary containing everything: the backend,
+        frontend bundle and any static assets. Cache every build layer
+        aggressively. No separate asset pipeline unless the product actually
+        needs one. The app serves the built assets, and the CDN caches them.
+      </p>
+      <p>
+        Fast deploys change team behaviour. People ship smaller changes, roll
+        back faster and avoid the giant risky release that happens because
+        deployment is painful.
       </p>
 
-      <h2>To microservice or not</h2>
+      <h2>Avoid microservices until the pain is real</h2>
       <p>
         I'm not the biggest fan of microservices, but they can make sense when:
       </p>
@@ -219,15 +221,18 @@
       <p>
         A modular monolith is usually the right answer until proven otherwise.
         Then split it. Still, always keep things simple with HTTP API calls. No
-        Kafka or PubSub unless it is really needed.
+        Kafka, Pub/Sub or event bus unless the pain justifies it.
       </p>
       <p>
         Boring protocols fail in obvious ways and have tools with decades of
         development to monitor and debug them.
       </p>
+      <p>
+        Can we remove it without rewriting the product? A monolith can be split
+        later. A distributed mess cannot be untangled.
+      </p>
 
-      <h2>Get off the cloud</h2>
-      <p>Wait what? You might start to think I've lost my sense here.</p>
+      <h2>Do not mistake platform limits for architecture needs</h2>
       <p>
         I am not against cloud. I am against cloud complexity theater that teams
         adopt before they have a real need.
@@ -237,8 +242,8 @@
         Kubernetes and full cloud ceremony, but there's another more subtle one.
       </p>
       <p>
-        The memory and CPU starved PaaS that forces you to deal with fake
-        scaling issues.
+        Then there is the memory- and CPU-starved PaaS that forces you to deal
+        with fake scaling issues.
       </p>
       <p>
         Most of those platforms have a ridiculously low amount of provisioned
@@ -253,19 +258,21 @@
         fact that they just don't have enough CPU or RAM.
       </p>
       <p>
-        None of that is needed if you get one HUGE server to begin with. I can
-        get a fully managed server with 32-core, 256 GB RAM and 2TB of storage
-        for € 199/m.
+        Much of that disappears if you start with one generously sized server. I
+        can get a fully managed server with 32-core, 256 GB RAM and 2TB of
+        storage for around € 199/m at the time of writing.
       </p>
       <p>
-        Hardware failures rarely happen. Usually the app goes down because a
-        human messed something up. Even if the server itself fails, the backup
-        recovery is so simple the whole app can be redeployed somewhere else.
+        Hardware failures are not usually the incidents that hurt the most. The
+        app goes down because a human messed something up. Even if the server
+        itself fails, the backup recovery is so simple the whole app can easily
+        be redeployed somewhere else.
       </p>
       <p>
-        But there's still a place for innovation. Strong engineering is boring
-        by default and innovative by exception. When we innovate, it has to be
-        justified, calculated and easy to undo.
+        Strong engineering is boring by default and innovative by exception. Use
+        the simple thing first. Keep the system easy to run, inspect, restore
+        and replace. Then, when complexity becomes unavoidable, add it
+        deliberately, isolate it carefully and make sure you can undo it.
       </p>
     </article>
   </body>
