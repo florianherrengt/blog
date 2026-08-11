@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link
+      rel="canonical"
+      href="https://blog.florianherrengt.com/ai-makes-it-impossible-to-hire-bad-engineers.html"
+    />
+
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://blog.florianherrengt.com/ai-makes-it-impossible-to-hire-bad-engineers.html"
+    />
+    <meta
+      property="og:title"
+      content="AI makes it impossible to hire bad engineers"
+    />
+    <meta
+      property="og:description"
+      content="AI makes projects with weak engineering culture fail much faster."
+    />
+    <meta property="og:site_name" content="Blog - Florian Herrengt" />
+    <meta property="og:locale" content="en_GB" />
+
+    <meta
+      property="article:published_time"
+      content="2026-08-11T00:00:00+00:00"
+    />
+    <meta property="article:author" content="Florian Herrengt" />
+    <meta property="article:section" content="Technology" />
+
+    <meta
+      name="twitter:url"
+      content="https://blog.florianherrengt.com/ai-makes-it-impossible-to-hire-bad-engineers.html"
+    />
+    <meta
+      name="twitter:description"
+      content="AI makes projects with weak engineering culture fail much faster."
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="AI makes it impossible to hire bad engineers"
+    />
+    <meta name="twitter:site" content="@florianherrengt" />
+    <meta name="twitter:creator" content="@florianherrengt" />
+
+    <meta name="author" content="Florian Herrengt" />
+    <title>AI makes it impossible to hire bad engineers</title>
+    <style>
+      .rainbow {
+        background: linear-gradient(
+          90deg,
+          #ff0000,
+          #ff9900,
+          #33cc33,
+          #0099ff,
+          #6633cc
+        );
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        font-weight: bold;
+        animation: rainbow-shift 3s linear infinite;
+      }
+
+      @keyframes rainbow-shift {
+        0% {
+          background-position: 0% center;
+        }
+        100% {
+          background-position: 200% center;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .rainbow {
+          animation: none;
+        }
+      }
+
+      .diff-add {
+        color: #2da44e;
+      }
+      .diff-del {
+        color: #cf222e;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .diff-add {
+          color: #3fb950;
+        }
+        .diff-del {
+          color: #f85149;
+        }
+      }
+
+      ul.dialogue {
+        list-style: none;
+        margin: 10px 0;
+        padding-left: 0;
+      }
+      ul.dialogue li {
+        margin: 6px 0;
+      }
+      ul.dialogue li::before {
+        content: "— ";
+      }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-7RQ5DTCN8C"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-7RQ5DTCN8C");
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>AI makes it impossible to hire bad engineers</h1>
+      <time datetime="2026-08-11">11 August 2026</time>
+    </header>
+
+    <article>
+      <p>
+        It's 2020. You're the most senior person on your team, in charge of code
+        quality and architecture. You've set up good engineering practices, you
+        thoroughly review PRs from people who are less experienced than you and
+        work hard to maintain a healthy codebase.
+      </p>
+      <p>
+        Then at some point, you go on holiday. When you come back, the codebase
+        is a mess. Everyone merged each other's PRs without really paying much
+        attention, someone added a bunch of new tables to the database to
+        denormalise it because it was easier and they added serverless or Kafka
+        to the stack without any solid evidence that they needed either.
+      </p>
+      <p>It's okay. You can fix this.</p>
+      <p>
+        Fast forward to 2026. You haven't been on holiday. It's just a normal
+        Monday morning. You make yourself a nice coffee, open your computer and
+        find yourself with 7 PRs to review. You open the first one:
+        <code
+          ><span class="diff-add">+24506</span>
+          <span class="diff-del">-3938</span></code
+        >
+        lines, accompanied by some AI-generated description of what they're
+        supposed to do. Somehow, your team has made more changes since Friday
+        than they used to make while you were away for a few weeks.
+      </p>
+
+      <h2>Bad decisions compound</h2>
+      <p>AI makes projects with weak engineering culture fail much faster.</p>
+      <p>
+        There used to be a time when people sat down and talked about how they'd
+        do something. Now they can just prompt an agent for a few hours and open
+        a PR.
+      </p>
+      <p>
+        The most tragic aspect of this way of working is that, to the untrained
+        eye, it works.
+      </p>
+      <p>
+        If you pull the branch and test it, you'll probably get something
+        somewhat functional. So what do they do? They keep going. Again and
+        again. Until the project reaches a point where no one knows how anything
+        works.
+      </p>
+      <p>
+        Just like someone buying a new luxury car on a credit card. You don't
+        see the debt. You just see the car that looks great.
+      </p>
+      <p>
+        But then users start to report a weird bug. It's the 4th time your team
+        has been trying to fix it. I mean... asking AI to fix it. Unfortunately,
+        it seems like not even Fable can figure it out.
+      </p>
+      <p>You go talk to the person who worked on this feature.</p>
+      <ul class="dialogue">
+        <li>"So where does the data come from?"</li>
+        <li>"Hmm... actually I don't know. Let me ask Claude."</li>
+      </ul>
+      <p>
+        You sit next to each other watching an endless wall of text appear on
+        the screen. Neither of you has any idea whether any of it is true but
+        Claude seems very confident.
+      </p>
+      <p>
+        "Let's just turn on <span class="rainbow">ultracode</span> and ask it to
+        double-check?"
+      </p>
+      <p>
+        This one will take a while. You start talking about the latest drama on
+        X.
+      </p>
+      <p>You finally get an answer back.</p>
+      <ul class="dialogue">
+        <li>"Does this make any sense to you?"</li>
+        <li>"I'm not sure."</li>
+        <li>"Didn't you build this like... last week?"</li>
+      </ul>
+      <p>Silence.</p>
+      <p>
+        This project has become so convoluted, with so many layers and services,
+        that no one on your team could possibly start to understand what's going
+        on.
+      </p>
+      <p>So, what do you do?</p>
+      <p>
+        Fixing it would require such a colossal amount of work that it would be
+        impossible to even start justifying it to anyone in management.
+      </p>
+      <p>
+        And what are you even thinking about? It would end up in the exact same
+        state again in just a few months anyway.
+      </p>
+      <ul class="dialogue">
+        <li>"Let's just ask Claude to fix it."</li>
+        <li>
+          "Okay. I'll create a loop and goal so it doesn't stop until it's
+          checked that everything works."
+        </li>
+        <li>"Sounds good"</li>
+        <li>
+          "Actually, I ran out of Fable usage for today so I'll run it tomorrow"
+        </li>
+      </ul>
+      <p>
+        You grab another coffee and walk back to your computer. You now have 13
+        PRs left to review. You see something you don't quite understand, so you
+        message the person who wrote it.
+      </p>
+      <ul class="dialogue">
+        <li>"Why are we doing this here?"</li>
+      </ul>
+      <p>They send you a link. It's a Claude conversation.</p>
+      <p>
+        Somewhere in that conversation, buried between Claude confidently
+        recommending one architecture, apologising, changing its mind, your
+        coworker asking it to reconsider again and another 15 rounds of changes,
+        is apparently the design decision behind this code.
+      </p>
+      <ul class="dialogue">
+        <li>"Which part should I read?"</li>
+        <li>"Probably all of it."</li>
+      </ul>
+      <p>Does this sound familiar?</p>
+      <p>
+        Whenever I talk about this, someone eventually tells me that nobody ever
+        fully understood large systems anyway. It's true.
+      </p>
+      <p>
+        You were never expected to understand every service and every database.
+        But at least someone did and would explain it to you.
+      </p>
+      <p>Now they ask a LLM because they don't actually know themselves.</p>
+
+      <h2>Bad engineers are a liability</h2>
+      <p>
+        In every team, there are competent people who make the project possible.
+        There are also incompetent people who essentially make it harder for
+        everyone else. And now anyone can produce more code in a day than they
+        used to in a year.
+      </p>
+      <p>In the story above, everyone is failing:</p>
+      <ul>
+        <li>
+          The engineer opening a 25,000-line PR should have stopped the agent
+          long before it got there. They should have understood what it was
+          doing, broken the work into smaller pieces and questioned every new
+          abstraction it introduced.
+        </li>
+        <li>
+          The person reviewing it should have refused to review something that
+          large instead of giving in.
+        </li>
+        <li>
+          The person adding Kafka should have been able to explain exactly why
+          it was needed.
+        </li>
+        <li>
+          The person who built the feature should have been able to explain
+          where the data came from without sending a link to a Claude
+          conversation.
+        </li>
+      </ul>
+      <p>
+        But what's the problem then? Just use AI to fix it. Well, it's not that
+        easy...
+      </p>
+      <p>
+        Before anyone jumps on this, none of this means technical debt is always
+        bad. The important part is that you know it's a shortcut.
+      </p>
+      <p>Anyway, reverting a bad decision is hard. Very hard.</p>
+      <p>
+        For example, how long would it take a LLM to add a bunch of tables and
+        columns to the database? 10 minutes?
+      </p>
+      <p>
+        But once you start storing data there, you can't just remove them. You
+        have to come up with a migration plan, make sure you don't disrupt the
+        system because people are paying to use this every day. You have to
+        think about what you'll do if the migration fails. Make sure you don't
+        end up with orphaned foreign keys. It's just so much harder to fix. Even
+        with the best model you can get.
+      </p>
+      <p>
+        And while you're fixing it, more PRs keep coming in. More code, more
+        abstractions, more decisions. A person can generate 20,000 lines of code
+        in an afternoon, but you still have to sit there and understand what
+        those lines actually do.
+      </p>
+      <p>
+        By the time you've untangled one bad decision, five more have been
+        merged.
+      </p>
+
+      <h2>The AI economy</h2>
+      <p>Of course, bad engineers were always a liability.</p>
+      <p>
+        It has been like this for decades, well before OpenAI or Anthropic
+        existed. Bad decisions compounded, unnecessary complexity accumulated
+        and teams ended up maintaining systems nobody really understood.
+      </p>
+      <p>
+        The difference is that there used to be a limit to how fast you could do
+        it.
+      </p>
+      <p>
+        Today, implementation is cheap. You are paid to make good decisions. To
+        build software that will scale while managing complexity.
+      </p>
+      <p>
+        Ask yourself why companies are paying six-figure salaries for engineers
+        in London or San Francisco in the first place.
+      </p>
+      <p>
+        If all they needed was someone who could turn a specification into
+        working code, why were they paying that much when they could already get
+        it done cheaply elsewhere?
+      </p>
+      <p>
+        Why are the tech companies claiming that "software is solved" still
+        paying top salaries to attract the best people they can?
+      </p>
+      <p>
+        My bet is that AI pushes salaries further apart. To be employable,
+        there's a bar you have to clear and that bar is whatever the current
+        best model du jour can do.
+      </p>
+      <p>
+        Good engineers have become more valuable because AI lets them move much
+        faster. They don't need as many people around them just to do the
+        implementation work anymore.
+      </p>
+      <p>
+        At the same time, bad engineers have become much more expensive to hire.
+      </p>
+      <p>
+        I wrote about this before when I said the
+        <a href="vibe-coder-career-path.html"
+          >vibe coder career path is doomed</a
+        >.
+      </p>
+      <p>
+        You need to contribute beyond what everyone already gets by giving an
+        agent a prompt.
+      </p>
+      <p>
+        If you lack the judgment required to evaluate the LLM's recommendation,
+        asking for more judgment doesn't solve the problem.
+      </p>
+      <p>
+        At some point, someone still has to know what is going on. And that's
+        the most valuable person on the team.
+      </p>
+      <p>
+        The people who don't will become much cheaper to hire or get replaced
+        entirely while the money gets funnelled towards an increasingly smaller
+        number of people who can actually be trusted.
+      </p>
+      <p>
+        I don't think this is going to be limited to software engineering
+        either. I believe the same thing is going to happen across most
+        knowledge work. AI will make the best people much more productive and
+        the bad ones almost impossible to hire. Before, there was a good chance
+        someone would catch their bad decisions before they went too far. Now
+        they can make changes faster than anyone around them can realistically
+        review or understand them.
+      </p>
+    </article>
+  </body>
+</html>
