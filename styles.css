@@ -92,6 +92,11 @@ figcaption {
 .emailoctopus-form-wrapper {
   margin: 2em auto !important;
   max-width: 520px;
+  padding: 1.5em;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  box-sizing: border-box;
 }
 
 .inline-container {
@@ -100,4 +105,11 @@ figcaption {
 
 .mastfoot:has(a[href*="emailoctopus"]) {
   display: none !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .emailoctopus-form-wrapper {
+    border-color: #3a3a3a;
+    background: #242424;
+  }
 }
