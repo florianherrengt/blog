@@ -97,6 +97,16 @@ figcaption {
   border-radius: 8px;
   background: #fafafa;
   box-sizing: border-box;
+  color: inherit;
+}
+
+.emailoctopus-form-wrapper::before {
+  content: "Get new posts by email. No spam.";
+  display: block;
+  text-align: center;
+  margin-bottom: 1em;
+  font-weight: 600;
+  color: inherit;
 }
 
 .inline-container {
