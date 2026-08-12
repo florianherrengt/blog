@@ -88,3 +88,16 @@ figcaption {
     color: #b19cd9;
   }
 }
+
+.emailoctopus-form-wrapper {
+  margin: 2em auto !important;
+  max-width: 520px;
+}
+
+.inline-container {
+  margin: 0 auto !important;
+}
+
+.mastfoot:has(a[href*="emailoctopus"]) {
+  display: none !important;
+}
