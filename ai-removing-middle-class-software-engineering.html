@@ -424,350 +424,310 @@
 
       <h2>Answers to the most common objections</h2>
 
-      <h3>"Bad engineers always existed"</h3>
-      <p>
-        This was probably the most frequent pushback. The argument goes: bad
-        engineers were always a liability, teams always shipped bad code, this
-        is nothing new.
-      </p>
-      <p>
-        I agree. Bad engineers were always a liability. That is literally in the
-        article.
-      </p>
-      <p>The difference is the speed.</p>
-      <p>
-        It is the difference between crashing at 30 km/h and crashing at 200
-        km/h. Before AI, a bad engineer would struggle to produce code that even
-        compiled. When they did produce something, it took them a long time and
-        the blast radius was limited. The damage was bounded by how fast a human
-        could type.
-      </p>
-      <p>
-        Now a bad engineer can produce 10,000 lines of working code before
-        lunch. The damage they can do in an afternoon used to take them months.
-        The speed at which bad decisions compound has changed completely while
-        the speed at which you can fix them has not.
-      </p>
-      <p>
-        Saying "this always happened" is technically true and completely misses
-        the point.
-      </p>
+      <details>
+        <summary>"Bad engineers always existed"</summary>
+        <p>The difference is the speed.</p>
+        <p>
+          It is the difference between crashing at 30 km/h and crashing at 200
+          km/h. Before AI, a bad engineer would struggle to produce code that
+          even compiled. When they did produce something, it took them a long
+          time and the blast radius was limited. The damage was bounded by how
+          fast a human could type.
+        </p>
+        <p>
+          Now a bad engineer can produce 10,000 lines of working code before
+          lunch. The damage we can do in an afternoon used to take them months.
+          The speed at which bad decisions compound has changed completely while
+          the speed at which you can fix them has not.
+        </p>
+      </details>
+      <details>
+        <summary>"Just fix your process"</summary>
+        <p>
+          Several people argued that the real problem is lack of process. If you
+          had proper tests, CI, code review and architectural reviews,
+          AI-generated slop wouldn't get through.
+        </p>
+        <p>We had all of those things. None of them disappeared.</p>
+        <p>
+          The problem is that they were designed for a world where producing a
+          massive amount of change was impossible. Code review don't work
+          anymore when someone opens 10 PRs a day with an AI-generated
+          description. Tests work when they cover the behaviours you thought to
+          test. They do not catch the behaviours nobody thought to test.
+        </p>
+        <p>
+          How many times have you had a completely green CI with full coverage
+          and still shipped a bug?
+        </p>
+        <p>
+          The difficulty of producing code was by itself one of the limiting
+          factors.
+        </p>
+        <p>
+          If the people trying to understand changes and guard quality are now
+          the bottleneck, you have three options. Generate less, find a
+          genuinely better way to validate or accept lower quality.
+        </p>
+      </details>
+      <details>
+        <summary>"You are just anti-AI"</summary>
 
-      <h3>"Just fix your process"</h3>
-      <p>
-        Several people argued that the real problem is lack of process. If you
-        had proper tests, CI, code review and architectural reviews,
-        AI-generated slop wouldn't get through.
-      </p>
-      <p>We had all of those things. None of them disappeared.</p>
-      <p>
-        The problem is that they were designed for a world where producing a
-        massive amount of change was impossible. Code review works when a PR is
-        a few hundred lines. It breaks down when someone opens 10 PRs a day with
-        an AI-generated description. Tests work when they cover the behaviours
-        you thought to test. They do not catch the behaviours nobody thought to
-        test.
-      </p>
-      <p>
-        How many times have you had a completely green CI with full coverage and
-        still shipped a bug?
-      </p>
-      <p>
-        The difficulty of producing code was itself one of the circuit breakers.
-        It is gone now. The remaining ones were never designed to handle this
-        volume.
-      </p>
-      <p>
-        If the people trying to understand changes and guard quality are now the
-        bottleneck, you have three options. Generate less, find a genuinely
-        better way to validate or accept lower quality.
-      </p>
+        <p>
+          Everytime I critisise AI someone says I'm a Luddism. I'm refusing to
+          adapt to the new world, clinging to the old ways.
+        </p>
+        <p>
+          I use AI heavily. I have said this repeatedly. I use it every day and
+          I have no interest in going back to writing everything by hand.
+        </p>
+        <p>
+          The point is that we have made producing large changes extremely cheap
+          and fast while understanding those changes is still slow, difficult
+          work. We have no shortcut for building a correct mental model of what
+          a change does.
+        </p>
+        <p>
+          Maybe one day we will find one. As of today, I do not think we have
+          one.
+        </p>
+        <p>
+          You can be a heavy AI user and still recognise that there are serious
+          problems with how it is being used.
+        </p>
+      </details>
+      <details>
+        <summary>"More output means more productive"</summary>
 
-      <h3>"You are just anti-AI"</h3>
-      <p>
-        A few people framed the article as Luddism. Refusing to adapt. Clinging
-        to the old ways.
-      </p>
-      <p>
-        I use AI heavily. I have said this repeatedly. I use it every day and I
-        have no interest in going back to writing everything by hand.
-      </p>
-      <p>
-        The point is not that AI is bad. The point is that we have made
-        producing large changes extremely cheap and fast while understanding
-        those changes is still slow, difficult work. We have no shortcut for
-        building a correct mental model of what a change does, how it interacts
-        with the rest of the system and whether the decisions behind it are
-        sound.
-      </p>
-      <p>
-        Maybe one day we will find one. As of today, I do not think we have one.
-      </p>
-      <p>
-        You can be a heavy AI user and still recognise that there are serious
-        problems with how it is being used. Those two things are not
-        contradictory.
-      </p>
+        <p>
+          Someone generates 10 PRs in a day, the numbers look incredible, surely
+          this person is ten times more productive.
+        </p>
+        <p>
+          Not necessarily. The supposed 10x engineer may simply be someone
+          stealing productivity from everyone around them.
+        </p>
+        <p>
+          If I generate 10 PRs in a day but three engineers now have to spend
+          the next two days reviewing them, figuring out what I changed,
+          correcting bad assumptions, debugging regressions and explaining why
+          half of it needs to be redone, I have not become 10x more productive.
+          I have just moved the work onto other people.
+        </p>
+        <p>
+          Worse, I am consuming the time of the people who are usually the
+          hardest to replace and whose attention is already scarce.
+        </p>
+        <p>
+          PR count, lines changed and features "completed" are terrible measures
+          of productivity. You can make your own numbers look incredible while
+          reducing the throughput of the entire team.
+        </p>
+        <p>
+          Some people pushed back on this by saying the real problem is bad
+          organisations with broken incentives. It's true. If your company
+          rewards ticket count over quality, the careful engineer looks like the
+          bad employee and the sloppy one gets promoted.
+        </p>
+      </details>
+      <details>
+        <summary>"Pushing back just makes you the toxic one"</summary>
 
-      <h3>"More output means more productive"</h3>
-      <p>
-        The sarcastic label for this is the "10x AI engineer." Someone generates
-        10 PRs in a day, the numbers look incredible, surely this person is ten
-        times more productive.
-      </p>
-      <p>
-        Not necessarily. The supposed 10x engineer may simply be someone
-        stealing productivity from everyone around them.
-      </p>
-      <p>
-        If I generate 10 PRs in a day but three engineers now have to spend the
-        next two days reviewing them, figuring out what I changed, correcting
-        bad assumptions, debugging regressions and explaining why half of it
-        needs to be redone, I have not become 10x more productive. I have just
-        moved the work onto other people.
-      </p>
-      <p>
-        Worse, I am consuming the time of the people who are usually the hardest
-        to replace and whose attention is already scarce.
-      </p>
-      <p>
-        PR count, lines changed and features "completed" are terrible measures
-        of productivity. You can make your own numbers look incredible while
-        reducing the throughput of the entire team.
-      </p>
-      <p>
-        Some people pushed back on this by saying the real problem is bad
-        organisations with broken incentives. If your company rewards ticket
-        count over quality, the careful engineer looks like the bad employee and
-        the sloppy one gets promoted.
-      </p>
-      <p>
-        There is truth to that. But it proves the point rather than
-        contradicting it. Before AI, the metric-gaming engineer could only game
-        so much in a day. Now they can game the metrics 10x harder while the
-        cleanup cost balloons. Bad incentives and AI compound each other. They
-        do not cancel out.
-      </p>
+        <p>
+          Someone pointed out that trying to hold the line on quality can get
+          you labelled as toxic. Everyone else is shipping fast and you are the
+          person saying "wait".
+        </p>
+        <p>
+          I would much rather have someone on my team who ships less but whose
+          work I can trust than someone much faster whose changes leave me
+          wondering what problems we're going to discover later.
+        </p>
+        <p>
+          You need to be flexible and compromise when the business trade-off
+          makes sense. But you also need a backbone. If you think something is
+          going to cause real problems, bringing it up is part of the job.
+        </p>
+        <p>
+          And when production breaks, and it will, I need the person who made
+          the change to actually understand it well enough to help fix it. Not
+          show up with no idea what is going on.
+        </p>
+      </details>
+      <details>
+        <summary>"Just AI output is like assembly from a compiler"</summary>
 
-      <h3>"Pushing back just makes you the toxic one"</h3>
-      <p>
-        Someone pointed out that trying to hold the line on quality can get you
-        labelled as toxic. Everyone else is shipping fast and you are the person
-        saying "wait, this is wrong." You look like the problem.
-      </p>
-      <p>
-        I would much rather have someone on my team who ships less but whose
-        work I can trust than someone much faster whose changes leave me
-        wondering what problems we're going to discover later.
-      </p>
-      <p>
-        You need to be flexible and compromise when the business trade-off makes
-        sense. But you also need a backbone. If you think something is going to
-        cause real problems, bringing it up is part of the job.
-      </p>
-      <p>
-        And when production breaks, and it will, I need the person who made the
-        change to actually understand it well enough to help fix it. Not show up
-        with no idea what is going on.
-      </p>
+        <p>
+          We already trust compilers to produce machine code we do not read. Why
+          is this different?
+        </p>
+        <p>
+          A compiler takes code and translates it into another representation
+          while preserving its semantics. The compiler is not deciding what your
+          system should do. It is deterministic.
+        </p>
+        <p>
+          An LLM is making decisions. It is choosing architectures, picking
+          abstractions, deciding where to put things. When you ask Claude to
+          build a feature, it is not translating your intent into code. It is
+          making dozens of design decisions on your behalf.
+        </p>
+        <p>
+          If in five years I can give an agent a complete specification and
+          reliably verify the resulting code against it, then sure, reviewing
+          code may become obsolete and I would happily stop doing it. We are not
+          there yet.
+        </p>
+        <p>
+          If you genuinely understand the resulting system, that is fine. That
+          is not the behaviour I am criticising. But for the vast majority of
+          very large PRs, especially AI-generated ones, I would bet money that
+          the person opening it does not actually understand all of it.
+        </p>
+      </details>
+      <details>
+        <summary>"We ship 99% AI-generated code and it works"</summary>
+        <p>I do the same. Most of the code I produce comes from AI.</p>
+        <p>
+          You still have to put in the work to understand the result. If you are
+          shipping AI code and you genuinely understand the system, you are
+          doing it right. The article is not about you.
+        </p>
+        <p>
+          "AI can write the code" ≠ "I do not need to understand it anymore."
+        </p>
+        <p>
+          You can use AI heavily and still take responsibility for what it
+          produces.
+        </p>
+      </details>
+      <details>
+        <summary>
+          "Users don't care. It's just a CRUD app. Ship it and get paid"
+        </summary>
+        <p>
+          I tend to find that this perspective comes from people working on
+          relatively small or isolated projects.
+        </p>
+        <p>
+          On a large system, the customer being happy today is not enough. You
+          need other engineers to be able to understand the system. Have you
+          ever been on call and been woken up in the middle of the night to fix
+          a production incident in a system you did not write?
+        </p>
+        <p>
+          If everything you build is small, isolated and easy to replace, then
+          sure. Ship the ugly thing, get paid and move on. If you are going to
+          be working on something for the next five years or more, you should
+          probably spend some time thinking about what you are doing.
+        </p>
+        <p>
+          Nobody is getting paid significant money just to build a simple CRUD
+          app. Even before AI. Companies pay experienced engineers because the
+          supposedly simple CRUD sits inside a messy real system with years of
+          business rules, constraints and integrations where bad decisions have
+          consequences.
+        </p>
+      </details>
+      <details>
+        <summary>"What about junior developers?"</summary>
+        <p>
+          I have worked with two junior developers recently who are very good
+          precisely because they are trying to understand what they are doing
+          rather than just producing code. They use AI to explore things they do
+          not understand, ask questions to clarify their reasoning and
+          double-check assumptions. They use the tools to increase their
+          understanding.
+        </p>
+        <p>
+          I have also worked with senior developers who basically gave up and
+          stopped trying to understand the code. They became much worse
+          engineers as a result. At this point I would much rather work with
+          those two juniors.
+        </p>
+        <p>
+          The problem is not AI. The problem is using AI as a substitute for
+          understanding instead of a tool for building it.
+        </p>
+        <p>
+          Related to this, some people argued that we should not teach skills
+          that AI can do better. The fact that a machine can do something better
+          than humans does not automatically make learning it pointless.
+        </p>
+        <p>
+          We still teach arithmetic and algebra despite computers being vastly
+          better at calculation. We teach spelling, grammar and essay writing.
+          We even teach history and geography while everyone permanently has a
+          device in their pocket that can look up almost any fact in seconds.
+        </p>
+        <p>
+          How else would you be developing the mental models required to
+          understand, question and verify anything?
+        </p>
+      </details>
+      <details>
+        <summary>"Using AI is just delegation, like a manager"</summary>
 
-      <h3>"Just review AI output like assembly from a compiler"</h3>
-      <p>
-        We already trust compilers to produce machine code we do not read. Why
-        is this different?
-      </p>
-      <p>
-        A compiler takes a human-specified program and translates it into
-        another representation while preserving its semantics. The compiler is
-        not deciding what your system should do. It is deterministic.
-      </p>
-      <p>
-        An LLM is making decisions. It is choosing architectures, picking
-        abstractions, deciding where to put things. When you ask Claude to build
-        a feature, it is not translating your intent into code. It is making
-        dozens of design decisions on your behalf.
-      </p>
-      <p>
-        If you do not understand the system, do not know what the code is doing
-        and are mostly prompting an LLM to make the decisions for you, what
-        exactly is your contribution? The ability to operate the tool is not
-        much of a moat when everyone else has access to the same tool.
-      </p>
-      <p>
-        If in five years I can give an agent a complete specification and
-        reliably verify the resulting code against it, then sure, reviewing code
-        may become obsolete and I would happily stop doing it. We are not there
-        yet.
-      </p>
-      <p>
-        Someone reasonably pointed out that it is possible to write a detailed
-        plan, use it as your understanding of the system and then have the agent
-        execute against that plan. With the right building blocks, you can
-        maintain confidence in large PRs.
-      </p>
-      <p>
-        If you genuinely understand the resulting system, that is fine. That is
-        not the behaviour I am criticising. For the vast majority of very large
-        PRs, especially AI-generated ones, I would bet money that the person
-        opening it does not actually understand all of it.
-      </p>
+        <p>
+          A manager is not normally the person deciding how the software should
+          be architected or implemented. Their job is largely priorities,
+          people, coordination and resource allocation.
+        </p>
+        <p>
+          You are still an engineer. But you have delegated your technical
+          judgement to an LLM. You just stopped doing the most important part of
+          your job.
+        </p>
+      </details>
+      <details>
+        <summary>"Not all technical debt is bad"</summary>
 
-      <h3>"We ship 99% AI-generated code and it works"</h3>
-      <p>
-        One person described their team's setup: coding standards for the agent,
-        review tooling, test batteries, screenshot validation. They ship 99% AI
-        code, it works and they understand all of it.
-      </p>
-      <p>I do the same. Most of the code I produce comes from AI.</p>
-      <p>
-        You still have to put in the work to understand the result. If you are
-        shipping 99% AI code and you genuinely understand the system, you are
-        doing it right. The article is not about you.
-      </p>
-      <p>
-        The problem is that a lot of teams read "AI can write the code" and hear
-        "I do not need to understand anymore." They skip the part where you
-        build the guardrails and maintain a mental model of what is happening.
-      </p>
-      <p>
-        You can use AI heavily and still take responsibility for what it
-        produces.
-      </p>
+        <p>Agreed. Debt is debt. Some of it is absolutely worth taking on.</p>
+        <p>
+          I do not have any issue with intentional debt when you understand the
+          trade-off and have a clear payoff plan.
+        </p>
+      </details>
+      <details>
+        <summary>
+          "How do we make more senior devs if we don't hire juniors anymore?"
+        </summary>
 
-      <h3>"Most software is just CRUD, ship the ugly thing"</h3>
-      <p>
-        Obsessing over elegant code is the wrong priority. Ship the ugly thing,
-        make the customer happy, move on.
-      </p>
-      <p>
-        I tend to find that this perspective comes from people working on
-        relatively small or isolated projects.
-      </p>
-      <p>
-        On a large system, the customer being happy today is not enough. You
-        need other engineers to be able to understand the system. Have you ever
-        been on call and been woken up in the middle of the night to fix a
-        production incident in a system you did not write?
-      </p>
-      <p>
-        If everything you build is small, isolated and easy to replace, then
-        sure. Ship the ugly thing, get paid and move on. If you are going to be
-        working on something for the next five years or more, you should
-        probably spend some time thinking about what you are doing.
-      </p>
-      <p>
-        Nobody is getting paid significant money just to build a simple CRUD
-        app. Even before AI. Companies pay experienced engineers because the
-        supposedly simple CRUD sits inside a messy real system with years of
-        business rules, constraints and integrations where bad decisions have
-        consequences.
-      </p>
+        <p>
+          By reducing the number of entry-level engineering roles, the industry
+          is sabotaging its own future. Fewer people learning means fewer people
+          capable of maintaining systems down the line.
+        </p>
+        <p>
+          It's true. But the industry does not really owe people opportunities.
+          Even if you think it should, that is not how companies are going to
+          behave.
+        </p>
+        <p>
+          That said, maintenance is the essence of the software industry. LLMs
+          cannot modify projects spanning hundreds of thousands of lines. The
+          skill required to partition architectures is still entirely human.
+          Learn that.
+        </p>
+        <p>
+          That is exactly why experienced engineers are becoming more valuable,
+          not less.
+        </p>
+      </details>
+      <details>
+        <summary>"Will anyone actually care?"</summary>
 
-      <h3>"What about junior developers?"</h3>
-      <p>AI prevents juniors from developing the skills they need.</p>
-      <p>
-        I have worked with two junior developers recently who are very good
-        precisely because they are trying to understand what they are doing
-        rather than just producing code. They use AI to explore things they do
-        not understand, ask questions to clarify their reasoning and
-        double-check assumptions. They use the tools to increase their
-        understanding.
-      </p>
-      <p>
-        I have also worked with senior developers who basically gave up and
-        stopped trying to understand the code. They became much worse engineers
-        as a result. At this point I would much rather work with those two
-        juniors.
-      </p>
-      <p>
-        The problem is not AI. The problem is using AI as a substitute for
-        understanding instead of a tool for building it.
-      </p>
-      <p>
-        Related to this, some people argued that we should not teach skills that
-        AI can do better. The fact that a machine can do something better than
-        humans does not automatically make learning it pointless.
-      </p>
-      <p>
-        We still teach arithmetic and algebra despite computers being vastly
-        better at calculation. We teach spelling, grammar and essay writing. We
-        even teach history and geography while everyone permanently has a device
-        in their pocket that can look up almost any fact in seconds.
-      </p>
-      <p>
-        How else would you be developing the mental models required to
-        understand, question and verify anything?
-      </p>
-
-      <h3>"Using AI is just delegation, like a manager"</h3>
-      <p>
-        A manager is not normally the person deciding how the software should be
-        architected or implemented. Their job is largely priorities, people,
-        coordination and resource allocation.
-      </p>
-      <p>
-        You are still an engineer. But you have delegated your technical
-        judgement to an LLM. You just stopped doing the most important part of
-        your engineering job.
-      </p>
-
-      <h3>"Not all technical debt is bad"</h3>
-      <p>Agreed. Debt is debt. Some of it is absolutely worth taking on.</p>
-      <p>
-        I do not have any issue with intentional debt when you understand the
-        trade-off and have a clear payoff plan. The article says this
-        explicitly.
-      </p>
-      <p>
-        The problem is unintentional debt. Decisions made without understanding.
-        Complexity introduced without evidence. That is what AI accelerates.
-      </p>
-
-      <h3>"The industry owes people opportunities"</h3>
-      <p>
-        By reducing the number of entry-level engineering roles, the industry is
-        sabotaging its own future. Fewer people learning means fewer people
-        capable of maintaining systems down the line.
-      </p>
-      <p>
-        It's true. But the industry does not really owe people opportunities.
-        Even if you think it should, that is not how companies are going to
-        behave.
-      </p>
-      <p>
-        That said, maintenance is the essence of the software industry. LLMs
-        cannot modify projects spanning hundreds of thousands of lines. The
-        skill required to partition architectures is still entirely human.
-      </p>
-      <p>
-        That is exactly why experienced engineers are becoming more valuable,
-        not less.
-      </p>
-
-      <h3>"Will anyone actually care?"</h3>
-      <p>
-        They will care when nothing works, nobody seems able to fix it, building
-        new features takes forever and every change breaks something somewhere
-        else.
-      </p>
-      <p>
-        This was already happening before AI. But now, a lot more companies that
-        previously might have taken many years to reach an unmaintainable state
-        can get there in just a few months.
-      </p>
-
-      <hr />
-
-      <p>
-        None of this is really about AI being good or bad. AI is a tool. It lets
-        good engineers move faster and bad engineers do damage faster.
-      </p>
-      <p>
-        The question is whether your team has the engineering culture, the
-        review capacity and the judgment to keep up with the speed at which
-        changes now arrive. For a lot of teams, the honest answer right now is
-        no.
-      </p>
+        <p>
+          They will care when nothing works, nobody seems able to fix it,
+          building new features takes forever and every change breaks something
+          somewhere else.
+        </p>
+        <p>
+          This was already happening before AI. But now, a lot more companies
+          that previously might have taken many years to reach an unmaintainable
+          state can get there in just a few months.
+        </p>
+      </details>
     </article>
     <footer>
       <nav class="post-nav">

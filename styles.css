@@ -40,6 +40,27 @@ h3 {
   font-size: 1.05rem;
   margin: 20px 0 10px 0;
 }
+details {
+  margin: 20px 0;
+}
+summary {
+  font-size: 1.05rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0;
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+summary::before {
+  content: "\25B6\FE0E ";
+  font-size: 0.7em;
+  margin-right: 0.4em;
+}
+details[open] summary::before {
+  content: "\25BC\FE0E ";
+}
 p {
   margin: 10px 0;
 }
