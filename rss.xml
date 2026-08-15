@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog - Florian Herrengt</title>
+    <link>https://blog.florianherrengt.com/</link>
+    <description>Writing by Florian Herrengt</description>
+    <language>en-gb</language>
+    <lastBuildDate>Sat, 15 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link
+      href="https://blog.florianherrengt.com/rss.xml"
+      rel="self"
+      type="application/rss+xml"
+    />
+
+    <item>
+      <title>AI is removing the middle class of software engineering</title>
+      <link>https://blog.florianherrengt.com/ai-removing-middle-class-software-engineering.html</link>
+      <guid isPermaLink="true">https://blog.florianherrengt.com/ai-removing-middle-class-software-engineering.html</guid>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 +0000</pubDate>
+      <description>AI makes projects with weak engineering culture fail much faster.</description>
+    </item>
+
+    <item>
+      <title>How to automate Instagram engagements with computer vision (and get banned)</title>
+      <link>https://blog.florianherrengt.com/how-to-automate-instagram-engagements.html</link>
+      <guid isPermaLink="true">https://blog.florianherrengt.com/how-to-automate-instagram-engagements.html</guid>
+      <pubDate>Sat, 06 Jun 2026 00:00:00 +0000</pubDate>
+      <description>Using computer vision and template matching to automate Instagram engagements.</description>
+    </item>
+
+    <item>
+      <title>Good engineers make boring choices</title>
+      <link>https://blog.florianherrengt.com/boring-software-engineer.html</link>
+      <guid isPermaLink="true">https://blog.florianherrengt.com/boring-software-engineer.html</guid>
+      <pubDate>Thu, 16 Apr 2026 00:00:00 +0000</pubDate>
+      <description>How to build software with fewer moving parts and faster recovery when things break.</description>
+    </item>
+
+    <item>
+      <title>From bigrams to attention: a gentle guide to LLMs</title>
+      <link>https://blog.florianherrengt.com/how-llms-work.html</link>
+      <guid isPermaLink="true">https://blog.florianherrengt.com/how-llms-work.html</guid>
+      <pubDate>Mon, 21 Jul 2025 00:00:00 +0000</pubDate>
+      <description>A simple explanation of how LLMs work using bigrams, attention and context.</description>
+    </item>
+
+    <item>
+      <title>The vibe coder's career path is doomed</title>
+      <link>https://blog.florianherrengt.com/vibe-coder-career-path.html</link>
+      <guid isPermaLink="true">https://blog.florianherrengt.com/vibe-coder-career-path.html</guid>
+      <pubDate>Thu, 17 Jul 2025 00:00:00 +0000</pubDate>
+      <description>It's about why vibe coding might be the worst career investment you'll make.</description>
+    </item>
+
+    <item>
+      <title>3D printing to help the NHS</title>
+      <link>https://blog.florianherrengt.com/3d-printing-ppe.html</link>
+      <guid isPermaLink="true">https://blog.florianherrengt.com/3d-printing-ppe.html</guid>
+      <pubDate>Sat, 06 Jun 2020 00:00:00 +0000</pubDate>
+      <description>How we set up a 3D printing mini factory at the Craft Central to produce and donate face shields for NHS workers during the COVID-19 crisis.</description>
+    </item>
+
+    <item>
+      <title>Building a basic self driving RC car</title>
+      <link>https://blog.florianherrengt.com/self-driving-rc-car.html</link>
+      <guid isPermaLink="true">https://blog.florianherrengt.com/self-driving-rc-car.html</guid>
+      <pubDate>Thu, 23 Feb 2017 00:00:00 +0000</pubDate>
+      <description>Step-by-step guide to building a self-driving RC car using Arduino, optocouplers, computer vision and machine learning.</description>
+    </item>
+  </channel>
+</rss>
