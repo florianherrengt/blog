@@ -4,10 +4,21 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="max-image-preview:large" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Blog - Florian Herrengt"
+      href="rss.xml"
+    />
     <link
       rel="canonical"
       href="https://blog.florianherrengt.com/boring-software-engineer.html"
+    />
+    <meta
+      name="description"
+      content="How to build software with fewer moving parts and faster recovery when things break."
     />
 
     <meta property="og:type" content="article" />
@@ -22,6 +33,17 @@
     />
     <meta property="og:site_name" content="Blog - Florian Herrengt" />
     <meta property="og:locale" content="en_GB" />
+    <meta
+      property="og:image"
+      content="https://blog.florianherrengt.com/social/boring-software-engineer.jpg"
+    />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Good engineers make boring choices"
+    />
 
     <meta
       property="article:published_time"
@@ -38,13 +60,39 @@
       name="twitter:description"
       content="How to build software with fewer moving parts and faster recovery when things break."
     />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Good engineers make boring choices" />
     <meta name="twitter:site" content="@florianherrengt" />
     <meta name="twitter:creator" content="@florianherrengt" />
+    <meta
+      name="twitter:image"
+      content="https://blog.florianherrengt.com/social/boring-software-engineer.jpg"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Good engineers make boring choices"
+    />
 
     <meta name="author" content="Florian Herrengt" />
     <title>Good engineers make boring choices</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Good engineers make boring choices",
+        "description": "How to build software with fewer moving parts and faster recovery when things break.",
+        "image": "https://blog.florianherrengt.com/social/boring-software-engineer.jpg",
+        "datePublished": "2026-04-16",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://blog.florianherrengt.com/boring-software-engineer.html"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Florian Herrengt"
+        }
+      }
+    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RQ5DTCN8C"></script>
     <script>
@@ -70,26 +118,26 @@
 
     <article>
       <p>
-        SaaS apps do not fail because a server explodes. They fail because the
-        stack has become too complex to debug and maintain.
+        SaaS apps fail because the stack has become too complex to debug and
+        maintain. A dead server is rarely the reason.
       </p>
       <p>
         The app cannot be reproduced locally. Bugs require jumping through
         dozens of files, services and dashboards. Migrations are fragile. Nobody
         knows where anything lives. The person who built the system left six
-        months ago, and now every change feels dangerous.
+        months ago and now every change feels dangerous.
       </p>
-      <p>This is what kills productivity. This is what kills projects.</p>
+      <p>This is what kills productivity. Projects die the same way.</p>
 
       <h2>Start with the smallest system that can work</h2>
       <p>
         For every app I work on, I try to keep the stack as lean as possible.
       </p>
       <p>
-        Take this blog for example. It is just HTML files. Nothing fancy. It
+        Take this blog, for example. It is just HTML files. Nothing fancy. It
         works. I can edit anything I want at any time. I have version control
         with Git and it scales because I have a CDN. I do not need anything
-        else. It is just me working on this alone, so why would I need a complex
+        else. It is just me working on this alone so why would I need a complex
         system?
       </p>
       <p>Before I add anything, I ask:</p>
@@ -127,19 +175,19 @@
 
       <h2>Optimise for recovery, not fantasy uptime</h2>
       <p>
-        Across my career, hardware has rarely caused the worst incidents. Human
-        mistakes, bad deploys, provider lockouts and architecture mistakes did.
+        In my career, hardware has rarely caused the worst incidents. Human
+        error, bad deploys, provider lockouts and architecture flaws did.
       </p>
-      <p>I cannot predict every outage. I can control how fast I recover.</p>
+      <p>Since I cannot predict every outage, I focus on how fast I recover.</p>
       <p>
         Systems I can reproduce locally. Deployments I can understand.
-        Dependencies I can replace. Incidents where the fix is obvious.
-        Infrastructure that fails in ways I have seen before.
+        Dependencies I can replace. And incidents where the fix is obvious
+        because I have seen that failure before.
       </p>
       <p>
         What matters at 2am is whether the failure is understandable and the
-        recovery path is already known — not whether the architecture looks
-        impressive on a diagram.
+        recovery path is already known. Nobody admires an architecture diagram
+        in the middle of an incident.
       </p>
 
       <h2>My default stack for small teams</h2>
@@ -165,13 +213,14 @@
       </ul>
       <p>
         I can run restore drills on any machine. Rebuild on a fresh server,
-        restore files and database and verify the app works end-to-end.
+        restore the files and the database, then verify the app works
+        end-to-end.
       </p>
 
       <h2>Postgres gets you surprisingly far</h2>
       <p>
         Most of the time, I need a database, a key-value store and a queue.
-        Turns out, Postgres can already do all of this and so much more.
+        Turns out Postgres already does all of this.
       </p>
       <ul>
         <li>Normal relational tables for core data</li>
@@ -184,8 +233,8 @@
         <li>Time-series data with partitioning and rollups.</li>
       </ul>
       <p>
-        Eventually, I might move to Kafka, Redis, Elasticsearch or ClickHouse
-        but Postgres works really well for a surprisingly long time.
+        Eventually, I might move to Kafka, Redis, Elasticsearch or ClickHouse.
+        But Postgres holds up for a very long time.
       </p>
       <h2>Deploy fast</h2>
       <p>
@@ -197,7 +246,7 @@
         Build one Docker image or binary containing everything: the backend,
         frontend bundle and any static assets. Cache every build layer
         aggressively. No separate asset pipeline unless the product actually
-        needs one. The app serves the built assets, and the CDN caches them.
+        needs one. The app serves the built assets and the CDN caches them.
       </p>
       <p>
         Fast deploys change team behaviour. People ship smaller changes, roll
@@ -207,7 +256,7 @@
 
       <h2>Avoid microservices until the pain is real</h2>
       <p>
-        I'm not the biggest fan of microservices, but they can make sense when:
+        I'm not the biggest fan of microservices but they can make sense when:
       </p>
       <ul>
         <li>Different services need different runtimes</li>
@@ -217,40 +266,41 @@
       </ul>
       <p>Most of those things do not apply to most startups and small teams.</p>
       <p>
-        Most of the other reasons I've heard are simply due to organisational
+        Most of the other reasons I've heard come down to organisational
         issues or shortcomings in the architecture. At this stage, your team is
-        too small for "coordination overhead", "domain-driven design" or the
-        worst reason to use microservices, "scaling".
+        too small for "coordination overhead" or "domain-driven design". And
+        "scaling" is the worst reason of all to use microservices.
       </p>
       <p>
         A modular monolith is usually the right answer until proven otherwise.
-        Then split it. Still, always keep things simple with HTTP API calls. No
-        Kafka, Pub/Sub or event bus unless the pain justifies it.
+        Then split it. Keep things simple with HTTP API calls. No Kafka,
+        Pub/Sub or event bus unless the pain justifies it.
       </p>
       <p>
-        Boring protocols fail in obvious ways and have tools with decades of
-        development to monitor and debug them.
+        Boring protocols fail in obvious ways and the tooling to monitor and
+        debug them has decades of development behind it.
       </p>
       <p>
-        Can we remove it without rewriting the product? A monolith can be split
-        later. A distributed mess cannot be untangled.
+        This is why I ask whether we can remove something without rewriting
+        the product. A monolith can be split later. You cannot untangle a
+        distributed mess.
       </p>
 
       <h2>Do not mistake platform limits for architecture needs</h2>
       <p>
-        I am not against cloud. I am against cloud complexity theater that teams
-        adopt before they have a real need.
+        Cloud is fine by me. My problem is the complexity theater teams adopt
+        before they have a real need.
       </p>
       <p>
         There's the classic mistake of over-engineering too early with
-        Kubernetes and full cloud ceremony, but there's another more subtle one.
+        Kubernetes and full cloud ceremony. Then there's a more subtle one.
       </p>
       <p>
-        Then there is the memory- and CPU-starved PaaS that forces you to deal
-        with fake scaling issues.
+        The PaaS that gives your app so little memory and CPU that you end up
+        dealing with fake scaling issues.
       </p>
       <p>
-        Most of those platforms have a ridiculously low amount of provisioned
+        Most of those platforms provision a ridiculously small amount of
         resources. I have seen teams waste time on caps, cold starts and
         workarounds instead of shipping product. If you only have a few
         gigabytes of RAM to work with, you're going to have to optimise your
@@ -262,21 +312,21 @@
         fact that they just don't have enough CPU or RAM.
       </p>
       <p>
-        Much of that disappears if you start with one generously sized server. I
-        can get a fully managed server with 32-core, 256 GB RAM and 2TB of
-        storage for around € 199/m at the time of writing.
+        Much of that disappears if you start with one generously sized
+        machine. I can get a fully managed server with 32 cores, 256 GB RAM
+        and 2 TB of storage for around €199/m at the time of writing.
       </p>
       <p>
-        Hardware failures are not usually the incidents that hurt the most. The
-        app goes down because a human messed something up. Even if the server
-        itself fails, the backup recovery is so simple the whole app can easily
-        be redeployed somewhere else.
+        Hardware is rarely what hurts the most. The app goes down because a
+        human messed something up. Even if the server itself dies, recovery is
+        simple enough that the whole app can easily be redeployed somewhere
+        else.
       </p>
       <p>
         Strong engineering is boring by default and innovative by exception. Use
         the simple thing first. Keep the system easy to run, inspect, restore
         and replace. Then, when complexity becomes unavoidable, add it
-        deliberately, isolate it carefully and make sure you can undo it.
+        deliberately, keep it isolated and make sure you can undo it.
       </p>
     </article>
     <footer>
