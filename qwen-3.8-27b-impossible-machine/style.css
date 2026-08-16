@@ -1,0 +1,75 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: #06070b;
+}
+
+#hud, #hint {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color: #8fa3bf;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+
+#c {
+  position: fixed;
+  inset: 0;
+  display: block;
+  cursor: none;
+  touch-action: none;
+}
+
+#hud {
+  position: fixed;
+  top: 22px;
+  left: 26px;
+  left: max(26px, env(safe-area-inset-left));
+  top: max(22px, env(safe-area-inset-top));
+  line-height: 1.9;
+}
+
+.t1 {
+  font-size: 11px;
+  letter-spacing: 0.42em;
+  color: #aebfd6;
+}
+
+.t2 {
+  font-size: 8px;
+  letter-spacing: 0.32em;
+  color: #5f7089;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#lamp {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #52e0ff;
+  box-shadow: 0 0 8px 1px rgba(82, 224, 255, 0.8);
+  opacity: 0.35;
+}
+
+#hint {
+  position: fixed;
+  bottom: 22px;
+  right: 26px;
+  right: max(26px, calc(env(safe-area-inset-right) + 26px));
+  bottom: max(22px, env(safe-area-inset-bottom));
+  font-size: 8px;
+  letter-spacing: 0.3em;
+  color: #5f7089;
+  animation: hintfade 9s ease forwards;
+}
+
+@keyframes hintfade {
+  0% { opacity: 0; }
+  8% { opacity: 0.9; }
+  62% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
