@@ -94,13 +94,18 @@
       }
     </script>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RQ5DTCN8C"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-7RQ5DTCN8C"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-7RQ5DTCN8C');
+      gtag("config", "G-7RQ5DTCN8C");
     </script>
   </head>
   <body>
@@ -108,12 +113,13 @@
       <h1>Good engineers make boring choices</h1>
       <time datetime="2026-04-16">16 April 2026</time>
       <p class="subtitle">
-        Complexity is the real outage. Build systems you can run, debug, restore
-        and replace.
+        Build systems you can run, debug, restore and replace.
       </p>
     </header>
     <nav class="social-links">
-      <a href="https://x.com/florianherrengt" target="_blank" rel="noopener">Follow me on X</a>
+      <a href="https://x.com/florianherrengt" target="_blank" rel="noopener"
+        >Follow me on X</a
+      >
     </nav>
 
     <article>
@@ -138,7 +144,6 @@
         knows where anything lives. The person who built the system left six
         months ago and now every change feels dangerous.
       </p>
-      <p>This is what kills productivity. Projects die the same way.</p>
 
       <h2>Start with the smallest system that can work</h2>
       <p>
@@ -162,8 +167,8 @@
 
       <h2>Redundancy is not resilience</h2>
       <p>
-        I had a client who wanted maximum redundancy. We set up multi-cloud
-        failover so if AWS died, Azure would take over.
+        Here's an example. I had a client who wanted maximum redundancy. We set
+        up multi-cloud failover so if AWS died, Azure would take over.
       </p>
       <p>
         In the end, the card on file expired so both providers stopped working
@@ -182,27 +187,33 @@
         If the answer to "can we replace it?" is no, that vendor owns a piece of
         our future.
       </p>
-      <script async src="https://eomail5.com/form/d6a8134c-9692-11f1-b87a-e599003fa625.js" data-form="d6a8134c-9692-11f1-b87a-e599003fa625"></script>
+      <script
+        async
+        src="https://eomail5.com/form/d6a8134c-9692-11f1-b87a-e599003fa625.js"
+        data-form="d6a8134c-9692-11f1-b87a-e599003fa625"
+      ></script>
 
-      <h2>Optimise for recovery, not fantasy uptime</h2>
+      <h2>Optimise for recovery</h2>
       <p>
         In my career, hardware has rarely caused the worst incidents. Human
         error, bad deploys, provider lockouts and architecture flaws did.
       </p>
-      <p>Since I cannot predict every outage, I focus on how fast I recover.</p>
       <p>
-        Systems I can reproduce locally. Deployments I can understand.
-        Dependencies I can replace. And incidents where the fix is obvious
-        because I have seen that failure before.
+        I know just can't predict every outage, so I focus on how fast I recover
+        instead.
       </p>
       <p>
-        What matters at 2am is whether the failure is understandable and the
-        recovery path is already known. Nobody admires an architecture diagram
-        in the middle of an incident.
+        Systems I can reproduce locally. Deployments I can understand.
+        Dependencies I can replace. I had a lot of incidents where the fix was
+        obvious because I could easily reproduce it on my machine.
+      </p>
+      <p>
+        What matters when everything's on fire at 2am is whether the failure is
+        understandable and the recovery path is already known.
       </p>
 
       <h2>My default stack for small teams</h2>
-      <p>For small teams, this setup has worked for me for a long time:</p>
+      <p>This is a setup that has worked for me for a long time:</p>
       <ul>
         <li>One oversized server</li>
         <li>Postgres for primary data</li>
@@ -215,7 +226,7 @@
         work that does not matter yet.
       </p>
       <p>
-        A server with too much headroom beats a clever setup with no margin.
+        A server with plenty of headroom beats a clever setup with no margin.
       </p>
       <p>My backup plan is deliberately simple:</p>
       <ul>
@@ -244,28 +255,27 @@
         <li>Time-series data with partitioning and rollups.</li>
       </ul>
       <p>
-        Eventually, I might move to Kafka, Redis, Elasticsearch or ClickHouse.
-        But Postgres holds up for a very long time.
+        Eventually, I might add Kafka, Redis, Elasticsearch or ClickHouse. But
+        Postgres holds up for a very long time.
       </p>
       <h2>Deploy fast</h2>
       <p>
         I care a lot about CI speed. If deploys take half an hour, the team only
         gets a handful of deploys in a day.
       </p>
-      <p>My deploy path follows the same rule.</p>
       <p>
-        Build one Docker image or binary containing everything: the backend,
-        frontend bundle and any static assets. Cache every build layer
+        I always build one Docker image or binary containing everything: the
+        backend, frontend bundle and any static assets. Cache every build layer
         aggressively. No separate asset pipeline unless the product actually
         needs one. The app serves the built assets and the CDN caches them.
       </p>
       <p>
-        Fast deploys change team behaviour. People ship smaller changes, roll
-        back faster and avoid the giant risky release that happens because
-        deployment is painful.
+        This is so important but fast deploys change your behaviour. People ship
+        smaller changes, roll back faster and avoid the giant risky release that
+        happens because pushing to prod is just too painful.
       </p>
 
-      <h2>Avoid microservices until the pain is real</h2>
+      <h2>Avoid microservices</h2>
       <p>
         I'm not the biggest fan of microservices but they can make sense when:
       </p>
@@ -277,61 +287,53 @@
       </ul>
       <p>Most of those things do not apply to most startups and small teams.</p>
       <p>
-        Most of the other reasons I've heard come down to organisational
-        issues or shortcomings in the architecture. At this stage, your team is
-        too small for "coordination overhead" or "domain-driven design". And
+        Most of the other reasons I've heard come down to organisational issues
+        or shortcomings in the architecture. At this stage, your team is too
+        small for "coordination overhead" or "domain-driven design". And
         "scaling" is the worst reason of all to use microservices.
       </p>
       <p>
         A modular monolith is usually the right answer until proven otherwise.
-        Then split it. Keep things simple with HTTP API calls. No Kafka,
-        Pub/Sub or event bus unless the pain justifies it.
+        Then split it. Keep things simple with HTTP API calls. No Kafka, Pub/Sub
+        or event bus unless the pain justifies it.
       </p>
       <p>
-        Boring protocols fail in obvious ways and the tooling to monitor and
-        debug them has decades of development behind it.
+        They fail in obvious ways and the tooling to monitor and debug them has
+        decades of development behind it.
       </p>
       <p>
-        This is why I ask whether we can remove something without rewriting
-        the product. A monolith can be split later. You cannot untangle a
-        distributed mess.
+        And if you have to change it later, a monolith can always easily be
+        split later anyway.
       </p>
 
       <h2>Do not mistake platform limits for architecture needs</h2>
       <p>
-        Cloud is fine by me. My problem is the complexity theater teams adopt
-        before they have a real need.
-      </p>
-      <p>
-        There's the classic mistake of over-engineering too early with
-        Kubernetes and full cloud ceremony. Then there's a more subtle one.
-      </p>
-      <p>
-        The PaaS that gives your app so little memory and CPU that you end up
+        Most PaaS gives your app so little memory and CPU that you end up
         dealing with fake scaling issues.
       </p>
       <p>
         Most of those platforms provision a ridiculously small amount of
-        resources. I have seen teams waste time on caps, cold starts and
-        workarounds instead of shipping product. If you only have a few
-        gigabytes of RAM to work with, you're going to have to optimise your
-        code much earlier than you should.
+        resources. I have seen teams waste time on caps, cold starts (love
+        serverless?) and workarounds instead of shipping product. If you only
+        have a few gigabytes of RAM to work with, you're going to have to
+        optimise much earlier than you should.
       </p>
       <p>
-        People misread platform limits as architecture needs. They add caches
-        and service splits and queues and whatever they can to work around the
-        fact that they just don't have enough CPU or RAM.
+        The platform limits shouldn't drive your architecture. I see people
+        adding caches and service splits and queues and whatever they can to
+        work around the fact that they simply just don't have enough CPU or RAM.
       </p>
       <p>
-        Much of that disappears if you start with one generously sized
-        machine. I can get a fully managed server with 32 cores, 256 GB RAM
-        and 2 TB of storage for around €199/m at the time of writing.
+        Most problems disappears if you start with one big machine. I can get a
+        fully managed server with 32 cores, 256 GB RAM and 2 TB of storage for
+        around €199/m at the time of writing. This thing will absorbe a LOT of
+        traffic.
       </p>
       <p>
-        Hardware is rarely what hurts the most. The app goes down because a
-        human messed something up. Even if the server itself dies, recovery is
-        simple enough that the whole app can easily be redeployed somewhere
-        else.
+        But what is the server dies? Hardware is rarely what hurts the most. The
+        app goes down because a human messed something up. Even if the server
+        itself dies, recovery is simple enough that the whole app can easily be
+        redeployed somewhere else in a few hours.
       </p>
       <p>
         Strong engineering is boring by default and innovative by exception. Use
@@ -344,19 +346,48 @@
       <nav class="post-nav">
         <a class="post-nav-prev" href="how-llms-work.html">
           <span class="post-nav-label">← Previous post</span>
-          <span class="post-nav-title">From bigrams to attention: a gentle guide to LLMs</span>
+          <span class="post-nav-title"
+            >From bigrams to attention: a gentle guide to LLMs</span
+          >
         </a>
-        <a class="post-nav-next" href="how-to-automate-instagram-engagements.html">
+        <a
+          class="post-nav-next"
+          href="how-to-automate-instagram-engagements.html"
+        >
           <span class="post-nav-label">Next post →</span>
-          <span class="post-nav-title">How to automate Instagram engagements with computer vision (and get banned)</span>
+          <span class="post-nav-title"
+            >How to automate Instagram engagements with computer vision (and get
+            banned)</span
+          >
         </a>
       </nav>
-      <script async src="https://eomail5.com/form/d6a8134c-9692-11f1-b87a-e599003fa625.js" data-form="d6a8134c-9692-11f1-b87a-e599003fa625"></script>
+      <script
+        async
+        src="https://eomail5.com/form/d6a8134c-9692-11f1-b87a-e599003fa625.js"
+        data-form="d6a8134c-9692-11f1-b87a-e599003fa625"
+      ></script>
       <nav class="social-links">
-        <a href="https://x.com/florianherrengt" target="_blank" rel="noopener">X</a>
-        <a href="https://news.ycombinator.com/submitted?id=florianherrengt" target="_blank" rel="noopener">Hacker News</a>
-        <a href="https://www.linkedin.com/in/florianherrengt-ab203494/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://www.linkedin.com/in/florianherrengt-ab203494/" target="_blank" rel="noopener">Hire me</a>
+        <a href="https://x.com/florianherrengt" target="_blank" rel="noopener"
+          >X</a
+        >
+        <a
+          href="https://news.ycombinator.com/submitted?id=florianherrengt"
+          target="_blank"
+          rel="noopener"
+          >Hacker News</a
+        >
+        <a
+          href="https://www.linkedin.com/in/florianherrengt-ab203494/"
+          target="_blank"
+          rel="noopener"
+          >LinkedIn</a
+        >
+        <a
+          href="https://www.linkedin.com/in/florianherrengt-ab203494/"
+          target="_blank"
+          rel="noopener"
+          >Hire me</a
+        >
       </nav>
     </footer>
   </body>
