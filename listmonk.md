@@ -21,6 +21,10 @@ Confirmed working:
 - The Lambda relay forwards signed SNS notifications to Listmonk.
 - A valid synthetic SNS bounce reached Listmonk and returned HTTP `200` during setup.
 - The relay source passes its local syntax check and unit test.
+- The Cloudflare Tunnel exposes only the public Listmonk paths, the SES webhook and the exact ALTCHA challenge endpoint.
+- Built-in ALTCHA CAPTCHA is enabled with complexity `300000`.
+- A live browser test completed the ALTCHA proof and changed the widget state to `Verified`.
+- The public subscription page is branded as Florian Herrengt and hides the optional name field, single-list selector, archive link, ALTCHA branding and Listmonk footer.
 
 Not yet completed:
 
@@ -114,11 +118,23 @@ The registry, the Mac resolver, Cloudflare Resolver, Google Public DNS and Quad9
 
 The Cloudflare tunnel is named `helium`.
 
-The main published route is:
+The main published route is restricted by a path allowlist:
 
 ```text
-newsletter.florianherrengt.com -> http://localhost:4480
+hostname: newsletter.florianherrengt.com
+path: ^/(subscription|link|campaign|public)(/.*)?$|^/webhooks/service/ses$|^/api/public/captcha/altcha$
+origin: http://localhost:4480
 ```
+
+The route intentionally exposes:
+
+- `/subscription/*` for subscribing, confirmation and unsubscribe flows
+- `/link/*` and `/campaign/*` for links generated in newsletters
+- `/public/*` for Listmonk's public static assets
+- exactly `/webhooks/service/ses` for SES feedback relayed by Lambda
+- exactly `/api/public/captcha/altcha` for built-in ALTCHA challenges
+
+It does not expose the Listmonk admin interface or the rest of `/api`. The ALTCHA exception is deliberately exact; widening it to `/api/public/*` would expose more application surface than the widget requires.
 
 During setup, Cloudflare showed one healthy replica with four edge connections in London. The observed edge locations were `lhr19`, `lhr13`, `lhr14` and `lhr18`.
 
@@ -260,6 +276,50 @@ These options are also enabled:
 - Amazon SES processing
 
 The rationale is to avoid blocking a subscriber after one temporary error while immediately blocking addresses that hard bounce or complain.
+
+### Subscription CAPTCHA
+
+Listmonk's built-in ALTCHA CAPTCHA is enabled under **Settings -> Security**. It uses complexity `300000` and requires no external CAPTCHA account or separate service.
+
+The public subscription form loads the bundled widget from:
+
+```text
+/public/static/altcha.umd.js
+```
+
+The widget requests a signed proof-of-work challenge from:
+
+```text
+/api/public/captcha/altcha
+```
+
+The widget initially failed with `Verification failed` because the tunnel's path allowlist blocked this challenge URL. Direct access to Listmonk on `helium:4480` returned HTTP `200`, while the public hostname returned HTTP `404`. Adding only the exact challenge path to the tunnel allowlist fixed the mismatch.
+
+### Public subscription page branding
+
+The public page is intentionally minimal. Its visible content is:
+
+- the `FH` logo
+- `Get new posts by email`
+- `Occasional writing by Florian Herrengt. No spam.`
+- the email field
+- the ALTCHA checkbox
+- the Subscribe button
+
+Listmonk's General settings are:
+
+| Setting | Value |
+| --- | --- |
+| Site name | `Florian Herrengt` |
+| Logo URL | `https://blog.florianherrengt.com/favicon.svg` |
+| Favicon URL | `https://blog.florianherrengt.com/favicon.svg` |
+| Public archive | Disabled |
+
+Public custom CSS removes the default card appearance, matches the blog's system-font light/dark theme and hides the optional name row, the only-list selector and the Listmonk footer. Hiding the list selector does not remove its checked input from the form, so new subscribers are still added to the `Blog` list.
+
+Public custom JavaScript changes the heading and description, sends the logo link to `https://blog.florianherrengt.com/`, and sets ALTCHA's `hidefooter` and `hidelogo` attributes. It handles both early and late script loading because Listmonk loads `/public/custom.js` asynchronously.
+
+Cloudflare cached the first custom JavaScript response for four hours. After the final customization was saved, the exact `/public/custom.js` and `/public/custom.css` URLs, with and without Listmonk's version query string, were purged from Cloudflare. This made the final version public immediately without purging unrelated site assets.
 
 ### Lists observed during setup
 
@@ -587,7 +647,11 @@ The Lambda function is called only for feedback events. It does not run for norm
 
 These endpoints are public because they must be reachable by browsers or service integrations:
 
-- `https://newsletter.florianherrengt.com`
+- `/subscription/*`
+- `/link/*`
+- `/campaign/*`
+- `/public/*`
+- `GET /api/public/captcha/altcha`
 - `POST /webhooks/service/ses`
 
 The SES webhook is public but Listmonk verifies the AWS SNS signature before accepting a notification.
@@ -597,7 +661,8 @@ The SES webhook is public but Listmonk verifies the AWS SNS signature before acc
 - The SNS topic requires AWS authorization.
 - Lambda has no public URL.
 - Lambda invocation is restricted to the exact SNS topic and AWS account.
-- The Listmonk admin interface requires authentication.
+- The Cloudflare Tunnel does not publish the Listmonk admin interface or general API.
+- Administration is performed privately over Tailscale using the `helium` hostname.
 - SMTP credentials remain in Listmonk.
 
 ### Spam and abuse implications
@@ -619,7 +684,11 @@ On 2026-08-19:
 - IPv4 returned HTTP `200`.
 - IPv6 returned HTTP `200`.
 - TLS verification returned success.
-- `/admin/` returned the expected authentication redirect.
+- `/subscription/form` returned HTTP `200`.
+- `/api/public/captcha/altcha` returned a valid JSON challenge with HTTP `200`.
+- The ALTCHA widget completed proof-of-work and displayed `Verified` in Chrome.
+- `/admin/` returned HTTP `404` through the public hostname.
+- `/api/health` returned HTTP `404`, confirming the general API remained blocked.
 
 ### Signed SNS notification
 
