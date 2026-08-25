@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Blog - Florian Herrengt"
+      href="rss.xml"
+    />
+    <link
+      rel="canonical"
+      href="https://blog.florianherrengt.com/give-the-llm-an-eval.html"
+    />
+    <meta
+      name="description"
+      content="I built a controlled web with answers I already know, then used an eval to let an LLM search for the solution instead of prescribing one."
+    />
+
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://blog.florianherrengt.com/give-the-llm-an-eval.html"
+    />
+    <meta
+      property="og:title"
+      content="Don’t tell the LLM how to solve it. Give it an eval"
+    />
+    <meta
+      property="og:description"
+      content="I built a controlled web with answers I already know, then used an eval to let an LLM search for the solution instead of prescribing one."
+    />
+    <meta property="og:site_name" content="Blog - Florian Herrengt" />
+    <meta property="og:locale" content="en_GB" />
+    <meta
+      property="og:image"
+      content="https://blog.florianherrengt.com/social/give-the-llm-an-eval.jpg"
+    />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Don’t tell the LLM how to solve it. Give it an eval"
+    />
+
+    <meta
+      property="article:published_time"
+      content="2026-08-24T00:00:00+00:00"
+    />
+    <meta property="article:author" content="Florian Herrengt" />
+    <meta property="article:section" content="Technology" />
+
+    <meta
+      name="twitter:url"
+      content="https://blog.florianherrengt.com/give-the-llm-an-eval.html"
+    />
+    <meta
+      name="twitter:description"
+      content="I built a controlled web with answers I already know, then used an eval to let an LLM search for the solution instead of prescribing one."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Don’t tell the LLM how to solve it. Give it an eval"
+    />
+    <meta name="twitter:site" content="@florianherrengt" />
+    <meta name="twitter:creator" content="@florianherrengt" />
+    <meta
+      name="twitter:image"
+      content="https://blog.florianherrengt.com/social/give-the-llm-an-eval.jpg"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Don’t tell the LLM how to solve it. Give it an eval"
+    />
+
+    <meta name="author" content="Florian Herrengt" />
+    <title>Don’t tell the LLM how to solve it. Give it an eval</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Don’t tell the LLM how to solve it. Give it an eval",
+        "description": "I built a controlled web with answers I already know, then used an eval to let an LLM search for the solution instead of prescribing one.",
+        "image": "https://blog.florianherrengt.com/social/give-the-llm-an-eval.jpg",
+        "datePublished": "2026-08-24",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://blog.florianherrengt.com/give-the-llm-an-eval.html"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Florian Herrengt"
+        }
+      }
+    </script>
+    <style>
+      blockquote {
+        margin: 20px 0;
+        padding-left: 20px;
+        border-left: 3px solid #888;
+      }
+
+      figure {
+        margin: 24px 0;
+      }
+
+      .visual img {
+        display: block;
+        width: 100%;
+        border: 1px solid #d0d0d0;
+        border-radius: 8px;
+      }
+
+      .cy-flow {
+        width: 100%;
+        height: 520px;
+        border: 1px solid #d0d0d0;
+        border-radius: 8px;
+        background: #faf9f6;
+      }
+
+      .cy-flow--world {
+        height: 470px;
+      }
+
+      .cy-flow--traps {
+        height: 610px;
+      }
+
+      .cy-flow:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 3px;
+      }
+
+      .cy-flow-fallback {
+        padding: 24px;
+        color: #202020;
+      }
+
+      .screenshot-comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+        margin: 20px 0;
+      }
+
+      .screenshot-comparison figure {
+        margin: 0;
+      }
+
+      .screenshot-comparison img {
+        width: 100%;
+        border: 1px solid #d0d0d0;
+        border-radius: 8px;
+      }
+
+      .screenshot-comparison figcaption {
+        margin-top: 8px;
+        font-size: 0.9rem;
+      }
+
+      .screenshot-single img {
+        display: block;
+        width: 100%;
+        border: 1px solid #d0d0d0;
+        border-radius: 8px;
+      }
+
+      figcaption {
+        margin-top: 8px;
+        font-size: 0.9rem;
+      }
+
+      .answer-list li {
+        margin: 8px 0;
+      }
+
+      @media (max-width: 620px) {
+        .screenshot-comparison {
+          grid-template-columns: 1fr;
+        }
+
+        .cy-flow {
+          height: 1040px;
+        }
+
+        .cy-flow--world {
+          height: 980px;
+        }
+
+        .cy-flow--traps {
+          height: 1250px;
+        }
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .visual img,
+        .screenshot-comparison img,
+        .screenshot-single img {
+          border-color: #4a4a4a;
+        }
+
+        .cy-flow {
+          border-color: #4a4a4a;
+          background: #1a1a1a;
+        }
+
+        .cy-flow-fallback {
+          color: #f2f2f2;
+        }
+      }
+    </style>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/cytoscape@3.34.1/dist/cytoscape.min.js"
+      integrity="sha384-ynDqnMA1DginJi7wSwU6Ob7MKWUKK2+vwP2WXecQBlvo3hTRXKjKYOWuC1GUuyEy"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-7RQ5DTCN8C"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-7RQ5DTCN8C");
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>Don’t tell the LLM how to solve it. Give it an eval</h1>
+      <time datetime="2026-08-24">24 August 2026</time>
+    </header>
+    <nav class="social-links">
+      <a href="https://x.com/florianherrengt" target="_blank" rel="noopener"
+        >Follow me on X</a
+      >
+    </nav>
+
+    <article>
+      <p>
+        I’m trying to build a system that can find solutions for me.
+      </p>
+      <p>Not implement a solution I already have. Find the solution.</p>
+      <p>
+        Right now, I’m testing that idea on web research. Can an LLM find a
+        reliable way to pick the genuinely best product from a messy web?
+      </p>
+      <p>The obvious way to do this is to tell it how.</p>
+      <p>
+        Search broadly. Keep a list of candidates. Never trust a marketing
+        claim. Open every configuration. Follow the strange link at the bottom
+        of the page. Verify the winner one more time before answering.
+      </p>
+      <p>
+        Every time the agent fails, I can add another rule. The prompt gets
+        longer, the controller gets stricter and eventually the system might
+        work.
+      </p>
+      <p>But then the LLM did not find the solution.</p>
+      <p>I did.</p>
+
+      <h2>If I tell it how, I solved it</h2>
+      <p>
+        I do not want the LLM to follow a research process I have already
+        designed in my head. I want it to find an approach that works.
+      </p>
+      <p>
+        Every instruction I add solves another part of the problem for it. The
+        more I define the process, the less of the solution is left for the LLM
+        to find.
+      </p>
+      <p>I need to be precise about what done means, not how to get there.</p>
+
+      <h2>This is how we used to do machine learning</h2>
+      <p>
+        Imagine I want to build an image classifier. I start with labelled
+        images. This one is a cat. This one is a dog. Then I train a model and
+        measure how often it gets the labels right on images it has not seen.
+      </p>
+      <p>
+        I do not write a thousand rules explaining how to detect fur, ears and
+        whiskers. I define the answer and let the machine find the mapping.
+      </p>
+      <p>
+        I want to use an LLM the same way. Not tell it my solution in words and
+        ask it to code it. Define a problem with an answer I can score, then let
+        the LLM search for a solution.
+      </p>
+      <p>
+        This is the instinct Rich Sutton warned about in
+        <a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html"
+          >The Bitter Lesson</a
+        >. Adding our own knowledge helps in the short term. General methods
+        based on search and learning are what keep winning as computation grows.
+      </p>
+      <p>
+        I am not training model weights here. A coding LLM is searching over
+        prompts, controllers, memory and code. The eval tells it whether the
+        proposed solution is better.
+      </p>
+
+      <figure class="visual">
+        <div
+          id="solution-search-flow"
+          class="cy-flow"
+          role="img"
+          aria-label="Traditional machine learning moves from labelled images through optimisation and a classifier to a test score. This experiment moves from a labelled web through a coding LLM and proposed solution to an exact eval, then feeds what worked and failed into the next attempt."
+          tabindex="0"
+        >
+          <p class="cy-flow-fallback">
+            Traditional ML: labelled images → optimisation → classifier → test
+            score.<br />
+            This experiment: labelled web → coding LLM → proposed solution →
+            exact eval → next attempt.
+          </p>
+        </div>
+        <figcaption>
+          The labels define success. The coding LLM searches for the solution.
+        </figcaption>
+      </figure>
+
+      <h2>A labelled internet</h2>
+      <p>
+        To test this, I need problems where I know the answer and the LLM does
+        not.
+      </p>
+      <p>
+        I vibe coded a fake search engine and a bunch of fake websites, then
+        gave the LLM access to them.
+      </p>
+      <p>
+        It is a controlled environment. I can change the facts, layouts and
+        traps while keeping the exact answer private.
+      </p>
+
+      <figure class="visual">
+        <div
+          id="controlled-world-flow"
+          class="cy-flow cy-flow--world"
+          role="img"
+          aria-label="A controlled environment creates a fake search engine, fake websites and a private known answer. The runtime LLM can use only the search engine and websites. Its selected products and the private answer meet in an exact evaluator."
+          tabindex="0"
+        >
+          <p class="cy-flow-fallback">
+            Controlled environment → fake search engine → fake websites →
+            runtime LLM → selected products → exact evaluator.<br />
+            Controlled environment → private known answer → exact evaluator.
+          </p>
+        </div>
+        <figcaption>
+          The LLM gets the web. The evaluator keeps the answer.
+        </figcaption>
+      </figure>
+
+      <h2>A hostile little internet</h2>
+      <p>
+        One of these worlds sells hammock gear. Its traps come directly from
+        failures I saw in research agents.
+      </p>
+      <p>The request looks harmless:</p>
+      <blockquote>
+        <p>
+          Build the lightest hammock system for backpacking. I’m expecting the
+          nights to be around 15°C.
+        </p>
+      </blockquote>
+      <p>
+        There are 520 products across 13 stores. Search returns at most eight
+        results and the agent gets 50 research actions. Reading every catalogue
+        page alone would take 104 actions.
+      </p>
+      <p>Brute force is not a solution anymore.</p>
+      <p>
+        And the web is full of things that look correct until you pay attention.
+      </p>
+
+      <div class="screenshot-comparison">
+        <figure>
+          <img
+            src="give-the-llm-an-eval/meridian-default.jpg"
+            width="640"
+            height="570"
+            loading="lazy"
+            decoding="async"
+            alt="The Meridian hammock with its default fabric selected at 428 grams"
+          />
+          <figcaption>The default page says 428 g.</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="give-the-llm-an-eval/meridian-aero.jpg"
+            width="640"
+            height="570"
+            loading="lazy"
+            decoding="async"
+            alt="The Meridian hammock with its Aero fabric selected at 118 grams"
+          />
+          <figcaption>The Aero configuration changes it to 118 g.</figcaption>
+        </figure>
+      </div>
+
+      <p>
+        The Meridian hammock appears to weigh 428 g. If the agent opens the
+        configuration selector, it finds an Aero fabric that weighs 118 g.
+      </p>
+      <p>
+        Miss the selector and the best hammock disappears in front of you.
+      </p>
+
+      <div class="screenshot-comparison">
+        <figure>
+          <img
+            src="give-the-llm-an-eval/breeze-20.jpg"
+            width="640"
+            height="570"
+            loading="lazy"
+            decoding="async"
+            alt="Breeze 20 underquilt showing 478 grams, comfort 20 degrees Celsius and limit 15 degrees Celsius"
+          />
+          <figcaption>Lighter, but not comfortable at 15°C.</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="give-the-llm-an-eval/traveller-3-4.jpg"
+            width="640"
+            height="570"
+            loading="lazy"
+            decoding="async"
+            alt="Traveller three-quarter underquilt showing 512 grams and a 10 degree Celsius comfort rating"
+          />
+          <figcaption>Heavier, but actually eligible.</figcaption>
+        </figure>
+      </div>
+
+      <p>
+        The Breeze underquilt is lighter at 478 g. It also has a 15°C rating.
+        Perfect.
+      </p>
+      <p>
+        Except that 15°C is the limit rating. Its comfort rating is 20°C. The
+        request asks for nights around 15°C, so the lighter product fails. The
+        correct choice is the 512 g Traveller with a 10°C comfort rating.
+      </p>
+      <p>
+        Then there is the tarp. The winning product does not appear in search or
+        the ordinary catalogues at all. The agent has to open another product,
+        notice a specialist collection and follow it.
+      </p>
+
+      <figure class="screenshot-single">
+        <img
+          src="give-the-llm-an-eval/skyshelter-collection.jpg"
+          width="640"
+          height="650"
+          loading="lazy"
+          decoding="async"
+          alt="SkyShelter collection showing the 396 gram Apex Hex tarp beside the 158 gram Cloudline UL tarp"
+        />
+        <figcaption>
+          The 158 g Cloudline is missing from search and ordinary catalogues.
+        </figcaption>
+      </figure>
+
+      <p>
+        It also has to discover that a hammock system needs four pieces, that
+        straps must be at least 25 mm wide and that a product calling itself
+        “the lightest” does not make it true.
+      </p>
+
+      <figure class="visual">
+        <div
+          id="trap-flow"
+          class="cy-flow cy-flow--traps"
+          role="img"
+          aria-label="Three hammock research traps. The 428 gram hammock becomes the correct 118 gram Aero hammock only after opening its fabric selector. The 478 gram Breeze underquilt is rejected after reading its 20 degree comfort rating, leaving the 512 gram Traveller. Search and catalogues miss the winning tarp, which appears only after following a specialist collection link."
+          tabindex="0"
+        >
+          <p class="cy-flow-fallback">
+            Hammock page at 428 g → open fabric selector → Aero at 118 g.<br />
+            Breeze at 478 g → read 20°C comfort rating → Traveller at 512 g.<br />
+            Search and catalogues miss the tarp → follow collection link →
+            Cloudline at 158 g.
+          </p>
+        </div>
+        <figcaption>
+          The obvious answer fails for a different reason each time.
+        </figcaption>
+      </figure>
+
+      <h2>The answer is 872 g</h2>
+      <p>I know the exact answer:</p>
+      <ul class="answer-list">
+        <li>DriftHaven Meridian, Aero configuration: 118 g</li>
+        <li>FeatherLink GhostWeave UL straps: 84 g</li>
+        <li>SkyShelter Cloudline UL tarp: 158 g</li>
+        <li>ShortShield Traveller 3/4 underquilt: 512 g</li>
+      </ul>
+      <p>Total: 872 g.</p>
+      <p>The runtime agent does not know this.</p>
+      <p>
+        It sees the normal request, the fake search engine and the websites. The
+        answer, the full market and the location of every trap stay on the
+        private side. When it finishes, the evaluator compares the four product
+        identifiers with the answer.
+      </p>
+      <p>
+        There is no LLM judge deciding whether the answer sounds plausible. The
+        four identifiers match or they do not.
+      </p>
+
+      <p class="newsletter-link">
+        <a href="https://newsletter.florianherrengt.com/subscription/form"
+          >Subscribe to the newsletter</a
+        >
+      </p>
+
+      <h2>The code is not the solution</h2>
+      <p>
+        Outside the benchmark, I run another loop with a coding LLM. I give it
+        the repository, relevant research and every previous experiment.
+      </p>
+      <p>
+        It reads what has already been tried, what worked and what failed. Then
+        it proposes another approach, creates what it needs to test it and runs
+        the eval again.
+      </p>
+      <p>
+        Of course it writes code. But code is not what I am asking it for. The
+        code is what it needs to test the solution it came up with.
+      </p>
+
+      <h2>Let the LLM search</h2>
+      <pre><code>Read the research and previous attempts
+  → Propose a solution
+  → Run the eval
+  → Preserve what worked and what failed
+  → Propose the next solution</code></pre>
+      <p>
+        The next loop does not start from scratch. It can see that one solution
+        missed a configuration, another kept reading the same pages and another
+        became so strict that it stopped returning answers entirely.
+      </p>
+      <p>
+        The next attempt gets the implementations and results, not just a score.
+        It can compare the approaches before proposing another one.
+      </p>
+      <p>
+        The more of the research process I encode as instructions, the more of
+        the solution I am designing myself.
+      </p>
+      <p>
+        Letting the LLM figure out the solution does not mean being vague. It
+        means being extremely clear about the environment, the constraints and
+        what a correct answer looks like while leaving the method open.
+      </p>
+      <p>
+        Define what needs to be done. Then let the LLM figure out how to do it.
+      </p>
+    </article>
+    <footer>
+      <nav class="post-nav">
+        <a
+          class="post-nav-prev"
+          href="ai-removing-middle-class-software-engineering.html"
+        >
+          <span class="post-nav-label">← Previous post</span>
+          <span class="post-nav-title"
+            >AI is removing the middle class of software engineering</span
+          >
+        </a>
+        <span></span>
+      </nav>
+      <p class="newsletter-link">
+        <a href="https://newsletter.florianherrengt.com/subscription/form"
+          >Subscribe to the newsletter</a
+        >
+      </p>
+      <nav class="social-links">
+        <a href="https://x.com/florianherrengt" target="_blank" rel="noopener"
+          >X</a
+        >
+        <a
+          href="https://news.ycombinator.com/submitted?id=florianherrengt"
+          target="_blank"
+          rel="noopener"
+          >Hacker News</a
+        >
+        <a
+          href="https://www.linkedin.com/in/florianherrengt-ab203494/"
+          target="_blank"
+          rel="noopener"
+          >LinkedIn</a
+        >
+        <a
+          href="https://www.linkedin.com/in/florianherrengt-ab203494/"
+          target="_blank"
+          rel="noopener"
+          >Hire me</a
+        >
+      </nav>
+    </footer>
+    <script>
+      window.addEventListener("DOMContentLoaded", function () {
+        if (typeof cytoscape !== "function") return;
+
+        var darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var mobileMode = window.matchMedia("(max-width: 620px)");
+        var charts = [];
+        window.articleFlows = charts;
+        var flowStyle = [
+            {
+              selector: "node",
+              style: {
+                shape: "round-rectangle",
+                width: 160,
+                height: 82,
+                label: "data(label)",
+                "text-wrap": "wrap",
+                "text-max-width": 140,
+                "text-valign": "center",
+                "text-halign": "center",
+                "font-family": "system-ui, sans-serif",
+                "font-size": 16,
+                "font-weight": 650,
+                color: "#171717",
+                "border-width": 2,
+                "border-color": "#242424"
+              }
+            },
+            { selector: "node.control", style: { "background-color": "#fff2cf" } },
+            { selector: "node.data", style: { "background-color": "#fff2cf" } },
+            { selector: "node.public", style: { "background-color": "#e6f3ff" } },
+            { selector: "node.search", style: { "background-color": "#eee8ff" } },
+            { selector: "node.candidate", style: { "background-color": "#e6f3ff" } },
+            { selector: "node.private", style: { "background-color": "#ffe7e2" } },
+            { selector: "node.reject", style: { "background-color": "#ffe7e2" } },
+            { selector: "node.score", style: { "background-color": "#e6f6ea" } },
+            {
+              selector: "node.section",
+              style: {
+                width: 250,
+                height: 28,
+                "background-opacity": 0,
+                "border-width": 0,
+                color: darkMode ? "#f2f2f2" : "#555555",
+                "font-size": 15,
+                "font-weight": 750,
+                "text-halign": "center",
+                "text-wrap": "none",
+                "text-max-width": 260
+              }
+            },
+            {
+              selector: "edge",
+              style: {
+                width: 2.5,
+                "curve-style": "bezier",
+                "line-color": darkMode ? "#c5c5c5" : "#303030",
+                "target-arrow-color": darkMode ? "#c5c5c5" : "#303030",
+                "target-arrow-shape": "triangle",
+                "arrow-scale": 1.1
+              }
+            },
+            {
+              selector: "edge.private-edge",
+              style: {
+                "line-style": "dashed",
+                "line-color": "#a84a3f",
+                "target-arrow-color": "#a84a3f"
+              }
+            },
+            {
+              selector: "edge.feedback",
+              style: {
+                "line-style": "dashed",
+                "line-color": "#7253aa",
+                "target-arrow-color": "#7253aa",
+                label: "data(label)",
+                "font-family": "system-ui, sans-serif",
+                "font-size": 14,
+                color: darkMode ? "#f2f2f2" : "#555555",
+                "text-background-color": darkMode ? "#1a1a1a" : "#faf9f6",
+                "text-background-opacity": 1,
+                "text-background-padding": 5,
+                "curve-style": "unbundled-bezier",
+                "control-point-distances": 115,
+                "control-point-weights": 0.5
+              }
+            }
+          ];
+
+        function createFlow(config) {
+          var container = document.getElementById(config.id);
+          if (!container) return;
+
+          container.replaceChildren();
+          var flow = cytoscape({
+            container: container,
+            elements: config.elements,
+            style: flowStyle,
+            layout: { name: "preset" },
+            userZoomingEnabled: false,
+            userPanningEnabled: false,
+            boxSelectionEnabled: false,
+            autoungrabify: true,
+            autounselectify: true
+          });
+
+          function layoutFlow() {
+            var mode = mobileMode.matches ? "mobile" : "desktop";
+            if (config.beforeLayout) config.beforeLayout(flow, mode);
+            flow.layout({
+              name: "preset",
+              positions: config.positions[mode],
+              fit: true,
+              padding: 28,
+              animate: false
+            }).run();
+          }
+
+          layoutFlow();
+          mobileMode.addEventListener("change", layoutFlow);
+          charts.push(flow);
+        }
+
+        createFlow({
+          id: "controlled-world-flow",
+          elements: [
+            { data: { id: "world", label: "Controlled environment\nfacts, layouts, traps" }, classes: "control" },
+            { data: { id: "fake-search", label: "Fake search engine" }, classes: "public" },
+            { data: { id: "fake-sites", label: "Fake websites" }, classes: "public" },
+            { data: { id: "runtime", label: "Runtime LLM\nsees only the web" }, classes: "search" },
+            { data: { id: "selection", label: "Selected products" }, classes: "candidate" },
+            { data: { id: "known-answer", label: "Known answer\nkept private" }, classes: "private" },
+            { data: { id: "evaluator", label: "Exact evaluator" }, classes: "score" },
+            { data: { id: "world-search", source: "world", target: "fake-search" } },
+            { data: { id: "search-sites", source: "fake-search", target: "fake-sites" } },
+            { data: { id: "sites-runtime", source: "fake-sites", target: "runtime" } },
+            { data: { id: "runtime-selection", source: "runtime", target: "selection" } },
+            { data: { id: "selection-eval", source: "selection", target: "evaluator" } },
+            { data: { id: "world-answer", source: "world", target: "known-answer" }, classes: "private-edge" },
+            { data: { id: "answer-eval", source: "known-answer", target: "evaluator" }, classes: "private-edge" }
+          ],
+          positions: {
+            desktop: {
+              world: { x: 100, y: 130 },
+              "fake-search": { x: 300, y: 130 },
+              "fake-sites": { x: 500, y: 130 },
+              runtime: { x: 700, y: 130 },
+              selection: { x: 700, y: 330 },
+              "known-answer": { x: 220, y: 330 },
+              evaluator: { x: 460, y: 330 }
+            },
+            mobile: {
+              world: { x: 150, y: 80 },
+              "fake-search": { x: 150, y: 210 },
+              "fake-sites": { x: 150, y: 340 },
+              runtime: { x: 150, y: 470 },
+              selection: { x: 150, y: 600 },
+              "known-answer": { x: 150, y: 730 },
+              evaluator: { x: 150, y: 860 }
+            }
+          }
+        });
+
+        createFlow({
+          id: "trap-flow",
+          elements: [
+            { data: { id: "hammock-title", label: "HAMMOCK" }, classes: "section" },
+            { data: { id: "hammock-page", label: "Default page\n428 g" }, classes: "data" },
+            { data: { id: "hammock-check", label: "Open fabric selector" }, classes: "search" },
+            { data: { id: "hammock-answer", label: "Aero\n118 g" }, classes: "score" },
+            { data: { id: "quilt-title", label: "UNDERQUILT" }, classes: "section" },
+            { data: { id: "quilt-page", label: "Breeze\n478 g\n15°C limit" }, classes: "data" },
+            { data: { id: "quilt-check", label: "Comfort is 20°C\nreject" }, classes: "reject" },
+            { data: { id: "quilt-answer", label: "Traveller\n512 g\n10°C comfort" }, classes: "score" },
+            { data: { id: "tarp-title", label: "TARP" }, classes: "section" },
+            { data: { id: "tarp-page", label: "Search and catalogues\nmiss the winner" }, classes: "data" },
+            { data: { id: "tarp-check", label: "Follow specialist\ncollection link" }, classes: "search" },
+            { data: { id: "tarp-answer", label: "Cloudline\n158 g" }, classes: "score" },
+            { data: { id: "hammock-1", source: "hammock-page", target: "hammock-check" } },
+            { data: { id: "hammock-2", source: "hammock-check", target: "hammock-answer" } },
+            { data: { id: "quilt-1", source: "quilt-page", target: "quilt-check" } },
+            { data: { id: "quilt-2", source: "quilt-check", target: "quilt-answer" } },
+            { data: { id: "tarp-1", source: "tarp-page", target: "tarp-check" } },
+            { data: { id: "tarp-2", source: "tarp-check", target: "tarp-answer" } }
+          ],
+          positions: {
+            desktop: {
+              "hammock-title": { x: 50, y: 100 },
+              "hammock-page": { x: 270, y: 100 },
+              "hammock-check": { x: 490, y: 100 },
+              "hammock-answer": { x: 710, y: 100 },
+              "quilt-title": { x: 50, y: 290 },
+              "quilt-page": { x: 270, y: 290 },
+              "quilt-check": { x: 490, y: 290 },
+              "quilt-answer": { x: 710, y: 290 },
+              "tarp-title": { x: 50, y: 480 },
+              "tarp-page": { x: 270, y: 480 },
+              "tarp-check": { x: 490, y: 480 },
+              "tarp-answer": { x: 710, y: 480 }
+            },
+            mobile: {
+              "hammock-title": { x: 150, y: 30 },
+              "hammock-page": { x: 150, y: 120 },
+              "hammock-check": { x: 150, y: 230 },
+              "hammock-answer": { x: 150, y: 340 },
+              "quilt-title": { x: 150, y: 430 },
+              "quilt-page": { x: 150, y: 520 },
+              "quilt-check": { x: 150, y: 630 },
+              "quilt-answer": { x: 150, y: 740 },
+              "tarp-title": { x: 150, y: 830 },
+              "tarp-page": { x: 150, y: 920 },
+              "tarp-check": { x: 150, y: 1030 },
+              "tarp-answer": { x: 150, y: 1140 }
+            }
+          }
+        });
+
+        createFlow({
+          id: "solution-search-flow",
+          elements: [
+            { data: { id: "ml-title", label: "TRADITIONAL MACHINE LEARNING" }, classes: "section" },
+            { data: { id: "ml-data", label: "Labelled images\ncat, dog, cat, dog" }, classes: "data" },
+            { data: { id: "ml-search", label: "Optimisation\nlearns a mapping" }, classes: "search" },
+            { data: { id: "ml-candidate", label: "Classifier\npredicts a label" }, classes: "candidate" },
+            { data: { id: "ml-score", label: "Test score\ncompare with labels" }, classes: "score" },
+            { data: { id: "llm-title", label: "THIS EXPERIMENT" }, classes: "section" },
+            { data: { id: "llm-data", label: "Labelled web\nshops, traps, private answer" }, classes: "data" },
+            { data: { id: "llm-search", label: "Coding LLM\nresearch and prior attempts" }, classes: "search" },
+            { data: { id: "llm-candidate", label: "Proposed solution\nruns on the public web" }, classes: "candidate" },
+            { data: { id: "llm-score", label: "Exact eval\ncompare with the answer" }, classes: "score" },
+            { data: { id: "ml-1", source: "ml-data", target: "ml-search" } },
+            { data: { id: "ml-2", source: "ml-search", target: "ml-candidate" } },
+            { data: { id: "ml-3", source: "ml-candidate", target: "ml-score" } },
+            { data: { id: "llm-1", source: "llm-data", target: "llm-search" } },
+            { data: { id: "llm-2", source: "llm-search", target: "llm-candidate" } },
+            { data: { id: "llm-3", source: "llm-candidate", target: "llm-score" } },
+            {
+              data: {
+                id: "feedback",
+                source: "llm-score",
+                target: "llm-search",
+                label: "what worked and failed"
+              },
+              classes: "feedback"
+            }
+          ],
+          positions: {
+            desktop: {
+              "ml-title": { x: 100, y: 30 },
+              "ml-data": { x: 100, y: 125 },
+              "ml-search": { x: 300, y: 125 },
+              "ml-candidate": { x: 500, y: 125 },
+              "ml-score": { x: 700, y: 125 },
+              "llm-title": { x: 100, y: 270 },
+              "llm-data": { x: 100, y: 365 },
+              "llm-search": { x: 300, y: 365 },
+              "llm-candidate": { x: 500, y: 365 },
+              "llm-score": { x: 700, y: 365 }
+            },
+            mobile: {
+              "ml-title": { x: 150, y: 30 },
+              "ml-data": { x: 150, y: 120 },
+              "ml-search": { x: 150, y: 230 },
+              "ml-candidate": { x: 150, y: 340 },
+              "ml-score": { x: 150, y: 450 },
+              "llm-title": { x: 150, y: 550 },
+              "llm-data": { x: 150, y: 640 },
+              "llm-search": { x: 150, y: 750 },
+              "llm-candidate": { x: 150, y: 860 },
+              "llm-score": { x: 150, y: 970 }
+            }
+          },
+          beforeLayout: function (flow, mode) {
+            flow.getElementById("feedback").style({
+              label: mode === "mobile" ? "" : "what worked and failed",
+              "control-point-distances": mode === "mobile" ? -80 : 115
+            });
+          }
+        });
+
+      });
+    </script>
+  </body>
+</html>

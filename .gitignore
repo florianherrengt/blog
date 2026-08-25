@@ -1,4 +1,5 @@
 .DS_Store
 *.m4a
 *.txt
+!robots.txt
 .logs/

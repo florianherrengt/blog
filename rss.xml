@@ -5,12 +5,19 @@
     <link>https://blog.florianherrengt.com/</link>
     <description>Writing by Florian Herrengt</description>
     <language>en-gb</language>
-    <lastBuildDate>Sat, 15 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link
       href="https://blog.florianherrengt.com/rss.xml"
       rel="self"
       type="application/rss+xml"
     />
+
+    <item>
+      <title>Don’t tell the LLM how to solve it. Give it an eval</title>
+      <link>https://blog.florianherrengt.com/give-the-llm-an-eval.html</link>
+      <guid isPermaLink="true">https://blog.florianherrengt.com/give-the-llm-an-eval.html</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <description>I built a controlled web with answers I already know, then used an eval to let an LLM search for the solution instead of prescribing one.</description>
+    </item>
 
     <item>
       <title>AI is removing the middle class of software engineering</title>
