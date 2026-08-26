@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Blog - Florian Herrengt"
+      href="rss.xml"
+    />
+    <link
+      rel="canonical"
+      href="https://blog.florianherrengt.com/do-less.html"
+    />
+    <meta
+      name="description"
+      content="Why small teams should skip premature processes and infrastructure, then add them when real problems justify the cost."
+    />
+
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://blog.florianherrengt.com/do-less.html"
+    />
+    <meta
+      property="og:title"
+      content="You don’t need to move faster. You just need to do less."
+    />
+    <meta
+      property="og:description"
+      content="Why small teams should skip premature processes and infrastructure, then add them when real problems justify the cost."
+    />
+    <meta property="og:site_name" content="Blog - Florian Herrengt" />
+    <meta property="og:locale" content="en_GB" />
+
+    <meta
+      property="article:published_time"
+      content="2026-08-26T00:00:00+00:00"
+    />
+    <meta property="article:author" content="Florian Herrengt" />
+    <meta property="article:section" content="Technology" />
+
+    <meta
+      name="twitter:url"
+      content="https://blog.florianherrengt.com/do-less.html"
+    />
+    <meta
+      name="twitter:description"
+      content="Why small teams should skip premature processes and infrastructure, then add them when real problems justify the cost."
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="You don’t need to move faster. You just need to do less."
+    />
+    <meta name="twitter:site" content="@florianherrengt" />
+    <meta name="twitter:creator" content="@florianherrengt" />
+
+    <meta name="author" content="Florian Herrengt" />
+    <title>You don’t need to move faster. You just need to do less.</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "You don’t need to move faster. You just need to do less.",
+        "description": "Why small teams should skip premature processes and infrastructure, then add them when real problems justify the cost.",
+        "datePublished": "2026-08-26",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://blog.florianherrengt.com/do-less.html"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Florian Herrengt"
+        }
+      }
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-7RQ5DTCN8C"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-7RQ5DTCN8C");
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>You don’t need to move faster. You just need to do less.</h1>
+      <time datetime="2026-08-26">26 August 2026</time>
+    </header>
+    <nav class="social-links">
+      <a href="https://x.com/florianherrengt" target="_blank" rel="noopener"
+        >Follow me on X</a
+      >
+    </nav>
+
+    <article>
+      <p>
+        I set up this blog to write down some of my thoughts and maybe find a
+        few people on the internet interested enough to read them.
+      </p>
+      <p>
+        I didn't plan anything. I put together a few HTML pages and published it
+        in about 10 seconds.
+      </p>
+      <p>
+        I've improved a few things since, but it's still basically a bunch of
+        static files I can serve from anywhere. Because I never expected much
+        traffic, I was missing some obvious things: analytics, a newsletter,
+        even an RSS feed.
+      </p>
+      <p>
+        Then one of my posts took off on Hacker News. I added analytics too late
+        and, worst of all, only set up the newsletter after most of the traffic
+        had already happened. I probably missed out on hundreds of subscribers.
+      </p>
+
+      <h2>"You should definitely have set all of that up before."</h2>
+      <p>Well, no.</p>
+      <p>
+        The truth is I've started a lot of projects and most of them went
+        nowhere. My GitHub is basically a graveyard with hundreds of abandoned
+        repositories.
+      </p>
+      <p>
+        On my first projects, I spent the time setting everything up properly:
+        analytics, infrastructure, all the little things I'd obviously need once
+        the project became successful.
+      </p>
+      <p>
+        I have now learned that my time is usually better spent somewhere else.
+        New projects have a low chance of success by nature, so build the thing,
+        put it out there, see if anyone bites and only then
+        <a href="https://knowyourmeme.com/memes/how-to-draw-an-owl"
+          >draw the rest of the owl</a
+        >.
+      </p>
+
+      <h2>"Ok, but still... you missed out on a huge opportunity."</h2>
+      <p>Yes. But it doesn't matter.</p>
+      <p>
+        For this blog to be successful, I'm going to have to consistently write
+        high-quality posts that people want to read. One popular article isn't
+        enough.
+      </p>
+      <p>
+        If I can keep writing things people want to read, I'll have plenty more
+        opportunities to build an audience and collect analytics. And if I
+        can't, then I only managed to write one good article, people will
+        unsubscribe and none of this mattered anyway.
+      </p>
+      <p>
+        That same logic applies to software in general. If people actually want
+        what you’re building, you’ll have plenty of opportunities to add
+        everything you skipped.
+      </p>
+
+      <h2>Solving problems you don't have</h2>
+      <p>
+        If you've made it this far, you're probably expecting me to say
+        something like "just use Postgres".
+      </p>
+      <p>
+        And yes, it's true. Over and over I see companies wasting resources on
+        things they don't need, for users they don't have. What do you mean
+        you're working on the database migration? You don't have any users. Just
+        nuke the db already and start fresh! Kubernetes/ECS/Serverless? Why?
+      </p>
+      <p>
+        Not only are you wasting time, you're also making the product harder to
+        build. And you'll probably get the scaling wrong anyway because scaling
+        is hard. Until you're actually hitting the limits, you're mostly
+        guessing what could go wrong.
+      </p>
+      <p>
+        I've talked enough about the tech stack in the
+        <a href="boring-software-engineer.html">boring engineer piece</a>.
+        Today, I want to talk about processes.
+      </p>
+
+      <h2>Half the stuff you think you need is just making work harder</h2>
+      <p>
+        There are things you could just stop doing and things would move faster.
+        Ways of working that have become habits without anyone asking whether
+        they’re still useful.
+      </p>
+      <p>
+        Most of this stuff is easier than ever to add with AI. A few prompts and
+        you can have CI, dashboards, staging, ticketing, backups. Pretty much
+        whatever you want. However, once it exists, you, the human, have to
+        maintain it. AI can help with this too but the responsibility ultimately
+        stays on you.
+      </p>
+      <p>
+        But before we get into the tech, let’s talk about the things so
+        ingrained in our way of working that we barely question them anymore.
+      </p>
+
+      <h3>Scheduled communication</h3>
+      <p>It’s 9:07am.</p>
+      <p>
+        You’ve got coffee. Slack is still quiet. Your brain is fresh. You open
+        the codebase and finally understand the thing that made absolutely no
+        sense yesterday.
+      </p>
+      <p>“Oh. That’s why it’s breaking.”</p>
+      <p>You start typing.</p>
+      <p>9:20. DING!</p>
+      <pre><code>Standup in 10 minutes.</code></pre>
+      <p>“Well... maybe I can finish this before...”</p>
+      <p>Nope.</p>
+      <p>9:30.</p>
+      <ul>
+        <li>“Morning.”</li>
+        <li>“Morning.”</li>
+        <li>“Can you hear me?”</li>
+        <li>“Yeah.”</li>
+        <li>“Cool. Who wants to go first?”</li>
+      </ul>
+      <p>The daily ritual of telling people things they already know begins.</p>
+      <ul>
+        <li>
+          “Yesterday I worked on X. Today I’m continuing with X. No blockers.”
+        </li>
+        <li>“Yesterday I worked on Y. Today I’m starting Z. No blockers.”</li>
+      </ul>
+      <p>
+        You already knew this because... you work with these people. You talk
+        all day. You can see their pull requests.
+      </p>
+      <p>
+        If something important happened, nobody would patiently save it for
+        tomorrow morning.
+      </p>
+      <ul>
+        <li>“Hey, production is completely broken.”</li>
+        <li>“Should we tell Sarah?”</li>
+        <li>“Nah. Let’s save it for standup.”</li>
+      </ul>
+      <p>Obviously not.</p>
+      <p>Fifteen minutes later:</p>
+      <p>“Thanks everyone!”</p>
+      <p>You go back to your computer.</p>
+      <p>“Wait… where was I?”</p>
+      <p>
+        The entire architecture your brain had in L1 cache has been garbage
+        collected.
+      </p>
+      <p>
+        At lunch, you grab a burrito with a couple of teammates and spend twenty
+        minutes talking through the next feature. You walk back with three ideas
+        worth testing but you won't have time to test any of them because...
+      </p>
+      <p>14:00.</p>
+      <ul>
+        <li>“So how many story points is this?”</li>
+        <li>“I don’t know.”</li>
+        <li>“If you had to guess?”</li>
+        <li>
+          “We’re building something nobody has built before, for users we’re
+          still learning about, on a product that changes every three days.”
+        </li>
+        <li>“So... five?”</li>
+        <li>“Sure.”</li>
+      </ul>
+      <p>
+        Great. “We have no idea” has successfully been converted into a number.
+      </p>
+      <p>
+        And then, throughout the week, there's retro, sprint planning, backlog
+        grooming. Half the team is half listening while doing something else.
+      </p>
+
+      <hr />
+
+      <p>
+        I’m not saying teams shouldn’t communicate. Obviously they should. But
+        if you’re a small team, communication shouldn’t require this much
+        ceremony.
+      </p>
+      <p>If you’re working on something new:</p>
+      <ul>
+        <li>
+          Nobody can accurately predict how long half this stuff will take.
+        </li>
+        <li>
+          Nobody needs a daily recital of what everyone worked on yesterday.
+        </li>
+        <li>
+          Nobody joined because they dreamed of moving sticky notes around.
+        </li>
+      </ul>
+      <p>
+        Your advantage is speed and a bunch of smart people working together.
+        When something matters, they will talk to each other.
+      </p>
+      <p>
+        Have them spend as much time as possible on the thing your customers
+        might actually care about: <strong>building the product.</strong> Trust
+        that grown adults can talk to each other when they need to. If a few
+        people can’t, deal with them directly instead of building a process that
+        punishes everyone else.
+      </p>
+      <blockquote>
+        <p>
+          Note: if you work at a FAANG company, a bank, or some other huge or
+          heavily regulated organisation, I’m not talking about you. Big
+          companies need structure. Small teams shouldn’t copy them before they
+          need it.
+        </p>
+      </blockquote>
+      <p>
+        Processes have the same failure mode as technical infrastructure. You
+        add machinery to solve problems you don’t have yet.
+      </p>
+
+      <h2>And then there’s the tech</h2>
+      <p>
+        The things you add because everyone else does. It’s been in every
+        project you’ve ever worked on. The stuff people will probably judge you
+        if you don’t have it.
+      </p>
+      <p>Off the top of my head:</p>
+      <p>
+        <strong>Observability and centralised logs:</strong> Nobody is using
+        your app. Add a few log lines, SSH into the box, run
+        <code>docker logs</code>
+        and move on. You do not need dashboards, traces, metrics pipelines and
+        five different alerts for traffic you do not have.
+      </p>
+      <p>
+        <strong>Backups:</strong> If you don’t have any data you care about yet,
+        run <code>pg_dump</code> occasionally. You do not need automated
+        snapshots, cross-region replication, point-in-time recovery and a
+        disaster recovery plan for a database with three test accounts in it.
+      </p>
+      <p>
+        <strong>CI:</strong> Run it locally in a pre-commit hook with something
+        like <a href="https://dagger.io">Dagger</a>. My MacBook Pro runs the
+        tests faster than GitHub Actions. For the last few years, it has had
+        better uptime too... If it's just a few trusted people, you don’t need
+        to send every commit to a remote machine just to run the exact same
+        tests you could have run before pushing.
+      </p>
+      <p>
+        <strong>Staging environment:</strong> It’s another environment to
+        maintain and it still won’t behave exactly like production anyway. If
+        your infrastructure is simple and changes are cheap to roll back, you
+        might not need one yet. Make sure you can restore the production
+        database schema and run the whole system locally. Add staging when
+        production changes become risky enough to justify maintaining another
+        environment.
+      </p>
+      <p>
+        <strong>Project tracker:</strong> Use something like
+        <a href="https://backlog.md">Backlog.md</a>. Underneath, it’s just
+        Markdown files in git. You get version history and everything stays next
+        to the code. Your agents can read the tasks alongside the code, gather
+        the surrounding context, document what they changed and update the task
+        as part of the same PR. If you have a small team and people need tickets
+        assigned to them just to know what they should be working on, the
+        problem isn’t your lack of a project management software.
+      </p>
+
+      <h2>
+        “Sure, you can skip these things now, but you’ll regret it later.”
+      </h2>
+      <p>
+        Maybe. But almost everything I’ve mentioned can easily be added
+        progressively.
+      </p>
+      <p>
+        Need backups? Start with <code>pg_dump</code> from your laptop. Or maybe
+        schedule it on a server and send it to object storage. Add incremental
+        backups and point-in-time recovery. Eventually you might decide managing
+        the database yourself is no longer worth it and move to a provider. At
+        least by then, you actually know what your requirements are.
+      </p>
+      <p>
+        Start with <code>docker logs</code> and centralise them when that
+        becomes painful. Move it to GitHub Actions when you actually need remote
+        CI. Add staging when production changes become risky enough to justify
+        maintaining another environment.
+      </p>
+      <p>
+        I’m not saying <strong>never</strong> use these things. Just
+        <strong>don’t pay for them before you need them</strong>. And “pay”
+        doesn’t just mean money.
+      </p>
+      <p>
+        Keeping things simple has another advantage. There are fewer moving
+        parts, fewer failure modes and fewer places to look when something
+        breaks.
+      </p>
+      <p>
+        When the simple version finally stops working, good. You now have a real
+        problem and you've learned enough from operating it to make an informed
+        choice about what comes next instead of guessing upfront.
+      </p>
+    </article>
+    <footer>
+      <nav class="post-nav">
+        <a class="post-nav-prev" href="give-the-llm-an-eval.html">
+          <span class="post-nav-label">← Previous post</span>
+          <span class="post-nav-title"
+            >Don’t tell the LLM how to solve it. Give it an eval</span
+          >
+        </a>
+        <span></span>
+      </nav>
+      <p class="newsletter-link">
+        <a href="https://newsletter.florianherrengt.com/subscription/form"
+          >Subscribe to the newsletter</a
+        >
+      </p>
+      <nav class="social-links">
+        <a href="https://x.com/florianherrengt" target="_blank" rel="noopener"
+          >X</a
+        >
+        <a
+          href="https://news.ycombinator.com/submitted?id=florianherrengt"
+          target="_blank"
+          rel="noopener"
+          >Hacker News</a
+        >
+        <a
+          href="https://www.linkedin.com/in/florianherrengt-ab203494/"
+          target="_blank"
+          rel="noopener"
+          >LinkedIn</a
+        >
+        <a
+          href="https://www.linkedin.com/in/florianherrengt-ab203494/"
+          target="_blank"
+          rel="noopener"
+          >Hire me</a
+        >
+      </nav>
+    </footer>
+  </body>
+</html>
