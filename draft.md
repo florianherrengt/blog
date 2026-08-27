@@ -1,163 +1,234 @@
-# You don’t need to move faster. You just need to do less.
+# AI won’t take your job. It will remove the need for it.
 
-I set up this blog to write down some of my thoughts and maybe find a few people on the internet interested enough to read them.
+AI is all over the news for a while now and there is no denying that it is getting good.
 
-I didn't plan anything. I put together a few HTML pages and published it in about 10 seconds.
+Inevitability, some variant of "What will we do when AI does everything?" comes up.
 
-I've improved a few things since, but it's still basically a bunch of static files I can serve from anywhere. Because I never expected much traffic, I was missing some obvious things: analytics, a newsletter, even an RSS feed.
+Honestly, at that point things like the "Jevons paradox" or "New jobs will appear" have started to feel like copium rather than an actual plan.
 
-Then one of my posts took off on Hacker News. I added analytics too late and, worst of all, only set up the newsletter after most of the traffic had already happened. I probably missed out on hundreds of subscribers.
+I have done a ton of research while writing this article and I couldn't find an intellectually honest argument that a particular job is truly safe.
 
-## "You should definitely have set all of that up before."
+How are you are supposed to do to keep paying your mortgage, cover the bills or support your family?
 
-Well, no.
+It would be pretentious of me to say I know exactly what you should do. But I do have are a few pointers.
 
-The truth is I've started a lot of projects and most of them went nowhere. My GitHub is basically a graveyard with hundreds of abandoned repositories.
+## Humans are not horse
 
-On my first projects, I spent the time setting everything up properly: analytics, infrastructure, all the little things I'd obviously need once the project became successful.
+The machines replaced horses. Why should humans be any different?
 
-I have now learned that my time is usually better spent somewhere else. New projects have a low chance of success by nature, so build the thing, put it out there, see if anyone bites and only then [draw the rest of the owl](https://knowyourmeme.com/memes/how-to-draw-an-owl).
+I never like this comparison but it took me a while to articulate why.
 
-## "Ok, but still... you missed out on a huge opportunity."
+Economically, horse was basically converting food into mechanical power. When machines became better at turning energy into motion, they couldn't just change what they were good at.
 
-Yes. But it doesn't matter.
+Unlike horses, humans are different. We can learn and re-invent ourselves.
 
-For this blog to be successful, I'm going to have to consistently write high-quality posts that people want to read. One popular article isn't enough.
+We do not know what the next jobs will be or if AI will create new jobs at all. But try to explain cybersecurity to someone from the 1950s.
 
-If I can keep writing things people want to read, I'll have plenty more opportunities to build an audience and collect analytics. And if I can't, then I only managed to write one good article, people will unsubscribe and none of this mattered anyway.
+## AI won’t take your job. Someone using AI will.
 
-That same logic applies to software in general. If people actually want what you’re building, you’ll have plenty of opportunities to add everything you skipped.
+Bullshit.
 
-## Solving problems you don't have
+They want us to imagine a world where there are still accountants, designers, programmers or lawyers doing roughly what they do today but with AI making them faster.
 
-If you've made it this far, you're probably expecting me to say something like "just use Postgres".
+Finding ways to do exactly the same job you are currently doing is short sighted.
 
-And yes, it's true. Over and over I see companies wasting resources on things they don't need, for users they don't have. What do you mean you're working on the database migration? You don't have any users. Just nuke the db already and start fresh! Kubernetes/ECS/Serverless? Why?
+I would be a lot more worried about someone who's trying to figure out how to automate my job entirely than someone who can do it faster.
 
-Not only are you wasting time, you're also making the product harder to build. And you'll probably get the scaling wrong anyway because scaling is hard. Until you're actually hitting the limits, you're mostly guessing what could go wrong.
+Overt time, processes will be redesigned around what the machines can do.
 
-I've talked enough about the tech stack in the boring engineer piece. Today, I want to talk about processes.
+What happens once a computer can read the input, make the decision, use the software you use via MCP, check its own work and only escalate the unusual cases?
 
-## Half the stuff you think you need is just making work harder
+## Replacing a steam engine with an electric one
 
-There are things you could just stop doing and things would move faster. Ways of working that have become habits without anyone asking whether they’re still useful.
+There is enough written about the Industrial Revolution that if I talk too much about it, you'll probably just close the tab.
 
-Most of this stuff is easier than ever to add with AI. A few prompts and you can have CI, dashboards, staging, ticketing, backups. Pretty much whatever you want. However, once it exists, you, the human, have to maintain it. AI can help with this too but the responsibility ultimately stays on you.
+This story is a related subset but much more interesting than simply saying "machines replaced all human labor".
 
-But before we get into the tech, let’s talk about the things so ingrained in our way of working that we barely question them anymore.
+By the late 19th century, many large factories had one central steam engine. It turned a line shaft running through the building and everything was connected to it.
 
-### Scheduled communication
+The entire factory was designed around transmitting mechanical power from one central point.
 
-It’s 9:07am.
+Then when electricity arrived, they replaced the steam engine with a more efficient electric motor.
 
-You’ve got coffee. Slack is still quiet. Your brain is fresh. You open the codebase and finally understand the thing that made absolutely no sense yesterday.
+But everything downstream remained basically the same. A big source of power turned the same shaft, which still turned the same belts and pulleys.
 
-“Oh. That’s why it’s breaking.”
+They made the steam factory better.
 
-You start typing.
+But only when electricity was distributed through wires, smaller motors could then be attached directly to individual machines.
 
-9:20. DING!
+The machines no longer had to be arranged around the shaft. They could be placed wherever the work required them and buildings themselves were designed differently.
 
-```text
-Standup in 10 minutes.
-```
+The important improvement came from redesigning the system around what the technology made possible.
 
-“Well... maybe I can finish this before—”
+AI assistants are our big electric motor making the existing process better.
 
-Nope.
+## The man with the red flag
 
-9:30.
+In 1865, Britain passed a law requiring every road locomotive to have one person walking in front of the vehicle carrying a red flag.
 
-- “Morning.”
-- “Morning.”
-- “Can you hear me?”
-- “Yeah.”
-- “Cool. Who wants to go first?”
+These were large, heavy and noisy steam-powered machines travelling on roads built for horses and carts.
 
-The daily ritual of telling people things they already know begins.
+They had invented a machine that no longer needed a horse, then designed a system in which its progress was still constrained by a man walking in front of it.
 
-- “Yesterday I worked on X. Today I’m continuing with X. No blockers.”
-- “Yesterday I worked on Y. Today I’m starting Z. No blockers.”
+A lot of current human-in-the-loop design looks like a digital version of the same thing.
 
-You already knew this because... you work with these people. You talk all day. You can see their pull requests.
+## The product changed. The business didn’t.
 
-If something important happened, nobody would patiently save it for tomorrow morning.
+In 1886, William Durant was running tiny horse-cart business.
 
-- “Hey, production is completely broken.”
-- “Should we tell Sarah?”
-- “Nah. Let’s save it for standup.”
+He was good enough at it that within 15 years, his company had become the largest manufacturer in the United States.
 
-Obviously not.
+Then automobiles started appearing. Unsurprisingly, he didn't like them.
 
-Fifteen minutes later:
+But in 1904, he was asked to take over Buick. He drove one around for a month, became convinced and accepted the offer.
 
-“Thanks everyone!”
+By 1908, Buick had become the highest-volume automobile producer in the United States. He also founded General Motors.
 
-You go back to your computer.
+The technology had changed completely but the problem he was solving was the same.
 
-“Wait… where was I?”
+Durant’s skills weren't about horse-cart but knowing how to build an organisation that can manufacture, distribute and sell vehicles.
 
-The entire architecture your brain had in L1 cache has been garbage collected.
+## The man who took the machine apart
 
-At lunch, you grab a burrito with a couple of teammates and spend twenty minutes talking through the next feature. You walk back with three ideas worth testing but you won't have time to test any of them because...
+You might think that Durant was already a wealthy man with a strong set of reusable skills.
 
-14:00.
+So let’s talk about George Stephenson.
 
-- “So how many story points is this?”
-- “I don’t know.”
-- “If you had to guess?”
-- “We’re building something nobody has built before, for users we’re still learning about, on a product that changes every three days.”
-- “So... five?”
-- “Sure.”
+He started at the bottom of the coal industry.
 
-Great. “We have no idea” has successfully been converted into a number.
+At some point, he became responsible for operating machinery. The interesting thing about George is that he didn't just operate the engine. He decided to take it apart.
 
-And then, throughout the week, there's retro, sprint planning, backlog grooming. Half the team is half listening while doing something else.
+He dismantled it, studied the pieces and put it back together until he understood it well enough that when something went wrong, he knew how to fix it.
 
----
+Eventually, he could repair engines that others could not and a few years later, he built his first locomotive.
 
-I’m not saying teams shouldn’t communicate. Obviously they should. But if you’re a small team, communication shouldn’t require this much ceremony.
+He treated the machine producing those tasks as something he could understand, alter and eventually rebuild.
 
-If you’re working on something new:
+## Build and understand systems
 
-- Nobody can accurately predict how long half this stuff will take.
-- Nobody needs a daily recital of what everyone worked on yesterday.
-- Nobody joined because they dreamed of moving sticky notes around.
+Okay, so how do we remain economically valuable?
 
-Your advantage is speed and a bunch of smart people working together. When something matters, they talk.
+There is pattern in these stories.
 
-Have them spend as much time as possible on the thing your customers might actually care about: **building the product.** Trust that grown adults can talk to each other when they need to. If a few people can’t, deal with them directly instead of building a process that punishes everyone else.
+Every time a new technology was introduced, the people who did particularly well didn't use it to do the work better. They spent time to understand it and used their skills to build systems around it.
 
-> Note: if you work at a FAANG company, a bank, or some other huge or heavily regulated organisation, I’m not talking about you. Big companies need structure. Small teams shouldn’t copy them before they need it.
+When machines can produce more work than anyone, production is no longer a scarce resource.
 
-Processes have the same failure mode as technical infrastructure. You add machinery to solve problems you don’t have yet.
+Someone still has to decide what should to be done and evaluate if the results are good. Then find where it is failing and why. You need decades to build those skills.
 
-## And then there’s the tech
+The important distinction, at least for now, is between doing the work and designing the thing that does the work.
 
-The things you add because everyone else does. It’s been in every project you’ve ever worked on. The stuff people will probably judge you if you don’t have it.
+We can already see this happening.
 
-Off the top of my head:
+We take processes designed around humans doing the work, replace one step with a machine, then carefully preserve everything around it.
 
-**Observability and centralised logs:** Nobody is using your app. Add a few log lines, SSH into the box, run `docker logs` and move on. You do not need dashboards, traces, metrics pipelines and five different alerts for traffic you do not have.
+Whenever you are the "human in the loop", ask yourself if it is really necessary or if you are just the man holding the red flag.
 
-**Backups:** If you don’t have any data you care about yet, run `pg_dump` occasionally. You do not need automated snapshots, cross-region replication, point-in-time recovery and a disaster recovery plan for a database with three test accounts in it.
+The practical move is not to use AI to perform your current step faster but to automate it. There are now plenty of things that were not worth doing because it was just too much work.
 
-**CI:** Run it locally in a pre-commit hook with something like [Dagger](https://dagger.io). My MacBook Pro runs the tests faster than GitHub Actions. For the last few years, it has had better uptime too... If it's just a few trusted people, you don’t need to send every commit to a remote machine just to run the exact same tests you could have run before pushing.
+Take something you do repeatedly and ask what would have to exist for you not to do it at all.
+Build a system and watch where it breaks. Do not just fix the mistake. Fix the system itself.
 
-**Staging environment:** It’s another environment to maintain and it still won’t behave exactly like production anyway. If your infrastructure is simple and changes are cheap to roll back, you might not need one yet. Make sure you can restore the production database schema and run the whole system locally. Add staging when production changes become risky enough to justify maintaining another environment.
+The goal is not to do the same work faster forever but to keep removing the reasons the work needs your attention in the first place.
 
-**Project tracker:** Use something like [Backlog.md](https://backlog.md). Underneath, it’s just Markdown files in git. You get version history and everything stays next to the code. Your agents can read the tasks alongside the code, gather the surrounding context, document what they changed and update the task as part of the same PR. If you have a small team and people need tickets assigned to them just to know what they should be working on, the problem isn’t your lack of a project management software.
+This does not guarantee that the machine will eventually do your job. Technology will keep improving and humans will constantly have to adapt to it.
 
-## “Sure, you can skip these things now, but you’ll regret it later.”
+## Find the bottleneck
 
-Maybe. But almost everything I’ve mentioned can easily be added progressively.
+I do not know what this looks like for you. That is something you will have to figure out.
+Personally, I am betting on evals.
 
-Need backups? Start with `pg_dump` from your laptop. Or maybe schedule it on a server and send it to object storage. Add incremental backups and point-in-time recovery. Eventually you might decide managing the database yourself is no longer worth it and move to a provider. At least by then, you actually know what your requirements are.
+We have already become pretty good at building systems that produce work.
+The harder problem is building systems that can tell whether that work is actually good.
 
-Start with `docker logs` and centralise them when that becomes painful. Move it to GitHub Actions when you actually need remote CI. Add staging when production changes become risky enough to justify maintaining another environment.
+If we can reliably evaluate the output, we can reject failures, find recurring weaknesses and feed those results back into the system.
 
-I’m not saying **never** use these things. Just **don’t pay for them before you need them**. And “pay” doesn’t just mean money.
+But I'm sure that, one day, much of it will also be automated.
 
-Keeping things simple has another advantage. There are fewer moving parts, fewer failure modes and fewer places to look when something breaks.
+The only durable skill is learning to identify a bottleneck and turning it into something the new system can use.
 
-When the simple version finally stops working, good. You now have a real problem and you've learned enough from operating it to make an informed choice about what comes next instead of guessing upfront.
+But that is my bet.
+
+Yours might be completely different. Just don't become better at carrying the red flag or replace your steam engine with an electric one.
+
+## Where to start
+
+Here are a few questions I think are useful:
+
+- What am I using AI to make faster that I should instead be trying to eliminate?
+- What context or rules do I repeatedly have to supply by hand?
+- What information do I keep having to find?
+- What mistakes do I repeatedly catch and correct?
+- What would need to change so that those mistakes could not happen again?
+- What would the system need to finish the job itself?
+- If I removed myself from this workflow tomorrow, where would it break first?
+
+A few examples make this easier to see.
+
+### Developer
+
+You keep reviewing pull requests for the same problems.
+
+Do not make faster review the goal. That is a small and temporary improvement.
+
+Build those checks into the system instead.
+
+Design an environment in which bad code is less likely to survive. Build the abstractions, generators and workflows that can produce and verify for you.
+
+By the time a pull request reaches you, the obvious problems should already be gone.
+
+Your attention should be reserved for the things that are actually difficult to automate, such as whether the approach makes sense and whether the trade-offs are right.
+
+### Data analyst
+
+Someone asks a question. You find the right tables, write SQL, make a chart, explain what happened, then answer three follow-up questions.
+
+Do not just generate the SQL faster.
+
+Build a system that understands the company’s metrics, knows where the data lives, can investigate anomalies and produces an explanation with enough evidence that people can interrogate it directly.
+
+Your value moves away from repeatedly extracting the answer and towards designing the system that can find trustworthy answers.
+
+### Product designer
+
+You repeatedly turn product requirements into flows, mockups and variants. Then you fix the same inconsistencies: wrong spacing, inaccessible colours, strange interaction states and components used incorrectly.
+
+Do not just use AI to generate Figma screens faster.
+
+Encode those decisions into the design system and the tools that generate the interface.
+
+Build a system that starts from the product constraints, generates candidate flows, checks them against the design system, applies known usability heuristics, incorporates behavioural data and surfaces only the genuinely difficult trade-offs to you.
+
+Fix the system that produces the screens.
+
+### Engineering manager
+
+You spend hours asking for status, identifying blockers, checking whether projects are slipping and reminding people about dependencies.
+
+Do not use AI to write prettier status summaries.
+
+Build a system that watches the actual work, detects deviations, asks for missing context and only involves you when a decision or intervention is required.
+
+That system will not resolve conflict, coach someone through a difficult situation or decide which trade-off the organisation should make.
+
+It will stop wasting your attention on collecting facts the software already knows.
+
+### QA engineer
+
+You repeatedly test the same flows after every release.
+
+Do not have AI click through the same test plan faster.
+
+Build a system that understands the product’s invariants, generates tests from changes, explores unexpected states and turns every production bug into a regression test.
+
+The goal is not a faster human-shaped testing process.
+
+The goal is a product that continuously tries to prove itself wrong.
+
+### Product manager
+
+You collect feedback from support, sales, analytics and interviews, then try to work out what matters.
+
+Do not use AI merely to summarise the feedback.
+
+Build a system that continuously clusters problems, connects them to behaviour and revenue, detects changes in frequency and gives you the few decisions actually worth spending human attention on.
