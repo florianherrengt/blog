@@ -1,24 +1,24 @@
 # AI won’t take your job. It will remove the need for it.
 
-AI is all over the news for a while now and there is no denying that it is getting good.
+AI has been all over the news for a while now and there is no denying that it is getting good.
 
-Inevitability, some variant of "What will we do when AI does everything?" comes up.
+Inevitably, some variant of "What will we do when AI does everything?" comes up.
 
 Honestly, at that point things like the "Jevons paradox" or "New jobs will appear" have started to feel like copium rather than an actual plan.
 
 I have done a ton of research while writing this article and I couldn't find an intellectually honest argument that a particular job is truly safe.
 
-How are you are supposed to do to keep paying your mortgage, cover the bills or support your family?
+What are you supposed to do to keep paying your mortgage, cover the bills or support your family?
 
-It would be pretentious of me to say I know exactly what you should do. But I do have are a few pointers.
+It would be pretentious of me to say I know exactly what you should do. But I do have a few pointers.
 
-## Humans are not horse
+## Humans are not horses
 
 The machines replaced horses. Why should humans be any different?
 
 I never like this comparison but it took me a while to articulate why.
 
-Economically, horse was basically converting food into mechanical power. When machines became better at turning energy into motion, they couldn't just change what they were good at.
+Economically, a horse was basically converting food into mechanical power. When machines became better at turning energy into motion, they couldn't just change what they were good at.
 
 Unlike horses, humans are different. We can learn and re-invent ourselves.
 
@@ -34,7 +34,7 @@ Finding ways to do exactly the same job you are currently doing is short sighted
 
 I would be a lot more worried about someone who's trying to figure out how to automate my job entirely than someone who can do it faster.
 
-Overt time, processes will be redesigned around what the machines can do.
+Over time, processes will be redesigned around what the machines can do.
 
 What happens once a computer can read the input, make the decision, use the software you use via MCP, check its own work and only escalate the unusual cases?
 
@@ -42,7 +42,7 @@ What happens once a computer can read the input, make the decision, use the soft
 
 There is enough written about the Industrial Revolution that if I talk too much about it, you'll probably just close the tab.
 
-This story is a related subset but much more interesting than simply saying "machines replaced all human labor".
+This story is a related subset but much more interesting than simply saying "machines replaced all human labour".
 
 By the late 19th century, many large factories had one central steam engine. It turned a line shaft running through the building and everything was connected to it.
 
@@ -74,7 +74,7 @@ A lot of current human-in-the-loop design looks like a digital version of the sa
 
 ## The product changed. The business didn’t.
 
-In 1886, William Durant was running tiny horse-cart business.
+In 1886, William Durant was running a tiny horse-cart business.
 
 He was good enough at it that within 15 years, his company had become the largest manufacturer in the United States.
 
@@ -86,7 +86,7 @@ By 1908, Buick had become the highest-volume automobile producer in the United S
 
 The technology had changed completely but the problem he was solving was the same.
 
-Durant’s skills weren't about horse-cart but knowing how to build an organisation that can manufacture, distribute and sell vehicles.
+Durant’s skills weren't about horse carts but about knowing how to build an organisation that can manufacture, distribute and sell vehicles.
 
 ## The man who took the machine apart
 
@@ -108,13 +108,13 @@ He treated the machine producing those tasks as something he could understand, a
 
 Okay, so how do we remain economically valuable?
 
-There is pattern in these stories.
+There is a pattern in these stories.
 
 Every time a new technology was introduced, the people who did particularly well didn't use it to do the work better. They spent time to understand it and used their skills to build systems around it.
 
 When machines can produce more work than anyone, production is no longer a scarce resource.
 
-Someone still has to decide what should to be done and evaluate if the results are good. Then find where it is failing and why. You need decades to build those skills.
+Someone still has to decide what should be done and evaluate if the results are good. Then find where it is failing and why. You need decades to build those skills.
 
 The important distinction, at least for now, is between doing the work and designing the thing that does the work.
 

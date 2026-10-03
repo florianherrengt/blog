@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Moving thresholds</title>
+<meta name="description" content="Hand-drawn animated chart: the competence threshold moves right and the output threshold moves down.">
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #fff;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background: #1a1a1a;
+    }
+  }
+
+  svg {
+    width: 100%;
+    max-width: 1150px;
+    height: auto;
+    display: block;
+    font-family: "Segoe Print", "Bradley Hand", "Chalkboard SE", "Marker Felt", "Comic Sans MS", cursive;
+  }
+
+  .thresholds {
+    --diagram-bg: #ffffff;
+    --ink: #111111;
+    --halo: #ffffff;
+    --orange: #ef8700;
+    --blue: #1976d2;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .thresholds {
+      --diagram-bg: #1a1a1a;
+      --ink: #e0e0e0;
+      --halo: #1a1a1a;
+      --orange: #ff9d2e;
+      --blue: #64b5f6;
+    }
+  }
+
+  .thresholds-bg { fill: var(--diagram-bg); }
+  .thresholds-axes { stroke: var(--ink); }
+  .thresholds-orange { stroke: var(--orange); }
+  .thresholds-blue { stroke: var(--blue); }
+  .thresholds-region { fill: var(--ink); stroke: var(--halo); }
+  .thresholds-labels { fill: var(--ink); }
+
+  #orange-threshold,
+  #blue-threshold {
+    animation-duration: 16s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  #orange-threshold { animation-name: slide-right; }
+  #blue-threshold { animation-name: slide-down; }
+
+  /* 16s loop: hold start 1s, move slowly for 12s, hold end 3s, then reset. */
+  @keyframes slide-right {
+    0%, 6.25% { transform: translateX(0); }
+    81.25%, 100% { transform: translateX(550px); }
+  }
+
+  @keyframes slide-down {
+    0%, 6.25% { transform: translateY(0); }
+    81.25%, 100% { transform: translateY(295px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #orange-threshold,
+    #blue-threshold {
+      animation: none;
+    }
+    #orange-threshold { transform: translateX(275px); }
+    #blue-threshold { transform: translateY(148px); }
+  }
+</style>
+</head>
+<body>
+<svg class="thresholds" viewBox="0 0 1600 900" role="img" aria-labelledby="chart-title chart-desc">
+  <title id="chart-title">Two moving thresholds</title>
+  <desc id="chart-desc">A hand-drawn chart of competence against output. An orange vertical threshold slides right while a blue horizontal threshold slides down, looping continuously.</desc>
+
+  <rect class="thresholds-bg" width="1600" height="900" fill="#ffffff"/>
+
+  <!-- Axes meeting exactly at the bottom-left corner -->
+  <g class="thresholds-axes" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none">
+    <path d="M388,720 C385,560 391,380 386,174"/>
+    <path d="M386,172 C381,190 373,200 364,207"/>
+    <path d="M386,172 C388,190 396,201 406,208"/>
+    <path d="M388,720 C680,716 1080,724 1506,720"/>
+    <path d="M1506,720 C1488,712 1477,707 1468,704"/>
+    <path d="M1506,720 C1490,724 1478,729 1469,735"/>
+  </g>
+
+  <!-- Orange moving threshold: starts a quarter of the chart width in from the Y axis, bottom sits exactly on the X axis -->
+  <g id="orange-threshold">
+    <path class="thresholds-orange" d="M668,720 C664,560 672,380 666,168" stroke="#ef8700" stroke-width="4" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Blue moving threshold: starts a quarter of the chart height down from the top of the Y axis, left end sits exactly on the Y axis -->
+  <g id="blue-threshold">
+    <path class="thresholds-blue" d="M388,308 C700,304 1120,312 1502,308" stroke="#1976d2" stroke-width="4" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Region labels: drawn last with a halo so the moving lines stay behind readable text -->
+  <g class="thresholds-region" font-size="54" fill="#111" text-anchor="middle" stroke="#fff" stroke-width="12" stroke-linejoin="round" paint-order="stroke">
+    <text x="620" y="312" transform="rotate(-2 620 312)">active liability</text>
+    <text x="1235" y="308" transform="rotate(1.5 1235 308)">problem solver</text>
+    <text x="620" y="662" transform="rotate(1 620 662)">just... there</text>
+    <text x="1215" y="668" transform="rotate(-1.5 1215 668)">will do it well if asked</text>
+  </g>
+
+  <!-- Axis labels -->
+  <g class="thresholds-labels" font-size="36" fill="#111">
+    <text x="362" y="200" text-anchor="end" transform="rotate(-2 362 200)">high output</text>
+    <text x="362" y="688" text-anchor="end" transform="rotate(1.5 362 688)">does nothing</text>
+    <text x="436" y="780" transform="rotate(-1.5 436 780)">incompetent/dumb</text>
+    <text x="1492" y="780" text-anchor="end" transform="rotate(1 1492 780)">competent/smart</text>
+  </g>
+</svg>
+</body>
+</html>

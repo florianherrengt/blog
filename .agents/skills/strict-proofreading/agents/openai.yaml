@@ -1,0 +1,4 @@
+interface:
+  display_name: "Strict Proofreading"
+  short_description: "Correct copy without changing anything else"
+  default_prompt: "Use $strict-proofreading to correct only the spelling and grammar errors in this text."

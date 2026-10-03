@@ -1,5 +1,6 @@
 .DS_Store
 *.m4a
 *.txt
+!ai-removing-middle-class-software-engineering.txt
 !robots.txt
 .logs/

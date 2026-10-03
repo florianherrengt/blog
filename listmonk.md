@@ -148,6 +148,35 @@ origin: http://localhost:4480
 
 The Lambda relay uses the main `newsletter.florianherrengt.com` hostname. The `ses-webhook` route is not part of the active feedback path. It can be removed after the final end-to-end test if it is not needed for another purpose.
 
+### Cloudflare response security headers
+
+An active Cloudflare HTTP Response Header Transform Rule named `Newsletter security headers` applies only when:
+
+```text
+(http.host eq "newsletter.florianherrengt.com")
+```
+
+The rule sets these headers on newsletter responses:
+
+| Header | Value |
+| --- | --- |
+| `Content-Security-Policy` | `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests` |
+| `Strict-Transport-Security` | `max-age=31536000` |
+| `X-Content-Type-Options` | `nosniff` |
+| `X-Frame-Options` | `DENY` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | Disables unused browser capabilities including camera, microphone, geolocation, payment, USB and related APIs |
+| `Cross-Origin-Opener-Policy` | `same-origin` |
+| `Cross-Origin-Resource-Policy` | `same-origin` |
+| `Origin-Agent-Cluster` | `?1` |
+| `X-XSS-Protection` | `0` |
+
+The CSP permits only same-origin scripts and connections. Inline styles remain allowed because the ALTCHA web component constructs its own styling. HTTPS images remain allowed so campaign content and the logo hosted at `blog.florianherrengt.com` continue to render. `worker-src 'self' blob:` permits ALTCHA's local proof-of-work worker. Framing and plugins are blocked.
+
+HSTS is scoped to the newsletter hostname for one year. It intentionally omits `includeSubDomains` and `preload`, so it does not impose HTTPS policy on unrelated descendants or the whole domain.
+
+Cloudflare briefly returned a mix of old and new headers while the rule propagated. After convergence, eight consecutive fresh requests included both CSP and HSTS. The form, custom CSS, custom JavaScript and ALTCHA challenge endpoint all returned the headers. A live browser test loaded the branded form and completed ALTCHA as `Verified`. `blog.florianherrengt.com` was checked separately and was not modified by this rule.
+
 ### DNS propagation incident
 
 The domain had just been transferred when the setup began.
@@ -205,6 +234,33 @@ Observed versions during setup:
 Listmonk listens on port `9000` inside its runtime. The host exposes the application to the tunnel on port `4480`.
 
 The database is PostgreSQL on the private `nassington` host. Database credentials are intentionally omitted.
+
+### Restricted host port bindings
+
+Coolify's Listmonk **Port Mappings** value is:
+
+```text
+127.0.0.1:4480:9000,100.65.174.90:4480:9000
+```
+
+This publishes the container's port `9000` on exactly two Raspberry Pi addresses:
+
+- `127.0.0.1:4480` for `cloudflared`, whose origin remains `http://localhost:4480`
+- `100.65.174.90:4480`, helium's Tailscale address, for private administration
+
+There is no `0.0.0.0:4480` binding. Port `4480` is therefore not listening on helium's LAN IPv4 address or global IPv6 address. Tailscale Serve was not added; the explicit Tailscale-address binding provides the required private access without another proxy layer.
+
+Administration remains available inside the tailnet at:
+
+```text
+http://helium:4480/admin/
+```
+
+The public Cloudflare Tunnel configuration did not need to change. After redeployment, the public subscription form and ALTCHA endpoint returned HTTP `200`, public `/admin/` returned HTTP `404`, and the private Tailscale admin interface loaded successfully. Direct connection attempts to helium's LAN IPv4 and global IPv6 addresses on port `4480` failed.
+
+The redeploy briefly returned HTTP `502` while the new container was starting. Once Listmonk finished initialization, repeated public and Tailscale requests returned HTTP `200`. The first admin dashboard render temporarily displayed zero counters; a reload showed the intact data: one list, four subscribers and one draft campaign.
+
+The Tailscale address normally remains stable for the lifetime of the node identity. If helium is removed and re-added to the tailnet and receives a different address, update the second Coolify mapping before redeploying.
 
 ### Public URL
 
@@ -300,8 +356,8 @@ The widget initially failed with `Verification failed` because the tunnel's path
 The public page is intentionally minimal. Its visible content is:
 
 - the `FH` logo
-- `Get new posts by email`
-- `Occasional writing by Florian Herrengt. No spam.`
+- `Subscribe`
+- `Occasional emails. No spam.`
 - the email field
 - the ALTCHA checkbox
 - the Subscribe button
