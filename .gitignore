@@ -2,5 +2,7 @@
 *.m4a
 *.txt
 !ai-removing-middle-class-software-engineering.txt
+!do-less/do-less.txt
+!3d-printing-ppe/3d-printing-ppe.txt
 !robots.txt
 .logs/
